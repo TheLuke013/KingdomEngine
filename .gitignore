@@ -1,0 +1,14 @@
+.vs
+bin
+bin-int
+
+ThirdParty/ImGui/DearImGui.vcxproj
+ThirdParty/ImGui/DearImGui.vcxproj.filters
+
+KingdomEngine/KingdomEngine.vcxproj
+KingdomEngine/KingdomEngine.vcxproj.filters
+KingdomEngine/KingdomEngine.vcxproj.user
+
+KingdomEditor/KingdomEditor.vcxproj
+KingdomEditor/KingdomEditor.vcxproj.user
+KingdomEditor/logs.txt
