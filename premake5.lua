@@ -46,24 +46,24 @@ project "KingdomEngine"
 	links
 	{
 		"ThirdParty/GLFW/lib/glfw3.lib",
-		"DearImGui"
+		"DearImGui",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 	filter "configurations:Debug"
-		defines "TES_DEBUG"
+		defines "KE_DEBUG"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "TES_RELEASE"
+		defines "KE_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"
-		defines "TES_DIST"
+		defines "KE_DIST"
 		optimize "On"
 
 project "KingdomEditor"
@@ -103,19 +103,18 @@ project "KingdomEditor"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 	filter "configurations:Debug"
-		defines "TES_DEBUG"
+		defines "KE_DEBUG"
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "TES_RELEASE"
+		defines "KE_RELEASE"
 		optimize "On"
 
 	filter "configurations:Dist"
-		defines "TES_DIST"
+		defines "KE_DIST"
 		optimize "On"
 
 project "DearImGui"
@@ -139,5 +138,4 @@ project "DearImGui"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"

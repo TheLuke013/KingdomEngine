@@ -15,10 +15,15 @@ public:
 
 	void OnReady() override
 	{
-
+		
 	}
 
 	void Update() override
+	{
+
+	}
+
+	void OnEvent(KE::Event e) override
 	{
 
 	}
