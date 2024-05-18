@@ -2,6 +2,8 @@
 bin
 bin-int
 
+KingdomEngine.sln
+
 ThirdParty/ImGui/DearImGui.vcxproj
 ThirdParty/ImGui/DearImGui.vcxproj.filters
 
