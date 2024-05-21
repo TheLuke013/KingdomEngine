@@ -76,22 +76,23 @@ namespace KE
 		{
 			LOG_INFO("Initialized GLAD");
 		}
+
+		glViewport(0, 0, properties.width, properties.height);
 	}
 
-	void Window::Update()
+	void Window::PollEvents()
 	{
 		glfwPollEvents();
 	}
 
 	void Window::Clear()
 	{
-		glClearColor(1.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 	void Window::SwapBuffers()
 	{
 		glfwSwapBuffers(window);
-		glFlush();
 	}
 }

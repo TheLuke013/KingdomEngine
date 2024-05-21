@@ -24,12 +24,12 @@ namespace KE
 		{
 			while (!glfwWindowShouldClose(window.Get()))
 			{
-				window.Update();
+				window.Clear();
 
 				Update();
 
-				window.Clear();
 				window.SwapBuffers();
+				window.PollEvents();
 			}
 			
 			if (glfwWindowShouldClose(window.Get()))

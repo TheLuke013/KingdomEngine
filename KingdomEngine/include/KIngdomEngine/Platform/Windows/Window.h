@@ -26,7 +26,7 @@ namespace KE
 		~Window();
 
 		void Create(int glMajorVersion, int glMinorVersion);
-		void Update();
+		void PollEvents();
 		void Clear();
 		void SwapBuffers();
 
