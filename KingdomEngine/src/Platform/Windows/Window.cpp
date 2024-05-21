@@ -32,7 +32,7 @@ namespace KE
 		glfwTerminate();
 	}
 
-	void Window::Create(int glMajorVersion = 3, int glMinorVersion = 3)
+	void Window::Create()
 	{
 		//INIT GLFW
 		if (!glfwInit())
@@ -47,8 +47,8 @@ namespace KE
 
 		//SET WINDOW HINTS
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glMajorVersion);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glMinorVersion);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 		//CREATE WINDOW
@@ -77,7 +77,7 @@ namespace KE
 			LOG_INFO("Initialized GLAD");
 		}
 
-		glViewport(0, 0, properties.width, properties.height);
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	void Window::PollEvents()
@@ -88,7 +88,7 @@ namespace KE
 	void Window::Clear()
 	{
 		glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Window::SwapBuffers()

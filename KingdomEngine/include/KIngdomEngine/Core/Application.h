@@ -10,6 +10,8 @@ namespace KE
 	class Application : EventListener
 	{
 	public:
+		Window window;
+
 		Application();
 		virtual ~Application();
 
@@ -22,8 +24,6 @@ namespace KE
 
 	private:
 		bool isRunning = true;
-
-		Window window;
 	};
 
 	Application* CreateApplication();

@@ -21,11 +21,13 @@ namespace KE
 		static void FramebufferResizeCallback(GLFWwindow* window, int framebufferWidth, int framebufferHeight);
 
 	public:
+		WindowProperties properties;
+
 		Window();
 		Window(const std::string& title, int width, int height);
 		~Window();
 
-		void Create(int glMajorVersion, int glMinorVersion);
+		void Create();
 		void PollEvents();
 		void Clear();
 		void SwapBuffers();
@@ -35,7 +37,6 @@ namespace KE
 
 	private:
 		GLFWwindow* window;
-		WindowProperties properties;
 
 	};
 }

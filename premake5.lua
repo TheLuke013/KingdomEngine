@@ -23,14 +23,16 @@ project "KingdomEngine"
 	{
 		"%{prj.name}/include/**.h",
 		"%{prj.name}/src/**.cpp",
-		"ThirdParty/GLAD/src/glad.c"
+		"ThirdParty/GLAD/src/glad.c",
+		"ThirdParty/stb/src/stb_image.cpp"
 	}
 
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
 		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
-		"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING"
+		"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING",
+		"GLM_ENABLE_EXPERIMENTAL"
 	}
 
 	includedirs
@@ -40,7 +42,8 @@ project "KingdomEngine"
 		"ThirdParty/ImGui/include",
 		"ThirdParty/GLAD/include",
 		"ThirdParty/GLM/include",
-		"ThirdParty/GLFW/include"
+		"ThirdParty/GLFW/include",
+		"ThirdParty/stb/include"
 	}
 
 	links
@@ -93,7 +96,8 @@ project "KingdomEditor"
 		"ThirdParty/spdlog/include",
 		"ThirdParty/GLAD/include",
 		"ThirdParty/GLM/include",
-		"ThirdParty/GLFW/include"
+		"ThirdParty/GLFW/include",
+		"ThirdParty/stb/include"
 	}
 
 	links

@@ -16,7 +16,7 @@ namespace KE
 	{
 		REGISTER_EVENT_LISTENER(this);
 
-		window.Create(3, 3);
+		window.Create();
 
 		OnReady();
 
