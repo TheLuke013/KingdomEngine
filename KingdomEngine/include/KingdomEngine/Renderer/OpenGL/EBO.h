@@ -2,6 +2,7 @@
 #define EBO_H
 
 #include <glad/glad.h>
+#include <vector>
 
 namespace KE
 {
@@ -10,7 +11,7 @@ namespace KE
 	public:
 		EBO();
 
-		void Create(GLuint* indices, GLsizeiptr size);
+		void Create(std::vector<GLuint>& indices);
 		void Bind();
 		void Unbind();
 		void Delete();

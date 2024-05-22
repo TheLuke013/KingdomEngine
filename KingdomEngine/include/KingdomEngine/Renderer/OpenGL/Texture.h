@@ -11,9 +11,10 @@ namespace KE
 	class Texture
 	{
 	public:
-		Texture();
+		std::string type;
 
-		void Create(const std::string& imagePath, GLenum textureType, GLenum slot, GLenum format, GLenum pixelType);
+		Texture(const std::string& imagePath, const std::string& textureType, GLenum slot, GLenum format, GLenum pixelType);
+
 		void TextureUnit(Shader& shader, const std::string& uniform, GLuint unit);
 		void Bind();
 		void Unbind();
@@ -21,7 +22,7 @@ namespace KE
 
 	private:
 		GLuint ID;
-		GLenum type;
+		GLuint unit;
 
 	};
 }

@@ -2,6 +2,9 @@
 #define VBO_H
 
 #include <glad/glad.h>
+#include <vector>
+
+#include "KingdomEngine/Renderer/OpenGL/Vertex.h"
 
 namespace KE
 {
@@ -10,7 +13,7 @@ namespace KE
 	public:
 		VBO();
 
-		void Create(GLfloat* vertices, GLsizeiptr size);
+		void Create(std::vector<Vertex>& vertices);
 		void Bind();
 		void Unbind();
 		void Delete();

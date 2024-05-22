@@ -1,23 +1,17 @@
 #include <KingdomEngine/KingdomEngine.h>
 
-#include "Camera.h"
-
 class EditorApplication : public KE::Application
 {
 public:
-	KE::Shader shaders;
-	KE::VAO vao;
-	KE::VBO vbo;
-	KE::EBO ebo;
-	KE::Texture texture;
+	KE::Shader shader;
+	KE::Shader lightShader;
+	KE::Camera camera;
 
-	Camera camera;
-
-	GLuint uniformID;
+	KE::Mesh light;
+	KE::Mesh floor;
 
 	EditorApplication()
-		: shaders(KE::Shader()), vao(KE::VAO()), vbo(KE::VBO()), ebo(KE::EBO()),
-		texture(KE::Texture()), uniformID(0), camera(Camera())
+		: camera(window.properties.width, window.properties.height, glm::vec3(0.0f, 1.0f, 0.0f))
 	{
 
 	}
@@ -29,56 +23,92 @@ public:
 
 	void OnReady() override
 	{
-		GLfloat vertices[] =
-		{ //     COORDINATES     /        COLORS      /   TexCoord  //
-			-0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Lower left corner
-			-0.5f,  0.5f, 0.0f,     0.0f, 1.0f, 0.0f,	0.0f, 1.0f, // Upper left corner
-			 0.5f,  0.5f, 0.0f,     0.0f, 0.0f, 1.0f,	1.0f, 1.0f, // Upper right corner
-			 0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 1.0f,	1.0f, 0.0f  // Lower right corner
+		KE::Vertex vertices[] =
+		{ //               COORDINATES           /            COLORS          /           NORMALS         /       TEXTURE COORDINATES    //
+			KE::Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+			KE::Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+			KE::Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+			KE::Vertex{glm::vec3(1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}
 		};
 
-		// Indices for vertices order
 		GLuint indices[] =
 		{
-			0, 2, 1, // Upper triangle
-			0, 3, 2 // Lower triangle
+			0, 1, 2,
+			0, 2, 3
 		};
 
-		shaders.LoadShaders("resource/shaders/default.vert", "resource/shaders/default.frag");
+		KE::Vertex lightVertices[] =
+		{ //     COORDINATES     //
+			KE::Vertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
+			KE::Vertex{glm::vec3(-0.1f, -0.1f, -0.1f)},
+			KE::Vertex{glm::vec3(0.1f, -0.1f, -0.1f)},
+			KE::Vertex{glm::vec3(0.1f, -0.1f,  0.1f)},
+			KE::Vertex{glm::vec3(-0.1f,  0.1f,  0.1f)},
+			KE::Vertex{glm::vec3(-0.1f,  0.1f, -0.1f)},
+			KE::Vertex{glm::vec3(0.1f,  0.1f, -0.1f)},
+			KE::Vertex{glm::vec3(0.1f,  0.1f,  0.1f)}
+		};
 
-		vao.Create();
-		vao.Bind();
+		GLuint lightIndices[] =
+		{
+			0, 1, 2,
+			0, 2, 3,
+			0, 4, 7,
+			0, 7, 3,
+			3, 7, 6,
+			3, 6, 2,
+			2, 6, 5,
+			2, 5, 1,
+			1, 5, 4,
+			1, 4, 0,
+			4, 5, 6,
+			4, 6, 7
+		};
 
-		vbo.Create(vertices, sizeof(vertices));
-		ebo.Create(indices, sizeof(indices));
+		KE::Texture textures[]
+		{
+			KE::Texture(("resource/textures/woodTexture.png"), "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE),
+			KE::Texture(("resource/textures/woodTexture_s.png"), "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+		};
 
-		vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-		vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		vao.LinkAttrib(vbo, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		//SHADER
+		shader.LoadShaders("resource/shaders/default.vert", "resource/shaders/default.frag");
+		std::vector <KE::Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(KE::Vertex));
+		std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+		std::vector <KE::Texture> tex(textures, textures + sizeof(textures) / sizeof(KE::Texture));
+		floor.Create(verts, ind, tex);
 
-		vao.Unbind();
-		vbo.Unbind();
-		ebo.Unbind();
+		//LIGHT SHADER
+		lightShader.LoadShaders("resource/shaders/light.vert", "resource/shaders/light.frag");
+		std::vector <KE::Vertex> lightVerts(lightVertices, lightVertices + sizeof(lightVertices) / sizeof(KE::Vertex));
+		std::vector <GLuint> lightInd(lightIndices, lightIndices + sizeof(lightIndices) / sizeof(GLuint));
+		light.Create(lightVerts, lightInd, tex);
 
-		uniformID = glGetUniformLocation(shaders.GetID(), "scale");
+		glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		glm::vec3 lightPos = glm::vec3(0.0f, 1.5f, 0.0f);
+		glm::mat4 lightModel = glm::mat4(1.0f);
+		lightModel = glm::translate(lightModel, lightPos);
 
-		texture.Create("resource/textures/013.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-		texture.TextureUnit(shaders, "tex0", 0);
+		glm::vec3 objectPos = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::mat4 objectModel = glm::mat4(1.0f);
+		objectModel = glm::translate(objectModel, objectPos);
 
-		camera.Create(window.properties.width, window.properties.height, glm::vec3(0.0f, 0.0f, 0.0f));
+		lightShader.Activate();
+		glUniformMatrix4fv(glGetUniformLocation(lightShader.GetID(), "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
+		glUniform4f(glGetUniformLocation(lightShader.GetID(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		shader.Activate();
+		glUniformMatrix4fv(glGetUniformLocation(shader.GetID(), "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
+		glUniform4f(glGetUniformLocation(shader.GetID(), "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		glUniform3f(glGetUniformLocation(shader.GetID(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 	}
 
 	void Update() override
 	{
-		shaders.Activate();
-
 		camera.Inputs(window.Get());
-		camera.Matrix(45.0f, 0.1f, 100.0f, shaders, "camMatrix");
+		camera.UpdateMatrix(45.0f, 0.1f, 100.0f);
 
-		glUniform1f(uniformID, 0.1f);
-
-		texture.Bind();
-		vao.Bind();
+		floor.Draw(shader, camera);
+		light.Draw(lightShader, camera);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}

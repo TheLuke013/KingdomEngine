@@ -11,5 +11,7 @@
 #include <KingdomEngine/Renderer/OpenGL/VBO.h>
 #include <KingdomEngine/Renderer/OpenGL/EBO.h>
 #include <KingdomEngine/Renderer/OpenGL/Texture.h>
+#include <KingdomEngine/Renderer/OpenGL/Camera.h>
+#include <KingdomEngine/Renderer/OpenGL/Mesh.h>
 
 #endif
