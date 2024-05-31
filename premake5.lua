@@ -93,6 +93,7 @@ project "KingdomEditor"
 	includedirs
 	{
 		"KingdomEngine/include",
+		"ThirdParty/ImGui/include",
 		"ThirdParty/spdlog/include",
 		"ThirdParty/GLAD/include",
 		"ThirdParty/GLM/include",
@@ -137,7 +138,8 @@ project "DearImGui"
 
 	includedirs
 	{
-		"ThirdParty/ImGui/include/ImGui"
+		"ThirdParty/ImGui/include/ImGui",
+		"ThirdParty/GLFW/include"
 	}
 
 	filter "system:windows"

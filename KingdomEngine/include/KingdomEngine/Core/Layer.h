@@ -21,7 +21,6 @@ namespace KE
 
 		virtual void OnReady() = 0;
 		virtual void Update() = 0;
-		virtual void OnEvent(Event e) = 0;
 
 	private:
 		std::string layerName;

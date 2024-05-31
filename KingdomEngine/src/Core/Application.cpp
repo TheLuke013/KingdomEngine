@@ -1,4 +1,5 @@
 #include "KingdomEngine/Core/Application.h"
+#include "KingdomEngine/GUI/ImGuiLayer.h"
 
 namespace KE
 {
@@ -19,19 +20,25 @@ namespace KE
 		window.Create();
 
 		OnReady();
+
+		//IMGUI LAYER
+		ImGuiLayer* imguiLayer = new ImGuiLayer(window.Get());
+		layerStack.PushLayer(imguiLayer);
+
 		layerStack.InitLayers();
 
 		while (isRunning)
 		{
 			while (!glfwWindowShouldClose(window.Get()))
 			{
+				window.PollEvents();
+				layerStack.UpdateLayers();	
 				window.Clear();
 
 				Update();
-				layerStack.UpdateLayers();
 
+				imguiLayer->Render();
 				window.SwapBuffers();
-				window.PollEvents();
 			}
 			
 			if (glfwWindowShouldClose(window.Get()))
@@ -44,7 +51,7 @@ namespace KE
 	void Application::_OnEvent(Event e)
 	{
 		OnEvent(e);
-		layerStack.OnEventLayers(e);
+		layerStack.UpdateEventLayers(e);
 
 		if (e.type_ == CLOSE_APPLICATION)
 		{

@@ -4,8 +4,6 @@
 #include <glad/glad.h>
 #include <vector>
 
-#include "KingdomEngine/Renderer/OpenGL/Vertex.h"
-
 namespace KE
 {
 	class VBO
@@ -13,7 +11,8 @@ namespace KE
 	public:
 		VBO();
 
-		void Create(std::vector<Vertex>& vertices);
+		void Create(GLfloat* vertices, GLsizeiptr size);
+
 		void Bind();
 		void Unbind();
 		void Delete();

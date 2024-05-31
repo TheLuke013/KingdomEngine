@@ -12,6 +12,8 @@ namespace KE
 		EBO();
 
 		void Create(std::vector<GLuint>& indices);
+		void Create(GLuint* indices, GLsizeiptr size);
+
 		void Bind();
 		void Unbind();
 		void Delete();

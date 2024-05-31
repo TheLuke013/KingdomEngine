@@ -6,6 +6,14 @@ namespace KE
 	{
 	}
 
+	LayerStack::~LayerStack()
+	{
+		for (auto layer : layers)
+		{
+			delete layer;
+		}
+	}
+
 	void LayerStack::PushLayer(Layer* layer)
 	{
 		layers.push_back(layer);
@@ -40,11 +48,11 @@ namespace KE
 		}
 	}
 
-	void LayerStack::OnEventLayers(Event& e)
+	void LayerStack::UpdateEventLayers(Event e)
 	{
 		for (auto layer : layers)
 		{
-			layer->OnEvent(e);
+			layer->_OnEvent(e);
 		}
 	}
 }

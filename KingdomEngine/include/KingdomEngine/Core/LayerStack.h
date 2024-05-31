@@ -11,13 +11,14 @@ namespace KE
 	{
 	public:
 		LayerStack();
+		~LayerStack();
 
 		void PushLayer(Layer* layer);
 		void RemoveLayer(Layer* layer);
 
-		void UpdateLayers();
 		void InitLayers();
-		void OnEventLayers(Event& e);
+		void UpdateLayers();
+		void UpdateEventLayers(Event e);
 
 	private:
 		std::vector<Layer*> layers;
