@@ -4,6 +4,7 @@
 #include "KingdomEngine/Core/Log.h"
 #include "kingdomEngine/Platform/Windows/Window.h"
 #include "KingdomEngine/Core/Event.h"
+#include "KingdomEngine/Core/LayerStack.h"
 
 namespace KE
 {
@@ -24,6 +25,7 @@ namespace KE
 
 	private:
 		bool isRunning = true;
+		LayerStack layerStack;
 	};
 
 	Application* CreateApplication();

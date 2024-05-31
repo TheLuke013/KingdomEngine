@@ -19,6 +19,7 @@ namespace KE
 		window.Create();
 
 		OnReady();
+		layerStack.InitLayers();
 
 		while (isRunning)
 		{
@@ -27,6 +28,7 @@ namespace KE
 				window.Clear();
 
 				Update();
+				layerStack.UpdateLayers();
 
 				window.SwapBuffers();
 				window.PollEvents();
@@ -42,6 +44,7 @@ namespace KE
 	void Application::_OnEvent(Event e)
 	{
 		OnEvent(e);
+		layerStack.OnEventLayers(e);
 
 		if (e.type_ == CLOSE_APPLICATION)
 		{
