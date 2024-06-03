@@ -11,6 +11,14 @@ workspace "KingdomEngine"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+group "Libs"
+	include "ThirdParty/ImGui"
+group ""
+
+group "Projects"
+	include "Projects"
+group ""
+
 project "KingdomEngine"
 	location "KingdomEngine"
 	kind "StaticLib"
@@ -121,27 +129,3 @@ project "KingdomEditor"
 	filter "configurations:Dist"
 		defines "KE_DIST"
 		optimize "On"
-
-project "DearImGui"
-	location "ThirdParty/ImGui"
-	kind "StaticLib"
-	language "C++"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	files
-	{
-		"ThirdParty/ImGui/include/**.h",
-		"ThirdParty/ImGui/src/**.cpp"
-	}
-
-	includedirs
-	{
-		"ThirdParty/ImGui/include/ImGui",
-		"ThirdParty/GLFW/include"
-	}
-
-	filter "system:windows"
-		cppdialect "C++17"
-		systemversion "latest"
