@@ -1,11 +1,19 @@
 #include "KingdomEngine/Core/Application.h"
-#include "KingdomEngine/GUI/ImGuiLayer.h"
 
 namespace KE
 {
 	Application::Application()
+		: imguiLayer(nullptr)
 	{
+		REGISTER_EVENT_LISTENER(this);
 
+		window.Create();
+
+		//IMGUI LAYER
+		ImGuiLayer* imguiLayer = new ImGuiLayer(window.Get());
+		layerStack.PushLayer(imguiLayer);
+
+		layerStack.InitLayers();
 	}
 
 	Application::~Application()
@@ -15,17 +23,7 @@ namespace KE
 
 	void Application::Run()
 	{
-		REGISTER_EVENT_LISTENER(this);
-
-		window.Create();
-
 		OnReady();
-
-		//IMGUI LAYER
-		ImGuiLayer* imguiLayer = new ImGuiLayer(window.Get());
-		layerStack.PushLayer(imguiLayer);
-
-		layerStack.InitLayers();
 
 		while (isRunning)
 		{
