@@ -3,7 +3,6 @@
 
 //ENGINE
 #include "Core/Application.h"
-#include "Core/EntryPoint.h"
 
 //OPENGL
 #include <KingdomEngine/Renderer/OpenGL/Shader.h>

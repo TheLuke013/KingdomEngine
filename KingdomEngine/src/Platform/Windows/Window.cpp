@@ -4,11 +4,6 @@
 
 namespace KE
 {
-	void Window::FramebufferResizeCallback(GLFWwindow* window, int framebufferWidth, int framebufferHeight)
-	{
-		glViewport(0, 0, framebufferWidth, framebufferHeight);
-	}
-
 	Window::Window()
 		: window(nullptr)
 	{
@@ -64,35 +59,19 @@ namespace KE
 			LOG_INFO("Window created");
 		}
 
-		glfwSetFramebufferSizeCallback(window, FramebufferResizeCallback);
+		glfwSetFramebufferSizeCallback(window, OpenGLContext::FramebufferResizeCallback);
 
 		glfwMakeContextCurrent(window);
-
-		if (gladLoadGL() == 0)
-		{
-			LOG_FATAL("Failed to initialize GLAD");
-		}
-		else
-		{
-			LOG_INFO("Initialized GLAD");
-		}
-
-		glEnable(GL_DEPTH_TEST);
 	}
 
-	void Window::PollEvents()
+	void Window::Update()
 	{
 		glfwPollEvents();
-	}
-
-	void Window::Clear()
-	{
-		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}
-
-	void Window::SwapBuffers()
-	{
 		glfwSwapBuffers(window);
+
+		if (IsClosed())
+		{
+			DISPATCH_EVENT(CLOSE_APPLICATION);
+		}
 	}
 }

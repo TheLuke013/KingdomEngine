@@ -9,6 +9,8 @@ namespace KE
 
 		window.Create();
 
+		context.Init();
+
 		//IMGUI LAYER
 		ImGuiLayer* imguiLayer = new ImGuiLayer(window.Get());
 		layerStack.PushLayer(imguiLayer);
@@ -27,21 +29,15 @@ namespace KE
 
 		while (isRunning)
 		{
-			while (!glfwWindowShouldClose(window.Get()))
+			while (!window.IsClosed())
 			{
-				window.PollEvents();
 				layerStack.UpdateLayers();	
-				window.Clear();
+				context.Clear();
 
-				Update();
+				OnUpdate();
 
 				imguiLayer->Render();
-				window.SwapBuffers();
-			}
-			
-			if (glfwWindowShouldClose(window.Get()))
-			{
-				isRunning = false;
+				window.Update();
 			}
 		}
 	}

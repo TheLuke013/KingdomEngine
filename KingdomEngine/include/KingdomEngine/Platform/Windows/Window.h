@@ -1,9 +1,9 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "KingdomEngine/Renderer/OpenGL/OpenGLContext.h"
 
+#include <GLFW/glfw3.h>
 #include <string>
 
 namespace KE
@@ -17,25 +17,22 @@ namespace KE
 
 	class Window
 	{
-	private:
-		static void FramebufferResizeCallback(GLFWwindow* window, int framebufferWidth, int framebufferHeight);
-
 	public:
-		WindowProperties properties;
-
 		Window();
 		Window(const std::string& title, int width, int height);
 		~Window();
 
 		void Create();
-		void PollEvents();
-		void Clear();
-		void SwapBuffers();
+		void Update();
+
+		bool IsClosed() { return glfwWindowShouldClose(window); }
 
 
 		GLFWwindow* Get() const { return window; }
+		WindowProperties& GetProper() { return properties; }
 
 	private:
+		WindowProperties properties;
 		GLFWwindow* window;
 
 	};

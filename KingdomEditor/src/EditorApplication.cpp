@@ -23,7 +23,7 @@ public:
 		sprite = new KE::Sprite("../resources/textures/013.png", shader);
 	}
 
-	void Update() override
+	void OnUpdate() override
 	{
 		sprite->Draw();
 	}

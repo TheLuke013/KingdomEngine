@@ -46,7 +46,7 @@ namespace KE
 	};
 }
 
-#define FIRE_EVENT(e) KE::EventManager::Get().Fire(e);
+#define DISPATCH_EVENT(e) KE::EventManager::Get().Fire(e);
 #define REGISTER_EVENT_LISTENER(listener) KE::EventManager::Get().Register(listener);
 
 #endif

@@ -1,5 +1,4 @@
-#ifndef ENTRY_POINT_H
-#define ENTRY_POINT_H
+#include "KingdomEngine/Core/Application.h"
 
 #ifdef _WIN32
 
@@ -16,7 +15,5 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
-#endif
 
 #endif

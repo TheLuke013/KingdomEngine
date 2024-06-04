@@ -12,22 +12,22 @@ namespace KE
 	class Application : EventListener
 	{
 	public:
-		Window window;
-
 		Application();
 		virtual ~Application();
+
+		virtual void OnEvent(Event e) = 0;
+		virtual void OnReady() = 0;
+		virtual void OnUpdate() = 0;
 
 		void Run();
 		void _OnEvent(Event e) override;
 
-		virtual void OnEvent(Event e) = 0;
-		virtual void OnReady() = 0;
-		virtual void Update() = 0;
-
 	private:
 		bool isRunning = true;
+		Window window;
 		LayerStack layerStack;
 		ImGuiLayer* imguiLayer;
+		OpenGLContext context;
 	};
 
 	Application* CreateApplication();

@@ -13,7 +13,7 @@ namespace KE
 	public:
 		std::string type;
 
-		Texture(const std::string& imagePath, const std::string& textureType, GLenum slot, GLenum format, GLenum pixelType);
+		Texture(const std::string& imagePath, const std::string& textureType, GLenum slot, GLenum pixelType);
 
 		void TextureUnit(Shader& shader, const std::string& uniform, GLuint unit);
 		void Bind();
@@ -23,6 +23,7 @@ namespace KE
 	private:
 		GLuint ID;
 		GLuint unit;
+		GLenum format;
 
 	};
 }

@@ -3,7 +3,7 @@
 namespace KE
 {
 	Sprite::Sprite(const std::string& texturePath, Shader& shader)
-		: shader(shader), texture(texturePath, "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE), transform(glm::mat4(1.0f))
+		: shader(shader), texture(texturePath, "diffuse", 0, GL_UNSIGNED_BYTE), transform(glm::mat4(1.0f))
 	{
 		Initialize(texturePath);
 	}
