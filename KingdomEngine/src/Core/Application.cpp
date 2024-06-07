@@ -3,19 +3,16 @@
 namespace KE
 {
 	Application::Application()
-		: imguiLayer(nullptr)
 	{
+		isRunning = true;
+
 		REGISTER_EVENT_LISTENER(this);
 
 		window.Create();
 
 		context.Init();
 
-		//IMGUI LAYER
-		ImGuiLayer* imguiLayer = new ImGuiLayer(window.Get());
-		layerStack.PushLayer(imguiLayer);
-
-		layerStack.InitLayers();
+		ActivateImGui();
 	}
 
 	Application::~Application()
@@ -23,33 +20,47 @@ namespace KE
 
 	}
 
+	//IMGUI
+	void Application::ActivateImGui()
+	{
+		imguiManager.Init(window.Get());
+	}
+
+	void Application::DisableImGui()
+	{
+		imguiManager.Disable();
+	}
+
 	void Application::Run()
 	{
 		OnReady();
 
-		while (isRunning)
+		while (isRunning && !window.IsClosed())
 		{
-			while (!window.IsClosed())
-			{
-				layerStack.UpdateLayers();	
-				context.Clear();
+			imguiManager.CreateNewFrame();
 
-				OnUpdate();
+			context.Clear();
 
-				imguiLayer->Render();
-				window.Update();
-			}
+			OnUpdate();
+
+			imguiManager.Render();
+
+			window.Update();
 		}
+	}
+
+	void Application::Quit()
+	{
+		isRunning = false;
 	}
 
 	void Application::_OnEvent(Event e)
 	{
 		OnEvent(e);
-		layerStack.UpdateEventLayers(e);
 
 		if (e.type_ == CLOSE_APPLICATION)
 		{
-			isRunning = false;
+			Quit();
 		}
 	}
 }

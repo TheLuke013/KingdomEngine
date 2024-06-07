@@ -12,6 +12,4 @@
 #include <KingdomEngine/Renderer/OpenGL/Texture.h>
 #include <KingdomEngine/Renderer/OpenGL/Sprite.h>
 
-#include <KingdomEngine/GUI/ImGuiLayer.h>
-
 #endif

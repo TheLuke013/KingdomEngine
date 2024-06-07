@@ -4,8 +4,7 @@
 #include "KingdomEngine/Core/Log.h"
 #include "kingdomEngine/Platform/Windows/Window.h"
 #include "KingdomEngine/Core/Event.h"
-#include "KingdomEngine/Core/LayerStack.h"
-#include "KingdomEngine/GUI/ImGuiLayer.h"
+#include "KingdomEngine/ImGui/ImGuiManager.h"
 
 namespace KE
 {
@@ -19,15 +18,21 @@ namespace KE
 		virtual void OnReady() = 0;
 		virtual void OnUpdate() = 0;
 
+		void ActivateImGui();
+		void DisableImGui();
+
+		Window& GetWindow() { return window; }
+
 		void Run();
-		void _OnEvent(Event e) override;
+		void Quit();
 
 	private:
-		bool isRunning = true;
+		bool isRunning;
 		Window window;
-		LayerStack layerStack;
-		ImGuiLayer* imguiLayer;
 		OpenGLContext context;
+		ImGuiManager imguiManager;
+
+		void _OnEvent(Event e) override;
 	};
 
 	Application* CreateApplication();

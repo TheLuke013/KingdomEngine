@@ -24,6 +24,7 @@ namespace KE
 
 		void Create();
 		void Update();
+		void Destroy();
 
 		bool IsClosed() { return glfwWindowShouldClose(window); }
 

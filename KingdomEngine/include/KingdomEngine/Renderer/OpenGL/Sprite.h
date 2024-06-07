@@ -21,8 +21,10 @@ namespace KE
 		~Sprite();
 
 		void Draw();
+
 		void SetPosition(float x, float y);
 		void SetScale(float scaleX, float scaleY);
+		void SetRotation(float degrees);
 
 	private:
 		VAO vao;
@@ -31,6 +33,9 @@ namespace KE
 		Texture texture;
 		Shader& shader;
 		glm::mat4 transform;
+		glm::vec2 position;
+		glm::vec2 scale;
+		float rotationDegrees;
 
 		void Initialize(const std::string& texturePath);
 	};

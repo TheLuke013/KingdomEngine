@@ -20,11 +20,7 @@ namespace KE
 
 	Window::~Window()
 	{
-		if (window)
-		{
-			glfwDestroyWindow(window);
-		}
-		glfwTerminate();
+		Destroy();
 	}
 
 	void Window::Create()
@@ -73,5 +69,14 @@ namespace KE
 		{
 			DISPATCH_EVENT(CLOSE_APPLICATION);
 		}
+	}
+
+	void Window::Destroy()
+	{
+		if (window)
+		{
+			glfwDestroyWindow(window);
+		}
+		glfwTerminate();
 	}
 }
