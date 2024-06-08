@@ -77,7 +77,7 @@ public:
 		
 	}}
 
-	void Update() override
+	void OnUpdate() override
 	{{
 		
 	}}
@@ -86,6 +86,16 @@ public:
 	{{
 
 	}}
+
+    void OnImGuiRender() override
+    {{
+
+    }}
+
+    void OnMenuBarRender() override
+    {{
+
+    }}
 }};
 
 KE::Application* KE::CreateApplication()

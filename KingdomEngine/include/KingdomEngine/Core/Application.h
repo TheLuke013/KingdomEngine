@@ -17,6 +17,8 @@ namespace KE
 		virtual void OnEvent(Event e) = 0;
 		virtual void OnReady() = 0;
 		virtual void OnUpdate() = 0;
+		virtual void OnImGuiRender() = 0;
+		virtual void OnMenuBarRender() = 0;
 
 		void ActivateImGui();
 		void DisableImGui();

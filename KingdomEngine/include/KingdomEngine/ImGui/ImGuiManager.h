@@ -20,9 +20,13 @@ namespace KE
 		void CreateNewFrame();
 		void Render();
 
+		void BeginDockspace();
+		void EndDockspace();
+
+		bool IsEnabled() const { return isEnabled; }
+
 	private:
 		GLFWwindow* window;
-		ImGuiIO io;
 		bool isEnabled;
 		bool newFrameIsCalled;
 

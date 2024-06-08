@@ -39,9 +39,23 @@ namespace KE
 		{
 			imguiManager.CreateNewFrame();
 
+			//IMGUI DOCKSPACE
+			imguiManager.BeginDockspace();
+			if (imguiManager.IsEnabled())
+			{
+				OnMenuBarRender();
+			}
+			imguiManager.EndDockspace();
+
+			//render client-application imgui
+			if (imguiManager.IsEnabled())
+			{
+				OnImGuiRender();
+			}
+
 			context.Clear();
 
-			OnUpdate();
+			OnUpdate(); //updates client-application
 
 			imguiManager.Render();
 
