@@ -16,7 +16,7 @@ public:
 
 	void OnReady() override
 	{
-		shader.LoadShaders("../resources/shaders/sprite.vert", "../resources/shaders/sprite.frag");
+		shader.LoadShaders("../resources/shaders/gl2/sprite.vert", "../resources/shaders/gl2/sprite.frag");
 		sprite = new KE::Sprite("../resources/textures/TheLuke.png", shader);
 	}
 
@@ -43,8 +43,8 @@ public:
 		{
 			DisableImGui();
 		}
-
-		sprite->Draw();
+		
+		//sprite->Draw();
 	}
 
 	void OnEvent(KE::Event e) override

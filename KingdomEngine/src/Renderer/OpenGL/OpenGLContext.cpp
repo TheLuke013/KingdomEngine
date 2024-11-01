@@ -3,6 +3,8 @@
 
 namespace KE
 {
+	OpenGLVersion OpenGLContext::version;
+
 	void OpenGLContext::Init()
 	{
 		if (gladLoadGL() == 0)

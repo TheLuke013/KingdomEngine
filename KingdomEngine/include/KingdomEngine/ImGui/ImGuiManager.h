@@ -6,6 +6,7 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+#include <ImGui/imgui_impl_opengl2.h>
 
 namespace KE
 {
@@ -24,6 +25,8 @@ namespace KE
 		void EndDockspace();
 
 		bool IsEnabled() const { return isEnabled; }
+
+		int DetectGLContextVersion();
 
 	private:
 		GLFWwindow* window;

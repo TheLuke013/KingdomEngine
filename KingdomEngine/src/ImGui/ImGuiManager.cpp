@@ -28,7 +28,7 @@ namespace KE
 			io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 			io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-			//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 			ImGuiStyle& style = ImGui::GetStyle();
 			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -38,7 +38,16 @@ namespace KE
 			}
 
 			ImGui_ImplGlfw_InitForOpenGL(window, true);
-			ImGui_ImplOpenGL3_Init("#version 330");
+
+			//detect opengl version selected
+			if (DetectGLContextVersion() == 3)
+			{
+				ImGui_ImplOpenGL3_Init("#version 330");
+			} 
+			else if (DetectGLContextVersion() == 2)
+			{
+				ImGui_ImplOpenGL2_Init();
+			}
 
 			isEnabled = true;
 			LOG_INFO("ImGui was enabled");
@@ -49,7 +58,15 @@ namespace KE
 	{
 		if (isEnabled)
 		{
-			ImGui_ImplOpenGL3_Shutdown();
+			if (DetectGLContextVersion() == 3)
+			{
+				ImGui_ImplOpenGL3_Shutdown();
+			}
+			else if (DetectGLContextVersion() == 2)
+			{
+				ImGui_ImplOpenGL2_Shutdown();
+			}
+
 			ImGui_ImplGlfw_Shutdown();
 			ImGui::DestroyContext();
 
@@ -64,7 +81,15 @@ namespace KE
 		if (isEnabled && newFrameIsCalled)
 		{
 			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+			if (DetectGLContextVersion() == 3)
+			{
+				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			}
+			else if (DetectGLContextVersion() == 2)
+			{
+				ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+			}
 
 			if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
@@ -113,11 +138,35 @@ namespace KE
 		}
 	}
 
+	int ImGuiManager::DetectGLContextVersion()
+	{
+		if (OpenGLContext::version.glVersion == OpenGL3)
+		{
+			return 3;
+		}
+		else if (OpenGLContext::version.glVersion == OpenGL2)
+		{
+			return 2;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	void ImGuiManager::CreateNewFrame()
 	{
 		if (isEnabled)
 		{
-			ImGui_ImplOpenGL3_NewFrame();
+			if (DetectGLContextVersion() == 3)
+			{
+				ImGui_ImplOpenGL3_NewFrame();
+			}
+			else if (DetectGLContextVersion() == 2)
+			{
+				ImGui_ImplOpenGL2_NewFrame();
+			}
+
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
