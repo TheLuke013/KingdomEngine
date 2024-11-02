@@ -8,6 +8,7 @@ namespace KE
 
 		REGISTER_EVENT_LISTENER(this);
 
+		window.GetProper().isMaximized = true;
 		window.Create();
 
 		context.Init();

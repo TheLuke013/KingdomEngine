@@ -13,13 +13,14 @@ namespace KE
 		std::string title = "Kingdom Engine";
 		int width = 1024, height = 600;
 		int framebufferWidth = 0, framebufferHeight = 0;
+		bool isMaximized = false;
 	};
 
 	class Window
 	{
 	public:
 		Window();
-		Window(const std::string& title, int width, int height);
+		Window(const std::string& title, int width, int height, bool maximized);
 		~Window();
 
 		void Create();

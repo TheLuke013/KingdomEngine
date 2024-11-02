@@ -1,26 +1,39 @@
-#include <KingdomEngine/KingdomEngine.h>
+#include "KingdomEditor/EditorApplication.h"
 
-class EditorApplication : public KE::Application
+namespace Editor
 {
-public:
-	EditorApplication()
+	EditorApplication::EditorApplication()
 		: sprite(nullptr), spritePos(glm::vec2(0.0f, 0.0f))
 	{
+		//gameObjectsPos = ImVec2(0, 19);
+		//gameObjectsSize = ImVec2(172, 334);
+		//gameObjectsCollapsed = false;
 
+		//detailsPanelPos = ImVec2(1184, 19);
+		//detailsPanelSize = ImVec2(182, 578);
+		//detailsPanelCollapsed = false;
+
+		//consolePos = ImVec2(0, 599);
+		//consoleSize = ImVec2(1366, 98);
+		//consoleCollapsed = false;
+
+		//logsPos = ImVec2(0, 599);
+		//logsSize = ImVec2(1366, 136);
+		//logsCollapsed = false;
 	}
 
-	~EditorApplication()
+	EditorApplication::~EditorApplication()
 	{
 
 	}
 
-	void OnReady() override
+	void EditorApplication::OnReady()
 	{
 		shader.LoadShaders("../resources/shaders/gl2/sprite.vert", "../resources/shaders/gl2/sprite.frag");
 		sprite = new KE::Sprite("../resources/textures/TheLuke.png", shader);
 	}
 
-	void OnUpdate() override
+	void EditorApplication::OnUpdate()
 	{
 		if (glfwGetKey(GetWindow().Get(), GLFW_KEY_A) == GLFW_PRESS)
 		{
@@ -43,33 +56,21 @@ public:
 		{
 			DisableImGui();
 		}
-		
+
 		//sprite->Draw();
 	}
 
-	void OnEvent(KE::Event e) override
+	void EditorApplication::OnEvent(KE::Event e)
 	{
 
 	}
 
-	void OnImGuiRender() override
+	void EditorApplication::OnImGuiRender()
 	{
-		//ImGui::ShowDemoWindow();
-
-		ImGui::Begin("Content Browser");
-		ImGui::End();
-
-		ImGui::Begin("Game Objects");
-		ImGui::End();
-
-		ImGui::Begin("Details Panel");
-		ImGui::End();
-
-		ImGui::Begin("Console");
-		ImGui::End();
+		UPDATE_EDITOR_INTERFACES();
 	}
 
-	void OnMenuBarRender() override
+	void EditorApplication::OnMenuBarRender()
 	{
 		if (ImGui::BeginMenuBar())
 		{
@@ -81,14 +82,9 @@ public:
 			ImGui::EndMenuBar();
 		}
 	}
-
-private:
-	KE::Shader shader;
-	KE::Sprite* sprite;
-	glm::vec2 spritePos;
-};
+}
 
 KE::Application* KE::CreateApplication()
 {
-	return new EditorApplication();
+	return new Editor::EditorApplication();
 }

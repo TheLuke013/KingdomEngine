@@ -24,6 +24,7 @@ namespace KE
 		void DisableImGui();
 
 		Window& GetWindow() { return window; }
+		OpenGLContext& GetContext() { return context; }
 
 		void Run();
 		void Quit();

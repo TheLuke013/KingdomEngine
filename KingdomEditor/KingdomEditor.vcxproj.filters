@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\KingdomEditor">
+      <UniqueIdentifier>{880175FD-F46D-30F8-BD61-C855298D5260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\KingdomEditor\EditorInterface">
+      <UniqueIdentifier>{4F4E6377-BB12-6267-8478-9231F0FBFD9C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\KingdomEditor\EditorInterface\UI">
+      <UniqueIdentifier>{1CB3748B-0830-68CE-31AD-68E21D890462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\EditorInterface">
+      <UniqueIdentifier>{F4A117C8-6003-F5D5-E970-3B8855D12B95}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\KingdomEditor\EditorInterface\EditorInterface.h">
+      <Filter>include\KingdomEditor\EditorInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KingdomEditor\EditorApplication.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\EditorApplication.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorInterface\EditorInterface.cpp">
+      <Filter>src\EditorInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorInterface\UI\ContentBrowser.cpp" />
+    <ClCompile Include="src\EditorInterface\UI\GameObjects.cpp" />
+    <ClCompile Include="src\EditorInterface\UI\DetailsPanel.cpp" />
+    <ClCompile Include="src\EditorInterface\UI\Console.cpp" />
+    <ClCompile Include="src\EditorInterface\UI\Logs.cpp" />
+  </ItemGroup>
+</Project>

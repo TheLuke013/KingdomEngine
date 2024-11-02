@@ -87,7 +87,7 @@ project "KingdomEditor"
 
 	files
 	{
-		"%{prj.name}/src/**.h",
+		"%{prj.name}/include/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
@@ -100,6 +100,7 @@ project "KingdomEditor"
 
 	includedirs
 	{
+		"%{prj.name}/include",
 		"KingdomEngine/include",
 		"ThirdParty/ImGui/include",
 		"ThirdParty/spdlog/include",

@@ -10,12 +10,13 @@ namespace KE
 
 	}
 
-	Window::Window(const std::string& title, int width, int height)
+	Window::Window(const std::string& title, int width, int height, bool maximized)
 		: window(nullptr)
 	{
 		properties.title = title;
 		properties.width = width;
 		properties.height = height;
+		properties.isMaximized = maximized;
 	}
 
 	Window::~Window()
@@ -53,6 +54,11 @@ namespace KE
 		else
 		{
 			LOG_INFO("Window created");
+		}
+
+		if (properties.isMaximized)
+		{
+			glfwMaximizeWindow(window);
 		}
 
 		glfwSetFramebufferSizeCallback(window, OpenGLContext::FramebufferResizeCallback);
