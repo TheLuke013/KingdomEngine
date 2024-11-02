@@ -5,7 +5,7 @@ namespace Editor
 	class Logs : public EditorInterface
 	{
 	public:
-		Logs() : EditorInterface("Logs", 0, 599, 1366, 136, false)
+		Logs() : EditorInterface("Logs", 0, 599, 1366, 136, false, DOWN)
 		{
 
 		}

@@ -5,21 +5,7 @@ namespace Editor
 	EditorApplication::EditorApplication()
 		: sprite(nullptr), spritePos(glm::vec2(0.0f, 0.0f))
 	{
-		//gameObjectsPos = ImVec2(0, 19);
-		//gameObjectsSize = ImVec2(172, 334);
-		//gameObjectsCollapsed = false;
-
-		//detailsPanelPos = ImVec2(1184, 19);
-		//detailsPanelSize = ImVec2(182, 578);
-		//detailsPanelCollapsed = false;
-
-		//consolePos = ImVec2(0, 599);
-		//consoleSize = ImVec2(1366, 98);
-		//consoleCollapsed = false;
-
-		//logsPos = ImVec2(0, 599);
-		//logsSize = ImVec2(1366, 136);
-		//logsCollapsed = false;
+		
 	}
 
 	EditorApplication::~EditorApplication()
@@ -81,6 +67,11 @@ namespace Editor
 			}
 			ImGui::EndMenuBar();
 		}
+	}
+
+	void EditorApplication::OnDockspaceUpdate()
+	{
+		UPDATE_EI_DOCKSPACE(GetImGuiManager());
 	}
 }
 

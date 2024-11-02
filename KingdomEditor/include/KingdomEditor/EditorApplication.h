@@ -18,6 +18,7 @@ namespace Editor
 		void OnEvent(KE::Event e) override;
 		void OnImGuiRender() override;
 		void OnMenuBarRender() override;
+		void OnDockspaceUpdate() override;
 
 	private:
 		KE::Shader shader;

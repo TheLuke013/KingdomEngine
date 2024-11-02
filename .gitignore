@@ -14,3 +14,4 @@ KingdomEngine/KingdomEngine.vcxproj.user
 KingdomEditor/KingdomEditor.vcxproj
 KingdomEditor/KingdomEditor.vcxproj.user
 KingdomEditor/logs.txt
+KingdomEditor/imgui.ini

@@ -19,12 +19,14 @@ namespace KE
 		virtual void OnUpdate() = 0;
 		virtual void OnImGuiRender() = 0;
 		virtual void OnMenuBarRender() = 0;
+		virtual void OnDockspaceUpdate() = 0;
 
 		void ActivateImGui();
 		void DisableImGui();
 
 		Window& GetWindow() { return window; }
 		OpenGLContext& GetContext() { return context; }
+		ImGuiManager& GetImGuiManager() { return imguiManager; }
 
 		void Run();
 		void Quit();

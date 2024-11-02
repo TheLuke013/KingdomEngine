@@ -44,6 +44,7 @@ namespace KE
 			imguiManager.BeginDockspace();
 			if (imguiManager.IsEnabled())
 			{
+				OnDockspaceUpdate();
 				OnMenuBarRender();
 			}
 			imguiManager.EndDockspace();
