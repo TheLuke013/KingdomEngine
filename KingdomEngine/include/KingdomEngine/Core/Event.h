@@ -9,7 +9,9 @@ namespace KE
 	{
 		NONE,
 		CLOSE_APPLICATION,
-		LOAD_FONT
+		RESTART_IMGUI,
+		LOAD_OPENGL2,
+		LOAD_OPENGL3
 	};
 
 	class Event

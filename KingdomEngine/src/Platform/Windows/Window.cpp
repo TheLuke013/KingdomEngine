@@ -2,6 +2,8 @@
 #include "KingdomEngine/Core/Log.h"
 #include "KingdomEngine/Core/Event.h"
 
+#include <sstream>
+
 namespace KE
 {
 	Window::Window()
@@ -24,13 +26,15 @@ namespace KE
 		Destroy();
 	}
 
-	void Window::Create()
+	bool Window::Create()
 	{
+		glfwSetErrorCallback(Window::ErrorCallback);
+
 		//INIT GLFW
 		if (!glfwInit())
 		{
 			LOG_FATAL("Failed to initialize GLFW");
-			return;
+			return false;
 		}
 		else
 		{
@@ -50,6 +54,7 @@ namespace KE
 		{
 			glfwTerminate();
 			LOG_FATAL("Failed to create window");
+			return false;
 		}
 		else
 		{
@@ -62,8 +67,9 @@ namespace KE
 		}
 
 		glfwSetFramebufferSizeCallback(window, OpenGLContext::FramebufferResizeCallback);
-
 		glfwMakeContextCurrent(window);
+
+		return true;
 	}
 
 	void Window::Update()
@@ -84,5 +90,13 @@ namespace KE
 			glfwDestroyWindow(window);
 		}
 		glfwTerminate();
+	}
+
+	void Window::ErrorCallback(int error, const char* description)
+	{
+		std::stringstream errorMsg;
+		errorMsg << "GLFW Error: " << error << " - " << description;
+		LOG_FATAL(errorMsg.str());
+
 	}
 }

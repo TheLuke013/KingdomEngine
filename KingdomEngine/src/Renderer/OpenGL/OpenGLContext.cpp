@@ -31,4 +31,20 @@ namespace KE
 	{
 		glViewport(0, 0, framebufferWidth, framebufferHeight);
 	}
+
+	void OpenGLContext::SetGLVersion(GLVersion version_)
+	{
+		if (version_ == OpenGL2)
+		{
+			version.glVersion = OpenGL2;
+			version.minorVersion = 1;
+			version.majorVersion = 2;
+		}
+		else if (version_ == OpenGL3)
+		{
+			version.glVersion = OpenGL3;
+			version.minorVersion = 3;
+			version.majorVersion = 3;
+		}
+	}
 }

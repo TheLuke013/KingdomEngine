@@ -27,6 +27,7 @@
     <ClInclude Include="include\KingdomEditor\EditorInterface\EditorInterface.h">
       <Filter>include\KingdomEditor\EditorInterface</Filter>
     </ClInclude>
+    <ClInclude Include="include\KingdomEditor\EditorInterface\EditorInterfaceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApplication.cpp">
@@ -51,5 +52,6 @@
       <Filter>src\EditorInterface\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\EditorInterface\UI\Config.cpp" />
+    <ClCompile Include="src\EditorInterface\EditorInterfaceManager.cpp" />
   </ItemGroup>
 </Project>

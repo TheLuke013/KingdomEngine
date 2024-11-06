@@ -23,6 +23,8 @@ namespace KE
 
 		void ActivateImGui();
 		void DisableImGui();
+		void CreateWindowMaximized();
+		void DisableApplication();
 
 		Window& GetWindow() { return window; }
 		OpenGLContext& GetContext() { return context; }
@@ -33,6 +35,7 @@ namespace KE
 	private:
 		bool isRunning;
 		bool restartImGui;
+		bool loadGL2, loadGL3;
 		Window window;
 		OpenGLContext context;
 		ImGuiManager& imguiManager;

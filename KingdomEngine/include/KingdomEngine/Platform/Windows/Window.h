@@ -23,11 +23,12 @@ namespace KE
 		Window(const std::string& title, int width, int height, bool maximized);
 		~Window();
 
-		void Create();
+		bool Create();
 		void Update();
 		void Destroy();
 
 		bool IsClosed() { return glfwWindowShouldClose(window); }
+		static void ErrorCallback(int error, const char* description);
 
 
 		GLFWwindow* Get() const { return window; }

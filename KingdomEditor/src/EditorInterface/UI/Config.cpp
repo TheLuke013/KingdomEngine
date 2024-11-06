@@ -16,10 +16,22 @@ namespace Editor
 		void OnRender() override
 		{
 			//OPENGL VERSION
-			static int glVersion = 1;
-			ImGui::Combo("OpenGL Version", &glVersion,
+			static int glVersion = KE::OpenGLContext::version.glVersion;
+			if (ImGui::Combo("OpenGL Version", &glVersion,
 				"OpenGL 3\0"
-				"OpenGL 2\0");
+				"OpenGL 2\0"))
+			{
+				if (glVersion == KE::GLVersion::OpenGL2)
+				{
+					DISPATCH_EVENT(KE::EventType::LOAD_OPENGL2);
+					LOG_WARN("Switching OpenGL version to OpenGL 2.1!");
+				}
+				else if (glVersion == KE::GLVersion::OpenGL3)
+				{
+					DISPATCH_EVENT(KE::EventType::LOAD_OPENGL3);
+					LOG_WARN("Switching OpenGL version to OpenGL 3.3!");
+				}
+			}
 
 			//TEXT FONT
 			if (ImGui::TreeNode("Text Font"))

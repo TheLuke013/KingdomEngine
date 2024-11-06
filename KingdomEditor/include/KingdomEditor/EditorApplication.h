@@ -3,7 +3,7 @@
 
 #include <KingdomEngine/KingdomEngine.h>
 
-#include "KingdomEditor/EditorInterface/EditorInterface.h"
+#include "KingdomEditor/EditorInterface/EditorInterfaceManager.h"
 
 namespace Editor
 {
