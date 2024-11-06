@@ -2,6 +2,7 @@
 #define IMGUI_MANAGER_H
 
 #include "KingdomEngine/Platform/Windows/Window.h"
+#include "KingdomEngine/Core/Font.h"
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
@@ -24,13 +25,14 @@ namespace KE
 	class ImGuiManager
 	{
 	public:
-		ImGuiManager();
-		~ImGuiManager();
+		static ImGuiManager& Get();
 
 		void Init(GLFWwindow* window);
 		void Disable();
+		void Restart();
 		void CreateNewFrame();
 		void Render();
+		void LoadFont(Font* font);
 
 		void BeginDockspace();
 		void EndDockspace();
@@ -43,11 +45,15 @@ namespace KE
 		int DetectGLContextVersion();
 
 	private:
+		ImGuiManager();
+		~ImGuiManager();
+
 		GLFWwindow* window;
 		bool isEnabled;
 		bool newFrameIsCalled;
 		ImGuiID dockspaceID;
 		DockSides dockSides;
+		Font* loadedFont;
 
 	};
 }

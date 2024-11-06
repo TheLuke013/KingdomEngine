@@ -5,7 +5,7 @@ namespace Editor
 	class DetailsPanel : public EditorInterface
 	{
 	public:
-		DetailsPanel() : EditorInterface("Details Panel", 1184, 19, 182, 578, false, RIGHT)
+		DetailsPanel() : EditorInterface("Details Panel", 1184, 19, 182, 578, true, RIGHT)
 		{
 
 		}

@@ -15,10 +15,6 @@ group "Libs"
 	include "ThirdParty/ImGui"
 group ""
 
-group "Projects"
-	include "Projects"
-group ""
-
 project "KingdomEngine"
 	location "KingdomEngine"
 	kind "StaticLib"

@@ -20,10 +20,6 @@ namespace Editor
 		void OnMenuBarRender() override;
 		void OnDockspaceUpdate() override;
 
-	private:
-		KE::Shader shader;
-		KE::Sprite* sprite;
-		glm::vec2 spritePos;
 	};
 }
 

@@ -1,10 +1,11 @@
 #include "KingdomEngine/ImGui/ImGuiManager.h"
 #include "KingdomEngine/Core/Log.h"
+#include "KingdomEngine/Core/Event.h"
 
 namespace KE
 {
 	ImGuiManager::ImGuiManager()
-		: isEnabled(false), window(nullptr), newFrameIsCalled(false)
+		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr)
 	{
 		
 	}
@@ -12,6 +13,12 @@ namespace KE
 	ImGuiManager::~ImGuiManager()
 	{
 		Disable();
+	}
+
+	ImGuiManager& ImGuiManager::Get()
+	{
+		static ImGuiManager* instance = new ImGuiManager();
+		return *instance;
 	}
 
 	void ImGuiManager::Init(GLFWwindow* window)
@@ -35,6 +42,13 @@ namespace KE
 			{
 				style.WindowRounding = 0.0f;
 				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+			}
+
+			//LOAD FONT IF ANY LOADED
+			if (loadedFont != nullptr)
+			{
+				io.Fonts->AddFontFromFileTTF(loadedFont->properties.filePath.c_str(), loadedFont->properties.size);
+				io.Fonts->Build();
 			}
 
 			ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -76,6 +90,12 @@ namespace KE
 		}
 	}
 
+	void ImGuiManager::Restart()
+	{
+		Disable();
+		Init(window);
+	}
+
 	void ImGuiManager::Render()
 	{
 		if (isEnabled && newFrameIsCalled)
@@ -101,6 +121,12 @@ namespace KE
 
 			newFrameIsCalled = false;
 		}
+	}
+
+	void ImGuiManager::LoadFont(Font* font)
+	{
+		loadedFont = font;
+		DISPATCH_EVENT(LOAD_FONT);
 	}
 
 	void ImGuiManager::BeginDockspace()

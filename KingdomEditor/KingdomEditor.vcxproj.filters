@@ -50,5 +50,6 @@
     <ClCompile Include="src\EditorInterface\UI\Logs.cpp">
       <Filter>src\EditorInterface\UI</Filter>
     </ClCompile>
+    <ClCompile Include="src\EditorInterface\UI\Config.cpp" />
   </ItemGroup>
 </Project>

@@ -3,8 +3,10 @@
 namespace KE
 {
 	Application::Application()
+		: imguiManager(ImGuiManager::Get())
 	{
 		isRunning = true;
+		restartImGui = false;
 
 		REGISTER_EVENT_LISTENER(this);
 
@@ -55,6 +57,12 @@ namespace KE
 				OnImGuiRender();
 			}
 
+			if (restartImGui)
+			{
+				imguiManager.Restart();
+				restartImGui = false;
+			}
+
 			context.Clear();
 
 			OnUpdate(); //updates client-application
@@ -77,6 +85,10 @@ namespace KE
 		if (e.type_ == CLOSE_APPLICATION)
 		{
 			Quit();
+		}
+		else if (e.type_ == LOAD_FONT)
+		{
+			restartImGui = true;
 		}
 	}
 }

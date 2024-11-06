@@ -2,15 +2,16 @@
 
 namespace Editor
 {
-	EditorInterface::EditorInterface(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool collapsed, DockSide dockSide)
+	EditorInterface::EditorInterface(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide)
 	{
-		position = ImVec2(xPos, yPos);
-		size = ImVec2(xSize, ySize);
-		this->collapsed = collapsed;
-		this->name = name;
-		this->dockSide = dockSide;
+		properties.position = ImVec2(xPos, yPos);
+		properties.size = ImVec2(xSize, ySize);
+		properties.name = name;
+		properties.dockSide = dockSide;
+		properties.isVisible = visible;
+		properties.flags = 0;
 
-		isInitialized = false;
+		properties.isInitialized = false;
 
 		REGISTER_EDITOR_INTERFACE(this);
 	}
@@ -22,16 +23,19 @@ namespace Editor
 	void EditorInterface::Render()
 	{
 		///on the first render
-		if (!isInitialized)
+		if (!properties.isInitialized)
 		{
-			ImGui::SetNextWindowPos(position);
-			ImGui::SetNextWindowSize(size);
-			isInitialized = true;
+			ImGui::SetNextWindowPos(properties.position);
+			ImGui::SetNextWindowSize(properties.size);
+			properties.isInitialized = true;
 		}
 
-		ImGui::Begin(name.c_str(), &collapsed);
-		OnRender();
-		ImGui::End();
+		if (properties.isVisible)
+		{
+			ImGui::Begin(properties.name.c_str(), &properties.isVisible, properties.flags);
+			OnRender();
+			ImGui::End();
+		}
 	}
 
 	EditorInterfaceManager& EditorInterfaceManager::Get()
@@ -40,9 +44,10 @@ namespace Editor
 		return *instance;
 	}
 
-	void EditorInterfaceManager::Register(EditorInterface* interface)
+	void EditorInterfaceManager::Register(EditorInterface* interface_)
 	{
-		interfaces.push_back(interface);
+		interfaces.push_back(interface_);
+		interfaceMap[interface_->properties.name] = interface_;
 	}
 
 	void EditorInterfaceManager::UpdateInterfaces()
@@ -57,9 +62,9 @@ namespace Editor
 	{
 		for (auto interface : interfaces)
 		{
-			const char* name = interface->GetName().c_str();
+			const char* name = interface->properties.name.c_str();
 
-			switch (interface->GetDockSide())
+			switch (interface->properties.dockSide)
 			{
 			case LEFT_TOP:
 				ImGui::DockBuilderDockWindow(name, imguiManager.GetDockSides().dock_left_top);
@@ -79,6 +84,15 @@ namespace Editor
 			default:
 				break;
 			}
+		}
+	}
+
+	void EditorInterfaceManager::SetEIVisible(const std::string& eiName, bool visible)
+	{
+		auto it = interfaceMap.find(eiName);
+		if (it != interfaceMap.end())
+		{
+			it->second->properties.isVisible = visible;
 		}
 	}
 }

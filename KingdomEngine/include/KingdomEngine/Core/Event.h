@@ -8,7 +8,8 @@ namespace KE
 	enum EventType
 	{
 		NONE,
-		CLOSE_APPLICATION
+		CLOSE_APPLICATION,
+		LOAD_FONT
 	};
 
 	class Event

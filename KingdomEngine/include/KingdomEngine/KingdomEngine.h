@@ -1,8 +1,9 @@
 #ifndef KINGDOM_ENGINE_H
 #define KINGDOM_ENGINE_H
 
-//ENGINE
-#include "Core/Application.h"
+//CORE
+#include <KingdomEngine/Core/Application.h>
+#include <KingdomEngine/Core/Font.h>
 
 //OPENGL
 #include <KingdomEngine/Renderer/OpenGL/Shader.h>

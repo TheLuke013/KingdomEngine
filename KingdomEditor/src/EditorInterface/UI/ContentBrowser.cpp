@@ -5,7 +5,7 @@ namespace Editor
 	class ContentBrowser : public EditorInterface
 	{
 	public:
-		ContentBrowser() : EditorInterface("Content Browser", 0, 355, 172, 242, false, LEFT_TOP)
+		ContentBrowser() : EditorInterface("Content Browser", 0, 355, 172, 242, true, LEFT_TOP)
 		{
 
 		}

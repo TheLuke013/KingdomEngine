@@ -26,16 +26,16 @@ namespace KE
 
 		Window& GetWindow() { return window; }
 		OpenGLContext& GetContext() { return context; }
-		ImGuiManager& GetImGuiManager() { return imguiManager; }
 
 		void Run();
 		void Quit();
 
 	private:
 		bool isRunning;
+		bool restartImGui;
 		Window window;
 		OpenGLContext context;
-		ImGuiManager imguiManager;
+		ImGuiManager& imguiManager;
 
 		void _OnEvent(Event e) override;
 	};

@@ -3,7 +3,6 @@
 namespace Editor
 {
 	EditorApplication::EditorApplication()
-		: sprite(nullptr), spritePos(glm::vec2(0.0f, 0.0f))
 	{
 		
 	}
@@ -15,24 +14,11 @@ namespace Editor
 
 	void EditorApplication::OnReady()
 	{
-		shader.LoadShaders("../resources/shaders/gl2/sprite.vert", "../resources/shaders/gl2/sprite.frag");
-		sprite = new KE::Sprite("../resources/textures/TheLuke.png", shader);
+
 	}
 
 	void EditorApplication::OnUpdate()
 	{
-		if (glfwGetKey(GetWindow().Get(), GLFW_KEY_A) == GLFW_PRESS)
-		{
-			spritePos.x -= 0.001f;
-			sprite->SetPosition(spritePos.x, spritePos.y);
-		}
-
-		if (glfwGetKey(GetWindow().Get(), GLFW_KEY_D) == GLFW_PRESS)
-		{
-			spritePos.x += 0.001f;
-			sprite->SetPosition(spritePos.x, spritePos.y);
-		}
-
 		if (glfwGetKey(GetWindow().Get(), GLFW_KEY_1) == GLFW_PRESS)
 		{
 			ActivateImGui();
@@ -42,17 +28,16 @@ namespace Editor
 		{
 			DisableImGui();
 		}
-
-		//sprite->Draw();
 	}
 
 	void EditorApplication::OnEvent(KE::Event e)
 	{
-
+		
 	}
 
 	void EditorApplication::OnImGuiRender()
 	{
+		//ImGui::ShowDemoWindow();
 		UPDATE_EDITOR_INTERFACES();
 	}
 
@@ -60,8 +45,13 @@ namespace Editor
 	{
 		if (ImGui::BeginMenuBar())
 		{
+			//FILE
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::MenuItem("Config")) { SET_EI_VISIBLE("Configuration", true); }
+
+				ImGui::Separator();
+
 				if (ImGui::MenuItem("Exit", "Alt+F4")) { Quit(); }
 				ImGui::EndMenu();
 			}
@@ -71,7 +61,7 @@ namespace Editor
 
 	void EditorApplication::OnDockspaceUpdate()
 	{
-		UPDATE_EI_DOCKSPACE(GetImGuiManager());
+		UPDATE_EI_DOCKSPACE(KE::ImGuiManager::Get());
 	}
 }
 
