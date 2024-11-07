@@ -15,7 +15,7 @@ namespace KE
 		static FontManager& Get();
 
 		void AddFont(Font* font);
-		void FindFonts();
+		void FindFonts(const std::string& directoryPath, const std::string& fontType);
 
 		std::vector<Font*> GetFonts() { return fonts; }
 

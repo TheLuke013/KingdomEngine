@@ -14,7 +14,7 @@ namespace Editor
 
 	void EditorApplication::OnReady()
 	{
-
+		KE::FontManager::Get().FindFonts("..\\resources\\fonts", ".ttf");
 	}
 
 	void EditorApplication::OnUpdate()

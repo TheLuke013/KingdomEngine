@@ -6,6 +6,10 @@
 #include <KingdomEngine/Core/Font.h>
 #include <KingdomEngine/Core/FontManager.h>
 
+//CORE/IO
+#include <KingdomEngine/Core/IO/File.h>
+#include <KingdomEngine/Core/IO/IOUtils.h>
+
 //OPENGL
 #include <KingdomEngine/Renderer/OpenGL/OpenGLContext.h>
 #include <KingdomEngine/Renderer/OpenGL/Shader.h>

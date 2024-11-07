@@ -2,6 +2,9 @@
 bin
 bin-int
 
+imgui.ini
+logs.txt
+
 KingdomEngine.sln
 
 ThirdParty/ImGui/DearImGui.vcxproj
@@ -13,5 +16,4 @@ KingdomEngine/KingdomEngine.vcxproj.user
 
 KingdomEditor/KingdomEditor.vcxproj
 KingdomEditor/KingdomEditor.vcxproj.user
-KingdomEditor/logs.txt
-KingdomEditor/imgui.ini
+KingdomEditor/KingdomEditor.vcxproj.filters
