@@ -9,8 +9,6 @@ workspace "KingdomEngine"
 		"Dist"
 	}
 
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
 group "Libs"
 	include "ThirdParty/ImGui"
 group ""
@@ -20,8 +18,8 @@ project "KingdomEngine"
 	kind "StaticLib"
 	language "C++"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/")
+	objdir ("bin-int/")
 
 	files
 	{
@@ -78,8 +76,8 @@ project "KingdomEditor"
 	kind "ConsoleApp"
 	language "C++"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("bin/")
+	objdir ("bin-int/")
 
 	files
 	{

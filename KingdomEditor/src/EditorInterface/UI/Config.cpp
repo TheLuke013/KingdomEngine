@@ -9,7 +9,6 @@ namespace Editor
 	public:
 		Config() : EditorInterface("Configuration", 397, 43, 678, 520, false, NONE)
 		{
-			properties.isVisible = false;
 			properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 		}
 

@@ -57,6 +57,7 @@ namespace Editor
 		if (it != interfaceMap.end())
 		{
 			it->second->properties.isVisible = visible;
+			it->second->properties.isInitialized = false;
 		}
 	}
 }
