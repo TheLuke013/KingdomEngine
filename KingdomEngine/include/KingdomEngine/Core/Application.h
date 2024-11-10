@@ -2,7 +2,7 @@
 #define APPLICATION_H
 
 #include "KingdomEngine/Core/Log.h"
-#include "kingdomEngine/Platform/Windows/Window.h"
+#include "kingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Event.h"
 #include "KingdomEngine/ImGui/ImGuiManager.h"
 

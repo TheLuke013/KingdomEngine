@@ -1,5 +1,5 @@
-#ifndef EDITOR_INTERFACE_H
-#define EDITOR_INTERFACE_H
+#ifndef IM_WINDOW_H
+#define IM_WINDOW_H
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
@@ -8,9 +8,9 @@
 
 #include <string>
 
-namespace Editor
+namespace KE
 {
-	enum DockSide
+	enum class DockSide
 	{
 		NONE,
 		MAIN,
@@ -21,7 +21,7 @@ namespace Editor
 		LEFT_BOTTOM
 	};
 
-	struct EditorInterfaceProperties
+	struct ImWindowProperties
 	{
 		ImVec2 position;
 		ImVec2 size;
@@ -32,17 +32,17 @@ namespace Editor
 		std::string name;
 	};
 
-	class EditorInterface
+	class ImWindow
 	{
 	public:
-		EditorInterface(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide = NONE);
-		virtual ~EditorInterface();
+		ImWindow(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide = DockSide::NONE);
+		virtual ~ImWindow();
 
 		void Render();
 
 		virtual void OnRender() = 0;
 
-		EditorInterfaceProperties properties;
+		ImWindowProperties properties;
 
 	};
 }

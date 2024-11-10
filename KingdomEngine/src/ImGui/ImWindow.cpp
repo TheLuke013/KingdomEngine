@@ -1,9 +1,9 @@
-#include "KingdomEditor/EditorInterface/EditorInterface.h"
-#include "KingdomEditor/EditorInterface/EditorInterfaceManager.h"
+#include "KingdomEngine/ImGui/ImWindow.h"
+#include "KingdomEngine/ImGui/ImWindowManager.h"
 
-namespace Editor
+namespace KE
 {
-	EditorInterface::EditorInterface(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide)
+	ImWindow::ImWindow(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide)
 	{
 		properties.position = ImVec2(xPos, yPos);
 		properties.size = ImVec2(xSize, ySize);
@@ -14,14 +14,14 @@ namespace Editor
 
 		properties.isInitialized = false;
 
-		REGISTER_EDITOR_INTERFACE(this);
+		REGISTER_IM_WINDOW(this);
 	}
 
-	EditorInterface::~EditorInterface()
+	ImWindow::~ImWindow()
 	{
 	}
 
-	void EditorInterface::Render()
+	void ImWindow::Render()
 	{
 		///on the first render
 		if (!properties.isInitialized)

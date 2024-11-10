@@ -5,7 +5,7 @@
 
 namespace KE
 {
-	enum EventType
+	enum class EventType
 	{
 		NONE,
 		CLOSE_APPLICATION,

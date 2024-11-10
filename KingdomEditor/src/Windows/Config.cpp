@@ -1,13 +1,11 @@
-#include "KingdomEditor/EditorInterface/EditorInterface.h"
-
 #include <KingdomEngine/KingdomEngine.h>
 
 namespace Editor
 {
-	class Config : public EditorInterface
+	class Config : public KE::ImWindow
 	{
 	public:
-		Config() : EditorInterface("Configuration", 397, 43, 678, 520, false, NONE)
+		Config() : KE::ImWindow("Configuration", 397, 43, 678, 520, false, KE::DockSide::NONE)
 		{
 			properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 		}

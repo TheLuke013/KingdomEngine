@@ -6,6 +6,11 @@
 #include <KingdomEngine/Core/Font.h>
 #include <KingdomEngine/Core/FontManager.h>
 
+//IMGUI
+#include <KingdomEngine/ImGui/ImGuiManager.h>
+#include <KingdomEngine/ImGui/ImWindow.h>
+#include <KingdomEngine/ImGui/ImWindowManager.h>
+
 //CORE/IO
 #include <KingdomEngine/Core/IO/File.h>
 #include <KingdomEngine/Core/IO/IOUtils.h>

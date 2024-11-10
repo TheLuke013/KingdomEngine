@@ -3,8 +3,6 @@
 
 #include <KingdomEngine/KingdomEngine.h>
 
-#include "KingdomEditor/EditorInterface/EditorInterfaceManager.h"
-
 namespace Editor
 {
 	class EditorApplication : public KE::Application

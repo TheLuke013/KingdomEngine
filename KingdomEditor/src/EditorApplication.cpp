@@ -38,7 +38,7 @@ namespace Editor
 	void EditorApplication::OnImGuiRender()
 	{
 		//ImGui::ShowDemoWindow();
-		UPDATE_EDITOR_INTERFACES();
+		UPDATE_ALL_IM_WINDOW();
 	}
 
 	void EditorApplication::OnMenuBarRender()
@@ -48,7 +48,7 @@ namespace Editor
 			//FILE
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Config")) { SET_EI_VISIBLE("Configuration", true); }
+				if (ImGui::MenuItem("Config")) { SET_IM_WINDOW_VISIBLE("Configuration", true); }
 
 				ImGui::Separator();
 
@@ -61,7 +61,7 @@ namespace Editor
 
 	void EditorApplication::OnDockspaceUpdate()
 	{
-		UPDATE_EI_DOCKSPACE(KE::ImGuiManager::Get());
+		UPDATE_ALL_IM_WINDOW_DOCKSPACE(KE::ImGuiManager::Get());
 	}
 }
 

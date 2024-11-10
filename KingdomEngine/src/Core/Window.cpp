@@ -1,4 +1,4 @@
-#include "KingdomEngine/Platform/Windows/Window.h"
+#include "KingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Log.h"
 #include "KingdomEngine/Core/Event.h"
 
@@ -79,7 +79,7 @@ namespace KE
 
 		if (IsClosed())
 		{
-			DISPATCH_EVENT(CLOSE_APPLICATION);
+			DISPATCH_EVENT(EventType::CLOSE_APPLICATION);
 		}
 	}
 

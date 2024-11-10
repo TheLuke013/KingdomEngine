@@ -109,20 +109,20 @@ namespace KE
 	{
 		OnEvent(e);
 
-		if (e.type_ == CLOSE_APPLICATION)
+		if (e.type_ == EventType::CLOSE_APPLICATION)
 		{
 			Quit();
 		}
-		else if (e.type_ == RESTART_IMGUI)
+		else if (e.type_ == EventType::RESTART_IMGUI)
 		{
 			restartImGui = true;
 		}
-		else if (e.type_ == LOAD_OPENGL3)
+		else if (e.type_ == EventType::LOAD_OPENGL3)
 		{
 			loadGL3 = true;
 			loadGL2 = false;
 		}
-		else if (e.type_ == LOAD_OPENGL2)
+		else if (e.type_ == EventType::LOAD_OPENGL2)
 		{
 			loadGL2 = true;
 			loadGL3 = false;

@@ -126,7 +126,7 @@ namespace KE
 	void ImGuiManager::LoadFont(Font* font)
 	{
 		loadedFont = font;
-		DISPATCH_EVENT(RESTART_IMGUI);
+		DISPATCH_EVENT(EventType::RESTART_IMGUI);
 	}
 
 	void ImGuiManager::BeginDockspace()

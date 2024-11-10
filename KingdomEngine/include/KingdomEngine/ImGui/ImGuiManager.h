@@ -1,7 +1,7 @@
 #ifndef IMGUI_MANAGER_H
 #define IMGUI_MANAGER_H
 
-#include "KingdomEngine/Platform/Windows/Window.h"
+#include "KingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Font.h"
 
 #include <ImGui/imgui.h>
