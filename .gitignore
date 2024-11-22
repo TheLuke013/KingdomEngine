@@ -1,19 +1,5 @@
 .vs
-bin
-bin-int
+out
 
 imgui.ini
 logs.txt
-
-KingdomEngine.sln
-
-ThirdParty/ImGui/DearImGui.vcxproj
-ThirdParty/ImGui/DearImGui.vcxproj.filters
-
-KingdomEngine/KingdomEngine.vcxproj
-KingdomEngine/KingdomEngine.vcxproj.filters
-KingdomEngine/KingdomEngine.vcxproj.user
-
-KingdomEditor/KingdomEditor.vcxproj
-KingdomEditor/KingdomEditor.vcxproj.user
-KingdomEditor/KingdomEditor.vcxproj.filters
