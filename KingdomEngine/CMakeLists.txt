@@ -15,9 +15,9 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/../KingdomEngine/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/spdlog/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/ImGui/include"
-	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLAD/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLAD/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLM/include"
-	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLFW/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/SDL2/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/stb/include"
 )
 
@@ -33,8 +33,12 @@ add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 if(WIN32)
     target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
     target_link_libraries(${PROJECT_NAME}
-        ${CMAKE_SOURCE_DIR}/ThirdParty/GLFW/lib/glfw3.lib
         DearImGui
+        ${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2.lib
+        ${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2main.lib
         opengl32
+        Winmm
+        Imm32
+        Version
     )
 endif()

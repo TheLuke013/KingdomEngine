@@ -5,7 +5,7 @@
 #include "KingdomEngine/Core/Font.h"
 
 #include <ImGui/imgui.h>
-#include <ImGui/imgui_impl_glfw.h>
+#include <ImGui/imgui_impl_sdl2.h>
 #include <ImGui/imgui_impl_opengl3.h>
 #include <ImGui/imgui_impl_opengl2.h>
 #include <ImGui/imgui_internal.h>
@@ -27,7 +27,7 @@ namespace KE
 	public:
 		static ImGuiManager& Get();
 
-		void Init(GLFWwindow* window);
+		void Init(SDL_Window* window);
 		void Disable();
 		void Restart();
 		void CreateNewFrame();
@@ -48,7 +48,7 @@ namespace KE
 		ImGuiManager();
 		~ImGuiManager();
 
-		GLFWwindow* window;
+		SDL_Window* window;
 		bool isEnabled;
 		bool newFrameIsCalled;
 		ImGuiID dockspaceID;

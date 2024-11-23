@@ -1,9 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "KingdomEngine/Renderer/OpenGL/OpenGLContext.h"
+#include "KingdomEngine/Renderer/OpenGL/GLContext.h"
 
-#include <GLFW/glfw3.h>
 #include <string>
 
 namespace KE
@@ -12,8 +11,8 @@ namespace KE
 	{
 		std::string title = "Kingdom Engine";
 		int width = 1024, height = 600;
-		int framebufferWidth = 0, framebufferHeight = 0;
 		bool isMaximized = false;
+		SDL_WindowFlags flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 	};
 
 	class Window
@@ -24,19 +23,15 @@ namespace KE
 		~Window();
 
 		bool Create();
-		void Update();
 		void Destroy();
+		void Update();
 
-		bool IsClosed() { return glfwWindowShouldClose(window); }
-		static void ErrorCallback(int error, const char* description);
+		SDL_Window* Get() { return window; }
 
-
-		GLFWwindow* Get() const { return window; }
-		WindowProperties& GetProper() { return properties; }
+		WindowProperties properties;
 
 	private:
-		WindowProperties properties;
-		GLFWwindow* window;
+		SDL_Window* window;
 
 	};
 }

@@ -19,15 +19,7 @@ namespace Editor
 
 	void EditorApplication::OnUpdate()
 	{
-		if (glfwGetKey(GetWindow().Get(), GLFW_KEY_1) == GLFW_PRESS)
-		{
-			ActivateImGui();
-		}
-
-		if (glfwGetKey(GetWindow().Get(), GLFW_KEY_2) == GLFW_PRESS)
-		{
-			DisableImGui();
-		}
+		
 	}
 
 	void EditorApplication::OnEvent(KE::Event e)

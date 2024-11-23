@@ -27,7 +27,6 @@ namespace KE
 		void DisableApplication();
 
 		Window& GetWindow() { return window; }
-		OpenGLContext& GetContext() { return context; }
 
 		void Run();
 		void Quit();
@@ -37,7 +36,6 @@ namespace KE
 		bool restartImGui;
 		bool loadGL2, loadGL3;
 		Window window;
-		OpenGLContext context;
 		ImGuiManager& imguiManager;
 
 		void _OnEvent(Event e) override;

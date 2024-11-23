@@ -2,6 +2,8 @@
 #include "KingdomEngine/Core/Log.h"
 #include "KingdomEngine/Core/Event.h"
 
+#include <ImGui/imgui_impl_sdl2.h>
+
 #include <sstream>
 
 namespace KE
@@ -28,31 +30,36 @@ namespace KE
 
 	bool Window::Create()
 	{
-		glfwSetErrorCallback(Window::ErrorCallback);
-
-		//INIT GLFW
-		if (!glfwInit())
+		//INIT SDL
+		if (!SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
-			LOG_FATAL("Failed to initialize GLFW");
+			LOG_FATAL("Failed to initialize SDL");
 			return false;
 		}
 		else
 		{
-			LOG_INFO("Initialized GLFW");
+			LOG_INFO("Initialized SDL");
 		}
 
 		//SET WINDOW HINTS
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OpenGLContext::version.majorVersion);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OpenGLContext::version.minorVersion);
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, GLContext::GetVersion().majorVersion);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, GLContext::GetVersion().minorVersion);
 
 		//CREATE WINDOW
-		window = glfwCreateWindow(properties.width, properties.height, properties.title.c_str(), NULL, NULL);
+		window = SDL_CreateWindow(
+			properties.title.c_str(),
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			properties.width,
+			properties.height,
+			properties.flags);
 
 		if (window == NULL)
 		{
-			glfwTerminate();
+			Destroy();
 			LOG_FATAL("Failed to create window");
 			return false;
 		}
@@ -63,40 +70,39 @@ namespace KE
 
 		if (properties.isMaximized)
 		{
-			glfwMaximizeWindow(window);
+			SDL_MaximizeWindow(window);
 		}
-
-		glfwSetFramebufferSizeCallback(window, OpenGLContext::FramebufferResizeCallback);
-		glfwMakeContextCurrent(window);
 
 		return true;
 	}
 
 	void Window::Update()
 	{
-		glfwPollEvents();
-		glfwSwapBuffers(window);
-
-		if (IsClosed())
+		//Update window events
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
 		{
-			DISPATCH_EVENT(EventType::CLOSE_APPLICATION);
+			ImGui_ImplSDL2_ProcessEvent(&event);
+			if (event.type == SDL_QUIT)
+				DISPATCH_EVENT(EventType::CLOSE_APPLICATION);
+			if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
+				DISPATCH_EVENT(EventType::CLOSE_APPLICATION);
 		}
+		if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED)
+		{
+			SDL_Delay(10);
+		}
+
+		SDL_GL_SwapWindow(window);
 	}
 
 	void Window::Destroy()
 	{
 		if (window)
 		{
-			glfwDestroyWindow(window);
+			SDL_GL_DeleteContext(GLContext::GetContext());
+			SDL_DestroyWindow(window);
+			SDL_Quit();
 		}
-		glfwTerminate();
-	}
-
-	void Window::ErrorCallback(int error, const char* description)
-	{
-		std::stringstream errorMsg;
-		errorMsg << "GLFW Error: " << error << " - " << description;
-		LOG_FATAL(errorMsg.str());
-
 	}
 }

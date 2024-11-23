@@ -21,7 +21,7 @@ namespace KE
 		return *instance;
 	}
 
-	void ImGuiManager::Init(GLFWwindow* window)
+	void ImGuiManager::Init(SDL_Window* window)
 	{
 		ImGuiManager::window = window;
 
@@ -51,7 +51,7 @@ namespace KE
 				io.Fonts->Build();
 			}
 
-			ImGui_ImplGlfw_InitForOpenGL(window, true);
+			ImGui_ImplSDL2_InitForOpenGL(window, GLContext::GetContext());
 
 			//detect opengl version selected
 			if (DetectGLContextVersion() == 3)
@@ -81,7 +81,7 @@ namespace KE
 				ImGui_ImplOpenGL2_Shutdown();
 			}
 
-			ImGui_ImplGlfw_Shutdown();
+			ImGui_ImplSDL2_Shutdown();
 			ImGui::DestroyContext();
 
 			isEnabled = false;
@@ -113,10 +113,11 @@ namespace KE
 
 			if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 			{
-				GLFWwindow* backup_current_context = glfwGetCurrentContext();
+				SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+				SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
 				ImGui::UpdatePlatformWindows();
 				ImGui::RenderPlatformWindowsDefault();
-				glfwMakeContextCurrent(backup_current_context);
+				SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 			}
 
 			newFrameIsCalled = false;
@@ -133,22 +134,23 @@ namespace KE
 	{
 		if (isEnabled)
 		{
-			//creates main viewport
-			ImGui::SetNextWindowPos(ImVec2(0, 0));
-			ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
-			ImGui::SetNextWindowBgAlpha(0.0f);
-
+			//properties
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+			ImGuiViewport* viewport = ImGui::GetMainViewport();
+
+			//setting main window
+			ImGui::SetNextWindowPos(viewport->Pos);
+			ImGui::SetNextWindowSize(viewport->Size);
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
+			//creates main window
 			ImGui::Begin("MainDockSpace", nullptr, window_flags);
-			dockspaceID = ImGui::GetID("MainDockSpace");
 
+			dockspaceID = ImGui::GetID("MainDockSpace");
 			ImGui::DockBuilderRemoveNode(dockspaceID);
 			ImGui::DockBuilderAddNode(dockspaceID, ImGuiDockNodeFlags_DockSpace);
 
@@ -167,11 +169,13 @@ namespace KE
 	{
 		if (isEnabled)
 		{
+			static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
+
 			ImGui::DockBuilderFinish(dockspaceID);
-			ImGui::PopStyleVar(3);
+			ImGui::PopStyleVar(2);
 
 			//setting dockspace
-			ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
+			ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
 
 			ImGui::End();
 		}
@@ -179,11 +183,11 @@ namespace KE
 
 	int ImGuiManager::DetectGLContextVersion()
 	{
-		if (OpenGLContext::version.glVersion == OpenGL3)
+		if (GLContext::GetVersion().glVersion == OpenGL3)
 		{
 			return 3;
 		}
-		else if (OpenGLContext::version.glVersion == OpenGL2)
+		else if (GLContext::GetVersion().glVersion == OpenGL2)
 		{
 			return 2;
 		}
@@ -206,7 +210,7 @@ namespace KE
 				ImGui_ImplOpenGL2_NewFrame();
 			}
 
-			ImGui_ImplGlfw_NewFrame();
+			ImGui_ImplSDL2_NewFrame();
 			ImGui::NewFrame();
 
 			newFrameIsCalled = true;

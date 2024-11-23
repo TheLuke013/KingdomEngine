@@ -12,9 +12,9 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/../KingdomEngine/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/spdlog/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/ImGui/include"
-	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLAD/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLAD/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLM/include"
-	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLFW/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/SDL2/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/stb/include"
 )
 
@@ -37,10 +37,20 @@ if(WIN32)
         VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
 
+    #Copy Resources dir
     add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${RESOURCES_DIR}"
     "${OUTPUT_DIR}"
-)
+    )
+
+    #Copy SDL.dll
+    add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2.dll"
+        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}"
+    )
 endif()

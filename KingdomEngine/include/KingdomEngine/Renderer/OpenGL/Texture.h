@@ -1,10 +1,9 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <glad/glad.h>
 #include <stb/stb_image.h>
 
-#include "Shader.h"
+#include "KingdomEngine/Renderer/OpenGL/Shader.h"
 
 namespace KE
 {

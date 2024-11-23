@@ -13,7 +13,7 @@ namespace KE
 		REGISTER_EVENT_LISTENER(this);
 
 		CreateWindowMaximized();
-		context.Init();
+		GLContext::Init(window.Get());
 		ActivateImGui();
 	}
 
@@ -35,7 +35,7 @@ namespace KE
 
 	void Application::CreateWindowMaximized()
 	{
-		window.GetProper().isMaximized = true;
+		window.properties.isMaximized = true;
 		if (!window.Create()) { Quit(); }
 	}
 
@@ -49,7 +49,7 @@ namespace KE
 	{
 		OnReady();
 
-		while (isRunning && !window.IsClosed())
+		while (isRunning)
 		{
 			imguiManager.CreateNewFrame();
 
@@ -75,7 +75,7 @@ namespace KE
 				restartImGui = false;
 			}
 
-			context.Clear();
+			GLContext::Clear();
 			OnUpdate(); //updates client-application
 			imguiManager.Render();
 			window.Update();
@@ -84,7 +84,7 @@ namespace KE
 			if (loadGL3)
 			{
 				DisableApplication();
-				context.SetGLVersion(OpenGL3);
+				GLContext::SetGLVersion(OpenGL3);
 				CreateWindowMaximized();
 				if (window.Get() != nullptr) { ActivateImGui(); }
 				loadGL3 = false;
@@ -92,7 +92,7 @@ namespace KE
 			else if (loadGL2)
 			{
 				DisableApplication();
-				context.SetGLVersion(OpenGL2);
+				GLContext::SetGLVersion(OpenGL2);
 				CreateWindowMaximized();
 				if (window.Get() != nullptr) { ActivateImGui(); }
 				loadGL2 = false;

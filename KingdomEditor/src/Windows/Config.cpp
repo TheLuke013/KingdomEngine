@@ -13,7 +13,7 @@ namespace Editor
 		void OnRender() override
 		{
 			//OPENGL VERSION
-			static int glVersion = KE::OpenGLContext::version.glVersion;
+			static int glVersion = KE::GLContext::GetVersion().glVersion;
 			if (ImGui::Combo("OpenGL Version", &glVersion,
 				"OpenGL 3\0"
 				"OpenGL 2\0"))
@@ -42,6 +42,9 @@ namespace Editor
 				}
 				ImGui::TreePop();
 			}
+
+			//BACKGROUND COLOR
+			//ImGui::ColorEdit3("Background Color", (float*)&KE::GLContext::GetClearColor());
 		}
 	};
 
