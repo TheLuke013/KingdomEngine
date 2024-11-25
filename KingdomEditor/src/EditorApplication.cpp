@@ -48,20 +48,7 @@ namespace Editor
 
 	void EditorApplication::OnMenuBarRender()
 	{
-		if (ImGui::BeginMenuBar())
-		{
-			//FILE
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("Engine Config")) { SET_IM_WINDOW_VISIBLE("Engine Configuration", true); }
-
-				ImGui::Separator();
-
-				if (ImGui::MenuItem("Exit", "Alt+F4")) { Quit(); }
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
+        UPDATE_ALL_IM_MENU();
 	}
 
 	void EditorApplication::OnDockspaceUpdate()

@@ -10,6 +10,8 @@
 #include <KingdomEngine/ImGui/ImGuiManager.h>
 #include <KingdomEngine/ImGui/ImWindow.h>
 #include <KingdomEngine/ImGui/ImWindowManager.h>
+#include <KingdomEngine/ImGui/ImMenu.h>
+#include <KingdomEngine/ImGui/ImMenuManager.h>
 
 //CORE/IO
 #include <KingdomEngine/Core/IO/File.h>
