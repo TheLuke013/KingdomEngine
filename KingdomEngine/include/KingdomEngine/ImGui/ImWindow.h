@@ -29,17 +29,19 @@ namespace KE
 		DockSide dockSide;
 		bool isInitialized;
 		bool isVisible;
+		bool isFocus;
 		std::string name;
 	};
 
 	class ImWindow
 	{
 	public:
-		ImWindow(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide = DockSide::NONE);
+		ImWindow(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, bool isFocus, DockSide dockSide = DockSide::NONE);
 		virtual ~ImWindow();
 
 		void Render();
 
+        virtual void OnReady() = 0;
 		virtual void OnRender() = 0;
 
 		ImWindowProperties properties;

@@ -26,7 +26,7 @@ namespace Editor
 
 	void EditorApplication::OnReady()
 	{
-
+        ONREADY_ALL_IM_WINDOW()
 	}
 
 	void EditorApplication::OnUpdate()
@@ -41,6 +41,7 @@ namespace Editor
 
 	void EditorApplication::OnImGuiRender()
 	{
+	    //ImGui::ShowMetricsWindow();
 		//ImGui::ShowDemoWindow();
 		UPDATE_ALL_IM_WINDOW();
 	}

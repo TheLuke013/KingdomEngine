@@ -14,6 +14,14 @@ namespace KE
 		windowsMap[imWindow_->properties.name] = imWindow_;
 	}
 
+	void ImWindowManager::OnReadyAllWindows()
+	{
+	    for (auto window : windows)
+		{
+			window->OnReady();
+		}
+	}
+
 	void ImWindowManager::UpdateAllWindows()
 	{
 		for (auto window : windows)

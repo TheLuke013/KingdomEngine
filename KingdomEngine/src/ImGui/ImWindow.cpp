@@ -3,13 +3,14 @@
 
 namespace KE
 {
-	ImWindow::ImWindow(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, DockSide dockSide)
+	ImWindow::ImWindow(const std::string& name, float xPos, float yPos, float xSize, float ySize, bool visible, bool isFocus, DockSide dockSide)
 	{
 		properties.position = ImVec2(xPos, yPos);
 		properties.size = ImVec2(xSize, ySize);
 		properties.name = name;
 		properties.dockSide = dockSide;
 		properties.isVisible = visible;
+		properties.isFocus = isFocus;
 		properties.flags = 0;
 
 		properties.isInitialized = false;
@@ -33,9 +34,14 @@ namespace KE
 
 		if (properties.isVisible)
 		{
-			ImGui::Begin(properties.name.c_str(), &properties.isVisible, properties.flags);
-			OnRender();
-			ImGui::End();
+		    if (properties.isFocus)
+            {
+                ImGui::SetNextWindowFocus();
+            }
+
+            ImGui::Begin(properties.name.c_str(), &properties.isVisible, properties.flags);
+            OnRender();
+            ImGui::End();
 		}
 	}
 }

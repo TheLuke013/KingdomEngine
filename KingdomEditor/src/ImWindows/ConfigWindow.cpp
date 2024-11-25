@@ -5,9 +5,14 @@ namespace Editor
 	class ConfigWindow : public KE::ImWindow
 	{
 	public:
-		ConfigWindow() : KE::ImWindow("Configuration", 397, 43, 678, 520, false, KE::DockSide::NONE)
+		ConfigWindow() : KE::ImWindow("Configuration", 397, 43, 678, 520, false, false, KE::DockSide::NONE)
 		{
 			properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+		}
+
+		void OnReady() override
+		{
+
 		}
 
 		void OnRender() override
