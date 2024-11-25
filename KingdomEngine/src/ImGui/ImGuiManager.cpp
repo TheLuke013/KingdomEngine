@@ -5,7 +5,7 @@
 namespace KE
 {
 	ImGuiManager::ImGuiManager()
-		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr)
+		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr), theme(Theme::DEFAULT)
 	{
 
 	}
@@ -37,12 +37,21 @@ namespace KE
 			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 			io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-			ImGuiStyle& style = ImGui::GetStyle();
-			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-			{
-				style.WindowRounding = 0.0f;
-				style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-			}
+			switch (theme.GetTheme())
+            {
+            case Theme::DEFAULT:
+                LOG_INFO("Set theme: Default");
+                theme.SetDefaultTheme();
+                break;
+            case Theme::DARK:
+                LOG_INFO("Set theme: Dark");
+                theme.SetDarkTheme();
+                break;
+            case Theme::LIGHT:
+                LOG_INFO("Set theme: Light");
+                theme.SetLightTheme();
+                break;
+            }
 
 			//LOAD FONT IF ANY LOADED
 			if (loadedFont != nullptr)
@@ -128,6 +137,12 @@ namespace KE
 	{
 		loadedFont = font;
 		DISPATCH_EVENT(EventType::RESTART_IMGUI);
+	}
+
+	void ImGuiManager::LoadTheme(Theme theme)
+	{
+	    ImGuiManager::theme.SetTheme(theme);
+	    DISPATCH_EVENT(EventType::RESTART_IMGUI);
 	}
 
 	void ImGuiManager::BeginDockspace()

@@ -3,6 +3,7 @@
 
 #include "KingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Font.h"
+#include "KingdomEngine/ImGui/ImGuiTheme.h"
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_sdl2.h>
@@ -33,6 +34,7 @@ namespace KE
 		void CreateNewFrame();
 		void Render();
 		void LoadFont(Font* font);
+		void LoadTheme(Theme theme);
 
 		void BeginDockspace();
 		void EndDockspace();
@@ -41,6 +43,7 @@ namespace KE
 
 		ImGuiID GetDockspaceID() { return dockspaceID; }
 		DockSides& GetDockSides() { return dockSides; }
+		Theme GetTheme() { return theme.GetTheme(); }
 
 		int DetectGLContextVersion();
 
@@ -54,6 +57,7 @@ namespace KE
 		ImGuiID dockspaceID;
 		DockSides dockSides;
 		Font* loadedFont;
+		ImGuiTheme theme;
 
 	};
 }

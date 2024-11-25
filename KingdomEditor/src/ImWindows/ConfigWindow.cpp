@@ -1,11 +1,13 @@
 #include <KingdomEngine/KingdomEngine.h>
 
+#include "KingdomEditor/Utils/GLVersionCombo.h"
+
 namespace Editor
 {
 	class ConfigWindow : public KE::ImWindow
 	{
 	public:
-		ConfigWindow() : KE::ImWindow("Configuration", 397, 43, 678, 520, false, false, KE::DockSide::NONE)
+		ConfigWindow() : KE::ImWindow("Engine Configuration", 397, 43, 678, 520, false, false, KE::DockSide::NONE)
 		{
 			properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 		}
@@ -17,23 +19,26 @@ namespace Editor
 
 		void OnRender() override
 		{
-			//OPENGL VERSION
-			int glVersion = KE::Renderer::GetVersion().glVersion;
-			if (ImGui::Combo("OpenGL Version", &glVersion,
-				"OpenGL 3\0"
-				"OpenGL 2\0"))
-			{
-				if (glVersion == KE::GLVersion::OpenGL2)
-				{
-					DISPATCH_EVENT(KE::EventType::LOAD_OPENGL2);
-					LOG_WARN("Switching OpenGL version to OpenGL 2.1!");
-				}
-				else if (glVersion == KE::GLVersion::OpenGL3)
-				{
-					DISPATCH_EVENT(KE::EventType::LOAD_OPENGL3);
-					LOG_WARN("Switching OpenGL version to OpenGL 3.3!");
-				}
-			}
+		    //THEME
+		    int theme = KE::ImGuiManager::Get().GetTheme();
+            if (ImGui::Combo("Style Theme", &theme,
+				"Default\0"
+				"Dark\0"
+				"Light\0"))
+            {
+                if (theme == KE::Theme::DEFAULT)
+                {
+                    KE::ImGuiManager::Get().LoadTheme(KE::Theme::DEFAULT);
+                }
+                else if (theme == KE::Theme::DARK)
+                {
+                    KE::ImGuiManager::Get().LoadTheme(KE::Theme::DARK);
+                }
+                else if (theme == KE::Theme::LIGHT)
+                {
+                    KE::ImGuiManager::Get().LoadTheme(KE::Theme::LIGHT);
+                }
+            }
 
 			//TEXT FONT
 			if (ImGui::TreeNode("Text Font"))

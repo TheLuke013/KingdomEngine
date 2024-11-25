@@ -53,7 +53,7 @@ namespace Editor
 			//FILE
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Config")) { SET_IM_WINDOW_VISIBLE("Configuration", true); }
+				if (ImGui::MenuItem("Engine Config")) { SET_IM_WINDOW_VISIBLE("Engine Configuration", true); }
 
 				ImGui::Separator();
 

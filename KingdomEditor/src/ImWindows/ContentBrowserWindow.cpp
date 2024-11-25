@@ -5,7 +5,7 @@ namespace Editor
 	class ContentBrowserWindow : public KE::ImWindow
 	{
 	public:
-		ContentBrowserWindow() : KE::ImWindow("Content Browser", 0, 355, 172, 242, true, false, KE::DockSide::LEFT_TOP)
+		ContentBrowserWindow() : KE::ImWindow("File Explorer", 0, 355, 172, 242, true, false, KE::DockSide::LEFT_BOTTOM)
 		{
 
 		}
