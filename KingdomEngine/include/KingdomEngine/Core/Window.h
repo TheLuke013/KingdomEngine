@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "KingdomEngine/Renderer/OpenGL/GLContext.h"
+#include "KingdomEngine/Renderer/Renderer.h"
 
 #include <string>
 

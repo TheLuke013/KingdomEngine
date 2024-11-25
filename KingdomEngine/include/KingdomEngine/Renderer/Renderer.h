@@ -1,6 +1,8 @@
 #ifndef GL_CONTEXT_H
 #define GL_CONTEXT_H
 
+#define NO_SDL_GLEXT
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include <ImGui/imgui.h>
@@ -15,15 +17,18 @@ namespace KE
 
 	struct OpenGLVersion
 	{
-		int minorVersion = 2;
-		int majorVersion = 2;
+        int majorVersion = 2;
+		int minorVersion = 1;
 		GLVersion glVersion = OpenGL2;
 	};
 
-	class GLContext
+	class Renderer
 	{
 	public:
-		static void Init(SDL_Window* window);
+		static void Init();
+		static void SetContext(SDL_Window* window);
+		static void InitGL();
+		static void CheckOpenGLVersion(SDL_Window* window);
 		static void Clear();
 
 		static void SetGLVersion(GLVersion version_);

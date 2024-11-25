@@ -1,7 +1,7 @@
 #ifndef VBO_H
 #define VBO_H
 
-#include <glad/glad.h>
+#include <GL/glew.h>
 
 #include <vector>
 

@@ -13,7 +13,7 @@ namespace Editor
 		void OnRender() override
 		{
 			//OPENGL VERSION
-			static int glVersion = KE::GLContext::GetVersion().glVersion;
+			int glVersion = KE::Renderer::GetVersion().glVersion;
 			if (ImGui::Combo("OpenGL Version", &glVersion,
 				"OpenGL 3\0"
 				"OpenGL 2\0"))

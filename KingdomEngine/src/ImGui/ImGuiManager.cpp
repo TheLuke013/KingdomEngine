@@ -7,7 +7,7 @@ namespace KE
 	ImGuiManager::ImGuiManager()
 		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr)
 	{
-		
+
 	}
 
 	ImGuiManager::~ImGuiManager()
@@ -51,13 +51,13 @@ namespace KE
 				io.Fonts->Build();
 			}
 
-			ImGui_ImplSDL2_InitForOpenGL(window, GLContext::GetContext());
+			ImGui_ImplSDL2_InitForOpenGL(window, Renderer::GetContext());
 
 			//detect opengl version selected
 			if (DetectGLContextVersion() == 3)
 			{
 				ImGui_ImplOpenGL3_Init("#version 330");
-			} 
+			}
 			else if (DetectGLContextVersion() == 2)
 			{
 				ImGui_ImplOpenGL2_Init();
@@ -154,7 +154,7 @@ namespace KE
 			ImGui::DockBuilderRemoveNode(dockspaceID);
 			ImGui::DockBuilderAddNode(dockspaceID, ImGuiDockNodeFlags_DockSpace);
 
-			ImGui::DockBuilderSetNodeSize(dockspaceID, ImGui::GetIO().DisplaySize);	
+			ImGui::DockBuilderSetNodeSize(dockspaceID, ImGui::GetIO().DisplaySize);
 
 			dockSides.dock_main = dockspaceID;
 			dockSides.dock_left = ImGui::DockBuilderSplitNode(dockSides.dock_main, ImGuiDir_Left, 0.2f, nullptr, &dockSides.dock_main);
@@ -183,11 +183,11 @@ namespace KE
 
 	int ImGuiManager::DetectGLContextVersion()
 	{
-		if (GLContext::GetVersion().glVersion == OpenGL3)
+		if (Renderer::GetVersion().glVersion == OpenGL3)
 		{
 			return 3;
 		}
-		else if (GLContext::GetVersion().glVersion == OpenGL2)
+		else if (Renderer::GetVersion().glVersion == OpenGL2)
 		{
 			return 2;
 		}
