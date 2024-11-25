@@ -2,10 +2,10 @@
 
 namespace Editor
 {
-	class Config : public KE::ImWindow
+	class ConfigWindow : public KE::ImWindow
 	{
 	public:
-		Config() : KE::ImWindow("Configuration", 397, 43, 678, 520, false, KE::DockSide::NONE)
+		ConfigWindow() : KE::ImWindow("Configuration", 397, 43, 678, 520, false, KE::DockSide::NONE)
 		{
 			properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 		}
@@ -48,5 +48,5 @@ namespace Editor
 		}
 	};
 
-	Config config;
+	ConfigWindow configWindow;
 }

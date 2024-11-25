@@ -9,7 +9,7 @@ namespace KE
 	class File
 	{
 	public:
-		File(const std::string& filename);
+		File();
 		~File();
 
 		bool Open(const std::string& filename, std::ios::openmode mode);

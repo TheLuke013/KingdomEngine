@@ -3,8 +3,20 @@
 namespace Editor
 {
 	EditorApplication::EditorApplication()
+        : defaultFont(nullptr)
 	{
-		
+        //Load default font
+        KE::File defaultFontFile;
+        if (defaultFontFile.Open("..\\resources\\fonts\\Roboto-Regular.ttf", std::ios::in))
+        {
+            defaultFont = new KE::Font("Default", "..\\resources\\fonts\\Roboto-Regular.ttf", 16.f);
+            ADD_FONT(defaultFont);
+            KE::ImGuiManager::Get().LoadFont(defaultFont);
+        }
+        defaultFontFile.Close();
+
+	    //Search for other fonts
+	    KE::FontManager::Get().FindFonts("..\\resources\\fonts", ".ttf");
 	}
 
 	EditorApplication::~EditorApplication()
@@ -14,17 +26,17 @@ namespace Editor
 
 	void EditorApplication::OnReady()
 	{
-		KE::FontManager::Get().FindFonts("..\\resources\\fonts", ".ttf");
+
 	}
 
 	void EditorApplication::OnUpdate()
 	{
-		
+
 	}
 
 	void EditorApplication::OnEvent(KE::Event e)
 	{
-		
+
 	}
 
 	void EditorApplication::OnImGuiRender()

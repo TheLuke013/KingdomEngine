@@ -18,6 +18,9 @@ namespace Editor
 		void OnMenuBarRender() override;
 		void OnDockspaceUpdate() override;
 
+    private:
+        KE::Font* defaultFont;
+
 	};
 }
 

@@ -3,10 +3,9 @@
 
 namespace KE
 {
-	File::File(const std::string& filename)
-		: filename(filename)
+	File::File()
 	{
-		
+
 	}
 
 	File::~File()
@@ -20,7 +19,7 @@ namespace KE
 		this->filename = filename;
 		file.open(filename, mode);
 
-		if (!file.is_open()) 
+		if (!file.is_open())
 		{
 			LOG_ERROR("Error opening file:" + filename);
 			return false;
@@ -30,11 +29,11 @@ namespace KE
 
 	void File::Write(const std::string& data)
 	{
-		if (file.is_open() && file.good()) 
+		if (file.is_open() && file.good())
 		{
 			file << data;
 		}
-		else 
+		else
 		{
 			LOG_ERROR("Error: File is not open or there is a problem writing");
 		}
@@ -42,7 +41,7 @@ namespace KE
 
 	std::string File::Read()
 	{
-		if (file.is_open() && file.good()) 
+		if (file.is_open() && file.good())
 		{
 			std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 			return content;
@@ -54,7 +53,7 @@ namespace KE
 
 	void File::Close()
 	{
-		if (file.is_open()) 
+		if (file.is_open())
 			file.close();
 	}
 }
