@@ -29,7 +29,7 @@ namespace Editor
 
 		    if (Item("Project Config"))
 			{
-
+                SET_IM_WINDOW_VISIBLE("Project Configuration", true);
 			}
 
 			if (Item("Engine Config"))

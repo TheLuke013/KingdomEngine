@@ -17,7 +17,6 @@ namespace Editor
         Project(const std::string& name, int glVersion);
         ~Project();
 
-    private:
         ProjectProperties properties;
     };
 }

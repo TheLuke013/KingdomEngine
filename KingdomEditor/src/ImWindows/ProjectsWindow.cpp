@@ -1,6 +1,9 @@
 #include <KingdomEngine/KingdomEngine.h>
 
 #include "KingdomEditor/Utils/GLVersionCombo.h"
+#include "KingdomEditor/ProjectManager.h"
+
+#include <cstring>
 
 namespace Editor
 {
@@ -10,13 +13,34 @@ namespace Editor
 		ProjectsWindow() : KE::ImWindow("Projects", 400, 100, 680, 480, true, true, KE::DockSide::NONE)
 		{
             properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar;
-            renderingProjects = true;
-            renderingNewProject = false;
+            SwitchToRenderProjects();
 		}
 
 		void OnReady() override
 		{
 
+		}
+
+		void ResetForms()
+		{
+		    strncpy(nameStr, "My Project", sizeof(nameStr) - 1);
+            nameStr[sizeof(nameStr) - 1] = '\0';
+
+            glVersion = KE::Renderer::GetVersion().glVersion;
+		}
+
+		void SwitchToRenderProjects()
+		{
+            renderingProjects = true;
+            renderingNewProject = false;
+            properties.isFocus = true;
+		}
+
+		void SwitchToNewProject()
+		{
+            renderingProjects = false;
+            renderingNewProject = true;
+            properties.isFocus = false;
 		}
 
 		void RenderProjects()
@@ -33,9 +57,8 @@ namespace Editor
             ImGui::SetCursorPos(ImVec2(565, 30));
             if (ImGui::Button("New Project", ImVec2(106, 32)))
             {
-                renderingProjects = false;
-                renderingNewProject = true;
-                properties.isFocus = false;
+                ResetForms();
+                SwitchToNewProject();
             }
 		}
 
@@ -46,27 +69,25 @@ namespace Editor
 
             ImGui::SetCursorPos(ImVec2(33, 125));
             ImGui::PushItemWidth(200);
-            static char str4[128] = "My Project";
-            ImGui::InputText("Name", str4, IM_ARRAYSIZE(str4));
+            ImGui::InputText("Name", nameStr, IM_ARRAYSIZE(nameStr));
             ImGui::PopItemWidth();
 
             ImGui::SetCursorPos(ImVec2(33, 160));
-            int glVersion = KE::Renderer::GetVersion().glVersion;
 			GLVersionCombo(glVersion);
 
             ImGui::SetCursorPos(ImVec2(430, 420));
             if (ImGui::Button("Create", ImVec2(106, 32)))
             {
-                LOG_INFO("Creating project");
+                Project project(nameStr, glVersion);
+                ProjectManager::Get().LoadProject(project);
                 properties.isVisible = false;
+                ResetForms();
             }
 
             ImGui::SetCursorPos(ImVec2(565, 420));
             if (ImGui::Button("Back", ImVec2(106, 32)))
             {
-                renderingProjects = true;
-                renderingNewProject = false;
-                properties.isFocus = true;
+                SwitchToRenderProjects();
             }
 		}
 
@@ -85,6 +106,8 @@ namespace Editor
     private:
         bool renderingProjects;
         bool renderingNewProject;
+        char nameStr[128];
+        int glVersion;
 	};
 
 	ProjectsWindow projectsWindow;
