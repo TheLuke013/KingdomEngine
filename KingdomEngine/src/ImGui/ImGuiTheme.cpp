@@ -60,6 +60,16 @@ namespace KE
         colors[ImGuiCol_TabUnfocused]       = ImVec4(0.15f, 0.15f, 0.15f, 1.0f);
         colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.18f, 0.18f, 0.18f, 1.0f);
 
+        colors[ImGuiCol_FrameBg]          = ImVec4(0.20f, 0.20f, 0.20f, 1.0f);
+        colors[ImGuiCol_FrameBgHovered]   = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);
+        colors[ImGuiCol_FrameBgActive]    = ImVec4(0.30f, 0.30f, 0.30f, 1.0f);
+
+        colors[ImGuiCol_Text]             = ImVec4(0.9f, 0.9f, 0.9f, 1.0f);
+        colors[ImGuiCol_TextDisabled]     = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
+
+        colors[ImGuiCol_Border]           = ImVec4(0.30f, 0.30f, 0.30f, 0.8f);
+        colors[ImGuiCol_BorderShadow]     = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
         style.FrameRounding = 4.0f;
         style.GrabRounding = 4.0f;
     }

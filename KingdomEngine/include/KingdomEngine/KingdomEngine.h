@@ -5,6 +5,7 @@
 #include <KingdomEngine/Core/Application.h>
 #include <KingdomEngine/Core/Font.h>
 #include <KingdomEngine/Core/FontManager.h>
+#include <KingdomEngine/Core/JSON.h>
 
 //IMGUI
 #include <KingdomEngine/ImGui/ImGuiManager.h>

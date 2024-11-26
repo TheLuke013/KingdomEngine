@@ -18,6 +18,7 @@ include_directories(
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/GLM/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/SDL2/include"
 	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/stb/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../ThirdParty/rapidjson/include"
 )
 
 add_definitions(
