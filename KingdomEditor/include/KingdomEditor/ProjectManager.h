@@ -18,7 +18,9 @@ namespace Editor
 		Project* GetLoadedProject() { return loadedProject; }
 
 	private:
-		ProjectManager() {}
+		ProjectManager()
+            : loadedProject(nullptr)
+		{}
 
         Project* loadedProject;
 

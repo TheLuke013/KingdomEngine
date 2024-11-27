@@ -87,4 +87,9 @@ namespace KE
 			SDL_Quit();
 		}
 	}
+
+	void Window::SetTitle(const std::string& title)
+	{
+	    SDL_SetWindowTitle(window, title.c_str());
+	}
 }

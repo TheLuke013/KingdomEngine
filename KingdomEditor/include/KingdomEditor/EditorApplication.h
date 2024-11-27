@@ -19,7 +19,8 @@ namespace Editor
 		void OnDockspaceUpdate() override;
 
     private:
-        KE::Font* defaultFont;
+        std::string keDir;
+        KE::File projectsFile;
 
 	};
 }

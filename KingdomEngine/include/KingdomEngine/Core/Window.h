@@ -25,6 +25,7 @@ namespace KE
 		bool Create();
 		void Destroy();
 		void Update();
+		void SetTitle(const std::string& title);
 
 		SDL_Window* Get() { return window; }
 

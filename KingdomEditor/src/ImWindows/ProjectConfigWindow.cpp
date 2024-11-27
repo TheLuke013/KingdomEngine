@@ -22,16 +22,38 @@ namespace Editor
 
 		void OnRender() override
 		{
-            ImGui::PushItemWidth(200);
-            static char nameStr[128] = "";
-            strncpy(nameStr, ProjectManager::Get().GetLoadedProject()->properties.name.c_str(), sizeof(nameStr) - 1);
+		    //get current project properties
+            inputProjectName = ProjectManager::Get().GetLoadedProject()->properties.name;
+            glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
+
+            //render widgets
+            strncpy(nameStr, inputProjectName.c_str(), sizeof(nameStr) - 1);
             nameStr[sizeof(nameStr) - 1] = '\0';
+
+            ImGui::PushItemWidth(200);
             ImGui::InputText("Name", nameStr, IM_ARRAYSIZE(nameStr));
             ImGui::PopItemWidth();
 
-            int glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
+            inputProjectName.assign(nameStr);
+
 			GLVersionCombo(glVersion);
+
+			//update project properties if they changed
+			if (ProjectManager::Get().GetLoadedProject()->properties.name != inputProjectName)
+            {
+                ProjectManager::Get().GetLoadedProject()->properties.name = inputProjectName;
+            }
+            else if (ProjectManager::Get().GetLoadedProject()->properties.glVersion != glVersion)
+            {
+                ProjectManager::Get().GetLoadedProject()->properties.glVersion = glVersion;
+            }
 		}
+
+    private:
+        char nameStr[128];
+        std::string inputProjectName;
+        int glVersion;
+
 	};
 
 	ProjectConfigWindow projectConfigWindow;

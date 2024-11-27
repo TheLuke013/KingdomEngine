@@ -14,17 +14,15 @@ namespace KE
 			file.close();
 	}
 
-	bool File::Open(const std::string& filename, std::ios::openmode mode)
+	void File::Open(const std::string& filename, ModeFlags mode)
 	{
 		this->filename = filename;
-		file.open(filename, mode);
+		file.open(filename, static_cast<std::ios::openmode>(mode));
 
 		if (!file.is_open())
 		{
 			LOG_ERROR("Error opening file:" + filename);
-			return false;
 		}
-		return true;
 	}
 
 	void File::Write(const std::string& data)
@@ -55,5 +53,17 @@ namespace KE
 	{
 		if (file.is_open())
 			file.close();
+	}
+
+	bool File::Exists(const std::string& filename)
+	{
+	    std::fstream file;
+	    file.open(filename, std::ios::in);
+
+		if (!file.is_open())
+		{
+			return false;
+		}
+		return file.good();
 	}
 }

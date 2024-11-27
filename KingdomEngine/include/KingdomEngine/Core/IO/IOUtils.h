@@ -11,6 +11,7 @@ namespace KE
 	{
 	public:
 		static std::vector<std::string> GetFilesWithExtension(const std::string& directory, const std::string& extension);
+		static std::string GetUserDir();
 	};
 }
 
