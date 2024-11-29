@@ -23,29 +23,42 @@ namespace Editor
 		void OnRender() override
 		{
 		    //get current project properties
-            inputProjectName = ProjectManager::Get().GetLoadedProject()->properties.name;
-            glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
+		    if (ProjectManager::Get().GetLoadedProject())
+            {
+                inputProjectName = ProjectManager::Get().GetLoadedProject()->properties.name;
+                glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
+            }
 
             //render widgets
             strncpy(nameStr, inputProjectName.c_str(), sizeof(nameStr) - 1);
             nameStr[sizeof(nameStr) - 1] = '\0';
 
-            ImGui::PushItemWidth(200);
-            ImGui::InputText("Name", nameStr, IM_ARRAYSIZE(nameStr));
-            ImGui::PopItemWidth();
+            if (ProjectManager::Get().GetLoadedProject())
+            {
+                ImGui::PushItemWidth(200);
+                ImGui::InputText("Name", nameStr, IM_ARRAYSIZE(nameStr));
+                ImGui::PopItemWidth();
 
-            inputProjectName.assign(nameStr);
+                inputProjectName.assign(nameStr);
 
-			GLVersionCombo(glVersion);
+                GLVersionCombo(glVersion);
+            }
+            else
+            {
+                ImGui::Text("No project loaded");
+            }
 
 			//update project properties if they changed
-			if (ProjectManager::Get().GetLoadedProject()->properties.name != inputProjectName)
+			if (ProjectManager::Get().GetLoadedProject())
             {
-                ProjectManager::Get().GetLoadedProject()->properties.name = inputProjectName;
-            }
-            else if (ProjectManager::Get().GetLoadedProject()->properties.glVersion != glVersion)
-            {
-                ProjectManager::Get().GetLoadedProject()->properties.glVersion = glVersion;
+                if (ProjectManager::Get().GetLoadedProject()->properties.name != inputProjectName)
+                {
+                    ProjectManager::Get().GetLoadedProject()->properties.name = inputProjectName;
+                }
+                else if (ProjectManager::Get().GetLoadedProject()->properties.glVersion != glVersion)
+                {
+                    ProjectManager::Get().GetLoadedProject()->properties.glVersion = glVersion;
+                }
             }
 		}
 

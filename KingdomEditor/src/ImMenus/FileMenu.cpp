@@ -1,5 +1,7 @@
 #include <KingdomEngine/KingdomEngine.h>
 
+#include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
+
 namespace Editor
 {
 	class FileMenu : public KE::ImMenu
@@ -14,7 +16,17 @@ namespace Editor
 		{
 		    if (ImGui::BeginMenu("New"))
             {
-                if (ImGui::MenuItem("Project")) { SET_IM_WINDOW_VISIBLE("Projects", true); }
+                if (ImGui::MenuItem("Project"))
+                {
+                    if (ProjectManager::Get().GetLoadedProject())
+                    {
+                        SaveProjectDialog::SetShow();
+                    }
+                    else
+                    {
+                        SET_IM_WINDOW_VISIBLE("Projects", true);
+                    }
+                }
                 ImGui::EndMenu();
             }
 
@@ -23,6 +35,20 @@ namespace Editor
 		    if (Item("Open"))
 			{
 
+			}
+
+			Separate();
+
+			if (Item("Close Project"))
+			{
+                if (ProjectManager::Get().GetLoadedProject())
+                {
+                    SaveProjectDialog::SetShow();
+                }
+                else
+                {
+                    SET_IM_WINDOW_VISIBLE("Projects", true);
+                }
 			}
 
 		    Separate();

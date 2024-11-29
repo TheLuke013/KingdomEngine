@@ -1,8 +1,11 @@
 #include "KingdomEditor/EditorApplication.h"
 #include "KingdomEditor/ProjectManager.h"
+#include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
 
 namespace Editor
 {
+    bool SaveProjectDialog::showSaveProjectDialog = false;
+
 	EditorApplication::EditorApplication()
         : keDir(KE::IOUtils::GetUserDir() + "\\KingdomEngine")
 	{
@@ -51,6 +54,11 @@ namespace Editor
             std::string newTitle = "Kingdom Engine - " + ProjectManager::Get().GetLoadedProject()->properties.name;
             GetWindow().SetTitle(newTitle);
         }
+
+        if (!ProjectManager::Get().GetLoadedProject())
+        {
+            GetWindow().SetTitle("Kingdom Engine - No Project Loaded");
+        }
 	}
 
 	void EditorApplication::OnEvent(KE::Event e)
@@ -60,9 +68,8 @@ namespace Editor
 
 	void EditorApplication::OnImGuiRender()
 	{
-	    //ImGui::ShowMetricsWindow();
-		//ImGui::ShowDemoWindow();
 		UPDATE_ALL_IM_WINDOW();
+		SaveProjectDialog::Show();
 	}
 
 	void EditorApplication::OnMenuBarRender()

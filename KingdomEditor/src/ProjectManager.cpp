@@ -21,5 +21,6 @@ namespace Editor
     void ProjectManager::UnloadProject()
     {
         delete loadedProject;
+        loadedProject = nullptr;
     }
 }

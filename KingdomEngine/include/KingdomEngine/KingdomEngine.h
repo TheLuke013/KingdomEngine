@@ -13,6 +13,7 @@
 #include <KingdomEngine/ImGui/ImWindowManager.h>
 #include <KingdomEngine/ImGui/ImMenu.h>
 #include <KingdomEngine/ImGui/ImMenuManager.h>
+#include <KingdomEngine/ImGui/ImDialogBox.h>
 
 //CORE/IO
 #include <KingdomEngine/Core/IO/File.h>
