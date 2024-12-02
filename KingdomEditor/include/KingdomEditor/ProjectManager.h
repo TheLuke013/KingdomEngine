@@ -12,6 +12,8 @@ namespace Editor
 	public:
 		static ProjectManager& Get();
 
+		void SaveProjectsFile();
+		void AddProject(Project& project);
 		void LoadProject(Project& project);
 		void UnloadProject();
 
@@ -23,6 +25,8 @@ namespace Editor
 		{}
 
         Project* loadedProject;
+        KE::JSON projectsJson;
+		KE::File projectsFile;
 
 	};
 }

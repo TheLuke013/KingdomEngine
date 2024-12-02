@@ -18,9 +18,8 @@ namespace Editor
 		void OnMenuBarRender() override;
 		void OnDockspaceUpdate() override;
 
-    private:
-        std::string keDir;
-        KE::File projectsFile;
+	private:
+		bool closeAfterSave;
 
 	};
 }

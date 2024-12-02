@@ -115,11 +115,7 @@ namespace KE
 	{
 		OnEvent(e);
 
-		if (e.type_ == EventType::CLOSE_APPLICATION)
-		{
-			Quit();
-		}
-		else if (e.type_ == EventType::RESTART_IMGUI)
+		if (e.type_ == EventType::RESTART_IMGUI)
 		{
 			restartImGui = true;
 		}

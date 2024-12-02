@@ -1,25 +1,27 @@
 #include "KingdomEditor/EditorApplication.h"
 #include "KingdomEditor/ProjectManager.h"
 #include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
+#include "KingdomEditor/Utils/Globals.h"
 
 namespace Editor
 {
     bool SaveProjectDialog::showSaveProjectDialog = false;
 
 	EditorApplication::EditorApplication()
-        : keDir(KE::IOUtils::GetUserDir() + "\\KingdomEngine")
 	{
+        closeAfterSave = false;
+
         //Search fonts and load default font
-        KE::FontManager::Get().FindFonts("..\\resources\\fonts", ".ttf");
+        KE::FontManager::Get().FindFonts(FONTS_DIR, ".ttf");
 
         for (const auto& font : KE::FontManager::Get().GetFonts())
         {
-            if (font->properties.filePath == "..\\resources\\fonts\\Roboto-Regular.ttf")
+            if (font->properties.filePath == FONTS_DIR + "\\Roboto-Regular.ttf")
             {
                 font->properties.name = "Default";
                 KE::ImGuiManager::Get().LoadFont(font);
             }
-            else if (font->properties.filePath == "..\\resources\\fonts\\Roboto-Bold.ttf")
+            else if (font->properties.filePath == FONTS_DIR + "\\Roboto-Bold.ttf")
             {
                 font->properties.name = "Default Bold";;
             }
@@ -28,21 +30,20 @@ namespace Editor
 
 	EditorApplication::~EditorApplication()
 	{
-
+        
 	}
 
 	void EditorApplication::OnReady()
 	{
 	    //Check KE dir
-	    if (!std::filesystem::exists(keDir))
+	    if (!std::filesystem::exists(KE_DIRECTORY))
         {
-            std::filesystem::create_directory(keDir);
+            std::filesystem::create_directory(KE_DIRECTORY);
             LOG_INFO("KE directory created");
         }
 
         //Open and load projects data file
-        projectsFile.Open(keDir + "\\projects.json", KE::ModeFlags::READ_WRITE);
-        projectsFile.Close();
+        
 
         ONREADY_ALL_IM_WINDOW();
 	}
@@ -63,13 +64,39 @@ namespace Editor
 
 	void EditorApplication::OnEvent(KE::Event e)
 	{
-
+        if (e.type_ == KE::EventType::CLOSE_APPLICATION)
+        {
+            if (ProjectManager::Get().GetLoadedProject())
+            {
+                SaveProjectDialog::SetShow();
+                closeAfterSave = true;
+            }
+            else
+            {
+                Quit();
+            }
+        }
 	}
 
 	void EditorApplication::OnImGuiRender()
 	{
 		UPDATE_ALL_IM_WINDOW();
-		SaveProjectDialog::Show();
+
+		KE::DialogResult saveProjectResult = SaveProjectDialog::Show();
+        if (saveProjectResult == KE::DialogResult::Save)
+        {
+            if (closeAfterSave)
+                Quit();
+        }
+        else if (saveProjectResult == KE::DialogResult::DontSave)
+        {
+            if (closeAfterSave)
+                Quit();
+        }
+        else if (saveProjectResult == KE::DialogResult::Cancel)
+        {
+            
+        }
 	}
 
 	void EditorApplication::OnMenuBarRender()

@@ -78,8 +78,13 @@ namespace Editor
             ImGui::SetCursorPos(ImVec2(430, 420));
             if (ImGui::Button("Create", ImVec2(106, 32)))
             {
-                Project project(nameStr, glVersion);
+                std::string kepFile = std::string(nameStr) + ".kep";
+
+                Project project(nameStr, "", kepFile, glVersion);
+                ProjectManager::Get().AddProject(project);
                 ProjectManager::Get().LoadProject(project);
+                ProjectManager::Get().SaveProjectsFile();
+
                 properties.isVisible = false;
                 ResetForms();
             }

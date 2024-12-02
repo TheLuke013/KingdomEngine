@@ -8,7 +8,7 @@ namespace Editor
     class SaveProjectDialog
     {
     public:
-        static void Show()
+        static KE::DialogResult Show()
         {
             if (showSaveProjectDialog)
             {
@@ -39,13 +39,19 @@ namespace Editor
                 default:
                     break;
                 }
+
+                return dialogResult;
             }
+
+            return KE::DialogResult::None;
         }
 
         static void SetShow()
         {
             showSaveProjectDialog = true;
         }
+
+        static bool IsShowing() { return showSaveProjectDialog; }
 
     private:
         static bool showSaveProjectDialog;
