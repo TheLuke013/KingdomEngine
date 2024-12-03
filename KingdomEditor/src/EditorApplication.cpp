@@ -11,7 +11,7 @@ namespace Editor
     {
         closeAfterSave = false;
 
-        // Search fonts and load default font
+        //search fonts and load default font
         KE::FontManager::Get().FindFonts(FONTS_DIR, ".ttf");
 
         for (const auto &font : KE::FontManager::Get().GetFonts())
@@ -35,14 +35,23 @@ namespace Editor
 
     void EditorApplication::OnReady()
     {
-        // Check KE dir
-        if (!std::filesystem::exists(KE_DIRECTORY))
+        //check KE dir
+        KE::Directory keDir;
+        if (!keDir.DirExists(KE_DIRECTORY))
         {
-            std::filesystem::create_directory(KE_DIRECTORY);
+            keDir.Create(KE_DIRECTORY);
             LOG_INFO("KE directory created");
         }
 
-        // Open and load projects data file
+        //check projects dir
+        KE::Directory projectsDir;
+        if (!projectsDir.DirExists(KE_PROJECTS_DIRECTORY))
+        {
+            projectsDir.Create(KE_PROJECTS_DIRECTORY);
+            LOG_INFO("Projects directory created");
+        }
+
+        //open and load projects data file
         ProjectManager::Get().OpenProjectsFile();
 
         ONREADY_ALL_IM_WINDOW();

@@ -1,9 +1,9 @@
-#include "KingdomEngine/Core/IO/IOUtils.h"
+#include "KingdomEngine/Core/IO/OS.h"
 #include "KingdomEngine/Core/Log.h"
 
 namespace KE
 {
-	std::vector<std::string> IOUtils::GetFilesWithExtension(const std::string& directory, const std::string& extension)
+	std::vector<std::string> OS::GetFilesWithExtension(const std::string& directory, const std::string& extension)
 	{
         std::vector<std::string> filePaths;
 
@@ -38,7 +38,7 @@ namespace KE
         #include <unistd.h>
     #endif
 
-	std::string IOUtils::GetUserDir()
+	std::string OS::GetUserDir()
 	{
         #if defined(_WIN32)
             char path[MAX_PATH];

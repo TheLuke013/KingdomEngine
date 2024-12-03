@@ -2,6 +2,7 @@
 
 #include "KingdomEditor/Utils/GLVersionCombo.h"
 #include "KingdomEditor/ProjectManager.h"
+#include "KingdomEditor/Utils/Globals.h"
 
 #include <cstring>
 
@@ -113,6 +114,7 @@ namespace Editor
         void RenderNewProject()
         {
             static bool nameExists = false;
+            static bool dirExists = false;
 
             ImGui::SetCursorPos(ImVec2(14.5, 30));
             ImGui::Text("New Project");
@@ -130,6 +132,13 @@ namespace Editor
                 ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
                 ImGui::SetCursorPos(ImVec2(14.5, 200));
                 ImGui::Text("There is already a project with that name");
+                ImGui::PopStyleColor();
+            }
+            else if (dirExists)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                ImGui::SetCursorPos(ImVec2(14.5, 200));
+                ImGui::Text("There is already a directory with that name in current directory");
                 ImGui::PopStyleColor();
             }
 
@@ -151,15 +160,25 @@ namespace Editor
                 }
                 else
                 {
+                    std::string path = KE_PROJECTS_DIRECTORY + "\\" + nameStr;
                     std::string kepFile = std::string(nameStr) + ".kep";
+                    KE::Directory dir;
 
-                    Project project(nameStr, "", kepFile, glVersion);
-                    ProjectManager::Get().AddProject(project);
-                    ProjectManager::Get().LoadProject(nameStr);
-                    ProjectManager::Get().SaveProjectsFile();
+                    if (!dir.DirExists(path))
+                    {
+                        Project project(nameStr, path, kepFile, glVersion);
+                        ProjectManager::Get().AddProject(project);
+                        ProjectManager::Get().LoadProject(nameStr);
+                        ProjectManager::Get().SaveProjectsFile();
 
-                    properties.isVisible = false;
-                    ResetForms();
+                        properties.isVisible = false;
+                        ResetForms();
+                    }
+                    else
+                    {
+                        LOG_ERROR("There is already a directory with that name in current directory");
+                        dirExists = true;
+                    }
                 }
             }
 
@@ -167,6 +186,7 @@ namespace Editor
             if (ImGui::Button("Back", ImVec2(106, 32)))
             {
                 nameExists = false;
+                dirExists = false;
                 SwitchToRenderProjects();
             }
         }

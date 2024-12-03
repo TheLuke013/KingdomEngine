@@ -73,12 +73,30 @@ namespace Editor
 
     void ProjectManager::AddProject(Project &project)
     {
+        //create project dictionary
         KE::Dictionary projectDict;
-
         projectDict.Add("path", project.properties.path);
         projectDict.Add("kep_file", project.properties.kepFile);
         projectDict.Add("gl_version", project.properties.glVersion);
         projectsJson.AddDicionary(project.properties.name, projectDict);
+
+        //create project directory
+        KE::Directory projDir;
+        if (!projDir.DirExists(project.properties.path))
+        {
+            projDir.Create(project.properties.path);
+            LOG_INFO("Project directory created");
+
+            //create project kep file
+            KE::File kepFile;
+            std::string kepFilePath = project.properties.path + "\\" + project.properties.kepFile;
+            kepFile.Open(kepFilePath, KE::ModeFlags::WRITE);
+            kepFile.Close();
+        }
+        else
+        {
+            LOG_ERROR("Project directory already exists");
+        }
 
         PushProject(project);
     }

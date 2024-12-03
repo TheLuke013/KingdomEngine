@@ -18,6 +18,7 @@
 
 //CORE/IO
 #include <KingdomEngine/Core/IO/File.h>
-#include <KingdomEngine/Core/IO/IOUtils.h>
+#include <KingdomEngine/Core/IO/Directory.h>
+#include <KingdomEngine/Core/IO/OS.h>
 
 #endif

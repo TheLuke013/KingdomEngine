@@ -1,5 +1,5 @@
 #include "KingdomEngine/Core/FontManager.h"
-#include "KingdomEngine/Core/IO/IOUtils.h"
+#include "KingdomEngine/Core/IO/OS.h"
 #include "KingdomEngine/Core/Font.h"
 
 namespace KE
@@ -18,7 +18,7 @@ namespace KE
 
 	void FontManager::FindFonts(const std::string& directoryPath, const std::string& fontType)
 	{
-		std::vector<std::string> fontsPath = KE::IOUtils::GetFilesWithExtension(directoryPath, fontType);
+		std::vector<std::string> fontsPath = OS::GetFilesWithExtension(directoryPath, fontType);
 		for (const std::string& fontPath : fontsPath)
     	{
 			std::string name = fontPath;
