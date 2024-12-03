@@ -9,8 +9,8 @@ namespace KE
     enum class ModeFlags
     {
         READ = std::ios::in,
-        WRITE = std::ios::out,
-        READ_WRITE = std::ios::in | std::ios::out | std::ios::app
+        WRITE = std::ios::out | std::ios::trunc,
+        READ_WRITE = std::ios::in | std::ios::out
     };
 
 	class File

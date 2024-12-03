@@ -14,6 +14,22 @@ namespace KE
 		windowsMap[imWindow_->properties.name] = imWindow_;
 	}
 
+	void ImWindowManager::Remove(const std::string& windowName)
+	{
+		auto it = windowsMap.find(windowName);
+		if (it != windowsMap.end())
+		{
+			ImWindow *windowToRemove = it->second;
+			windowsMap.erase(it);
+
+			auto windowIt = std::find(windows.begin(), windows.end(), windowToRemove);
+            if (windowIt != windows.end())
+            {
+                windows.erase(windowIt);
+            }
+		}
+	}
+
 	void ImWindowManager::OnReadyAllWindows()
 	{
 	    for (auto window : windows)

@@ -40,7 +40,7 @@ namespace KE
 		void EndDockspace();
 
 		bool IsEnabled() const { return isEnabled; }
-
+		bool NewFrameIsCalled() { return newFrameIsCalled; }
 		ImGuiID GetDockspaceID() { return dockspaceID; }
 		DockSides& GetDockSides() { return dockSides; }
 		Theme GetTheme() { return theme.GetTheme(); }

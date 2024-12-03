@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "xstring": "cpp",
+        "xhash": "cpp",
         "algorithm": "cpp",
         "array": "cpp",
         "atomic": "cpp",
@@ -61,7 +61,6 @@
         "variant": "cpp",
         "vector": "cpp",
         "xfacet": "cpp",
-        "xhash": "cpp",
         "xiosbase": "cpp",
         "xlocale": "cpp",
         "xlocbuf": "cpp",
@@ -71,6 +70,7 @@
         "xlocnum": "cpp",
         "xloctime": "cpp",
         "xmemory": "cpp",
+        "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp"

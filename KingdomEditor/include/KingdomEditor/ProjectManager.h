@@ -2,8 +2,9 @@
 #define PROJECT_MANAGER_H
 
 #include <KingdomEngine/KingdomEngine.h>
-
 #include "KingdomEditor/Project.h"
+
+#include <unordered_map>
 
 namespace Editor
 {
@@ -13,10 +14,13 @@ namespace Editor
 		static ProjectManager& Get();
 
 		void SaveProjectsFile();
+		void OpenProjectsFile();
 		void AddProject(Project& project);
-		void LoadProject(Project& project);
+		void LoadProject(const std::string& projectName);
 		void UnloadProject();
+		void RemoveProject(const std::string& projectName);
 
+		std::vector<Project*>& GetProjects() { return projects; }
 		Project* GetLoadedProject() { return loadedProject; }
 
 	private:
@@ -24,6 +28,11 @@ namespace Editor
             : loadedProject(nullptr)
 		{}
 
+		void WriteProjectFile();
+		void PushProject(Project& project);
+
+		std::vector<Project*> projects;
+		std::unordered_map<std::string, Project*> projectsMap;
         Project* loadedProject;
         KE::JSON projectsJson;
 		KE::File projectsFile;

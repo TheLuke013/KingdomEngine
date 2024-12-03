@@ -7,14 +7,14 @@ namespace Editor
 {
     bool SaveProjectDialog::showSaveProjectDialog = false;
 
-	EditorApplication::EditorApplication()
-	{
+    EditorApplication::EditorApplication()
+    {
         closeAfterSave = false;
 
-        //Search fonts and load default font
+        // Search fonts and load default font
         KE::FontManager::Get().FindFonts(FONTS_DIR, ".ttf");
 
-        for (const auto& font : KE::FontManager::Get().GetFonts())
+        for (const auto &font : KE::FontManager::Get().GetFonts())
         {
             if (font->properties.filePath == FONTS_DIR + "\\Roboto-Regular.ttf")
             {
@@ -23,33 +23,33 @@ namespace Editor
             }
             else if (font->properties.filePath == FONTS_DIR + "\\Roboto-Bold.ttf")
             {
-                font->properties.name = "Default Bold";;
+                font->properties.name = "Default Bold";
+                ;
             }
         }
-	}
+    }
 
-	EditorApplication::~EditorApplication()
-	{
-        
-	}
+    EditorApplication::~EditorApplication()
+    {
+    }
 
-	void EditorApplication::OnReady()
-	{
-	    //Check KE dir
-	    if (!std::filesystem::exists(KE_DIRECTORY))
+    void EditorApplication::OnReady()
+    {
+        // Check KE dir
+        if (!std::filesystem::exists(KE_DIRECTORY))
         {
             std::filesystem::create_directory(KE_DIRECTORY);
             LOG_INFO("KE directory created");
         }
 
-        //Open and load projects data file
-        
+        // Open and load projects data file
+        ProjectManager::Get().OpenProjectsFile();
 
         ONREADY_ALL_IM_WINDOW();
-	}
+    }
 
-	void EditorApplication::OnUpdate()
-	{
+    void EditorApplication::OnUpdate()
+    {
         if (ProjectManager::Get().GetLoadedProject())
         {
             std::string newTitle = "Kingdom Engine - " + ProjectManager::Get().GetLoadedProject()->properties.name;
@@ -60,10 +60,10 @@ namespace Editor
         {
             GetWindow().SetTitle("Kingdom Engine - No Project Loaded");
         }
-	}
+    }
 
-	void EditorApplication::OnEvent(KE::Event e)
-	{
+    void EditorApplication::OnEvent(KE::Event e)
+    {
         if (e.type_ == KE::EventType::CLOSE_APPLICATION)
         {
             if (ProjectManager::Get().GetLoadedProject())
@@ -76,13 +76,13 @@ namespace Editor
                 Quit();
             }
         }
-	}
+    }
 
-	void EditorApplication::OnImGuiRender()
-	{
-		UPDATE_ALL_IM_WINDOW();
+    void EditorApplication::OnImGuiRender()
+    {
+        UPDATE_ALL_IM_WINDOW();
 
-		KE::DialogResult saveProjectResult = SaveProjectDialog::Show();
+        KE::DialogResult saveProjectResult = SaveProjectDialog::Show();
         if (saveProjectResult == KE::DialogResult::Save)
         {
             if (closeAfterSave)
@@ -97,20 +97,20 @@ namespace Editor
         {
             
         }
-	}
+    }
 
-	void EditorApplication::OnMenuBarRender()
-	{
+    void EditorApplication::OnMenuBarRender()
+    {
         UPDATE_ALL_IM_MENU();
-	}
+    }
 
-	void EditorApplication::OnDockspaceUpdate()
-	{
-		UPDATE_ALL_IM_WINDOW_DOCKSPACE(KE::ImGuiManager::Get());
-	}
+    void EditorApplication::OnDockspaceUpdate()
+    {
+        UPDATE_ALL_IM_WINDOW_DOCKSPACE(KE::ImGuiManager::Get());
+    }
 }
 
-KE::Application* KE::CreateApplication()
+KE::Application *KE::CreateApplication()
 {
-	return new Editor::EditorApplication();
+    return new Editor::EditorApplication();
 }
