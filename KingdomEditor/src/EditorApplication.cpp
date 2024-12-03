@@ -1,11 +1,14 @@
 #include "KingdomEditor/EditorApplication.h"
 #include "KingdomEditor/ProjectManager.h"
 #include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
+#include "KingdomEditor/DialogBox/ExcludeProjectDialogBox.h"
 #include "KingdomEditor/Utils/Globals.h"
 
 namespace Editor
 {
-    bool SaveProjectDialog::showSaveProjectDialog = false;
+    bool SaveProjectDialog::showing = false;
+    bool ExcludeProjectDialog::showing = false;
+    std::string ExcludeProjectDialog::projectNameToRemove = "";
 
     EditorApplication::EditorApplication()
     {
@@ -51,6 +54,8 @@ namespace Editor
             LOG_INFO("Projects directory created");
         }
 
+        LOG_WARN(keDir.GetCurrentDir());
+
         //open and load projects data file
         ProjectManager::Get().OpenProjectsFile();
 
@@ -91,6 +96,7 @@ namespace Editor
     {
         UPDATE_ALL_IM_WINDOW();
 
+        //process save project dialog box
         KE::DialogResult saveProjectResult = SaveProjectDialog::Show();
         if (saveProjectResult == KE::DialogResult::Save)
         {
@@ -102,10 +108,9 @@ namespace Editor
             if (closeAfterSave)
                 Quit();
         }
-        else if (saveProjectResult == KE::DialogResult::Cancel)
-        {
-            
-        }
+
+        //process exclude project dialog box
+        KE::DialogResult excludeProjectResult = ExcludeProjectDialog::Show();
     }
 
     void EditorApplication::OnMenuBarRender()

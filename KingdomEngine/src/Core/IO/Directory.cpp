@@ -1,42 +1,33 @@
 #include "KingdomEngine/Core/IO/Directory.h"
 #include "KingdomEngine/Core/Log.h"
 
-#include <cstdlib>
-
 namespace KE
 {
     Directory::Directory()
     {
-
     }
 
     Directory::~Directory()
     {
-
     }
 
-    void Directory::Open(const std::string& path)
+    void Directory::Open(const std::string &path)
     {
-        if (!DirExists(path))
+        try
         {
-            LOG_ERROR("Directory does not exist: " + path);
-            return;
+            if (DirExists(path))
+            {
+                std::filesystem::current_path(path);
+                LOG_WARN("Changed current directory to: " + path);
+            }
+            else
+            {
+                LOG_ERROR("Directory does not exist: " + path);
+            }
         }
-
-        #ifdef _WIN32
-            std::string command = "start " + path;
-        #elif __APPLE__
-            std::string command = "open " + path;
-        #elif __linux__
-            std::string command = "xdg-open " + path;
-        #else
-            LOG_ERROR("Unsupported platform for opening directories");
-            return;
-        #endif
-        int result = std::system(command.c_str());
-        if (result != 0)
+        catch (const std::filesystem::filesystem_error &e)
         {
-            LOG_ERROR("Failed to open directory: " + path);
+            LOG_ERROR("Failed to change directory to: " + path + " - " + e.what());
         }
     }
 
@@ -48,8 +39,7 @@ namespace KE
         }
         catch (const std::filesystem::filesystem_error &e)
         {
-            std::string errMsg = "Error removing: " + path + " - " + e.what();
-            LOG_ERROR(errMsg);
+            LOG_ERROR("Error removing: " + path + " - " + e.what());
         }
     }
 
@@ -61,8 +51,7 @@ namespace KE
         }
         catch (const std::filesystem::filesystem_error &e)
         {
-            std::string errMsg = "Error renaming: " + from + " to " + to + " - " + e.what();
-            LOG_ERROR(errMsg);
+            LOG_ERROR("Error renaming: " + from + " to " + to + " - " + e.what());
         }
     }
 
@@ -76,12 +65,11 @@ namespace KE
         }
         catch (const std::filesystem::filesystem_error &e)
         {
-            std::string errMsg = "Error copying: " + std::string(e.what());
-            LOG_ERROR(errMsg);
+            LOG_ERROR("Error copying: " + std::string(e.what()));
         }
     }
 
-    void Directory::Create(const std::string& path)
+    void Directory::Create(const std::string &path)
     {
         try
         {
@@ -94,10 +82,9 @@ namespace KE
                 LOG_WARN("Directory already exists: " + path);
             }
         }
-        catch (const std::filesystem::filesystem_error& e)
+        catch (const std::filesystem::filesystem_error &e)
         {
-            std::string errMsg = "Error creating directory: " + path + " - " + e.what();
-            LOG_ERROR(errMsg);
+            LOG_ERROR("Error creating directory: " + path + " - " + e.what());
         }
     }
 

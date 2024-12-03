@@ -103,11 +103,13 @@ namespace Editor
 
     void ProjectManager::LoadProject(const std::string &projectName)
     {
+        //unload project if other project is loaded
         if (loadedProject)
         {
             UnloadProject();
         }
 
+        //search project and load it
         auto it = projectsMap.find(projectName);
         if (it != projectsMap.end())
         {
@@ -117,6 +119,10 @@ namespace Editor
         {
             LOG_ERROR("Project not found");
         }
+
+        //open project dir
+        KE::Directory dir;
+        dir.Open(loadedProject->properties.path);
     }
 
     void ProjectManager::UnloadProject()

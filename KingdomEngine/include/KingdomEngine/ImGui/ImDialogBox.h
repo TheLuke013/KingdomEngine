@@ -11,13 +11,19 @@ namespace KE
         None,
         Save,
         DontSave,
-        Cancel
+        Cancel,
+        Confirm,
+        ConfirmAndRemoveFiles
     };
 
     class ImDialogBox
     {
     public:
         static DialogResult ShowSaveDialog(const std::string& msgText);
+        static DialogResult ShowExcludeDialog(const std::string& msgText);
+
+    private:
+        static int flags;
     };
 }
 

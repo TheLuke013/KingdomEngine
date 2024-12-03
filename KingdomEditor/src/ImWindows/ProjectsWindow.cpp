@@ -3,6 +3,7 @@
 #include "KingdomEditor/Utils/GLVersionCombo.h"
 #include "KingdomEditor/ProjectManager.h"
 #include "KingdomEditor/Utils/Globals.h"
+#include "KingdomEditor/DialogBox/ExcludeProjectDialogBox.h"
 
 #include <cstring>
 
@@ -204,9 +205,13 @@ namespace Editor
 
             if (removingProject)
             {
-                ProjectManager::Get().RemoveProject(removingProjectName);
+                ExcludeProjectDialog::SetProjectName(removingProjectName);
+                ExcludeProjectDialog::SetShow();
                 removingProject = false;
+                LOG_WARN("Removing project: " + removingProjectName);
             }
+
+            properties.isFocus = !ExcludeProjectDialog::IsShowing();
         }
 
     private:

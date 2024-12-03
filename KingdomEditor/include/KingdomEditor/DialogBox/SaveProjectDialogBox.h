@@ -10,7 +10,7 @@ namespace Editor
     public:
         static KE::DialogResult Show()
         {
-            if (showSaveProjectDialog)
+            if (showing)
             {
                 KE::DialogResult dialogResult = KE::DialogResult::None;
 
@@ -25,16 +25,16 @@ namespace Editor
                 {
                 case KE::DialogResult::Save:
                     ProjectManager::Get().UnloadProject();
-                    showSaveProjectDialog = false;
+                    showing = false;
                     SET_IM_WINDOW_VISIBLE("Projects", true);
                     break;
                 case KE::DialogResult::DontSave:
                     ProjectManager::Get().UnloadProject();
-                    showSaveProjectDialog = false;
+                    showing = false;
                     SET_IM_WINDOW_VISIBLE("Projects", true);
                     break;
                 case KE::DialogResult::Cancel:
-                    showSaveProjectDialog = false;
+                    showing = false;
                     break;
                 default:
                     break;
@@ -48,13 +48,13 @@ namespace Editor
 
         static void SetShow()
         {
-            showSaveProjectDialog = true;
+            showing = true;
         }
 
-        static bool IsShowing() { return showSaveProjectDialog; }
+        static bool IsShowing() { return showing; }
 
     private:
-        static bool showSaveProjectDialog;
+        static bool showing;
 
     };
 }
