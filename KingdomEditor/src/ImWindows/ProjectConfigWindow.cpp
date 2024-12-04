@@ -1,7 +1,7 @@
 #include <KingdomEngine/KingdomEngine.h>
 
 #include "KingdomEditor/Utils/GLVersionCombo.h"
-#include "KingdomEditor/ProjectManager.h"
+#include "KingdomEditor/Project/ProjectManager.h"
 
 #include <cstring>
 

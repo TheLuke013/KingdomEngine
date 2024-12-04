@@ -135,14 +135,20 @@ namespace KE
 
 	void ImGuiManager::LoadFont(Font* font)
 	{
-		loadedFont = font;
-		DISPATCH_EVENT(EventType::RESTART_IMGUI);
+		if (isEnabled)
+		{
+			loadedFont = font;
+			DISPATCH_EVENT(EventType::RESTART_IMGUI);
+		}
 	}
 
 	void ImGuiManager::LoadTheme(Theme theme)
 	{
-	    ImGuiManager::theme.SetTheme(theme);
-	    DISPATCH_EVENT(EventType::RESTART_IMGUI);
+		if (isEnabled)
+		{
+			ImGuiManager::theme.SetTheme(theme);
+	    	DISPATCH_EVENT(EventType::RESTART_IMGUI);
+		}
 	}
 
 	void ImGuiManager::BeginDockspace()

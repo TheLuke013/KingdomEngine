@@ -14,7 +14,6 @@ namespace KE
 
 		Renderer::Init();
 		CreateWindowMaximized();
-		ActivateImGui();
 	}
 
 	Application::~Application()
@@ -80,9 +79,10 @@ namespace KE
 				imguiManager.Restart();
 				restartImGui = false;
 			}
-
-			Renderer::Clear();
-			OnUpdate(); //updates client-application
+					
+			Renderer::Clear(window.properties.width, window.properties.height);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			OnUpdate();
 			imguiManager.Render();
 			window.Update();
 

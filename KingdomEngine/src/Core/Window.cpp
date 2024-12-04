@@ -1,6 +1,7 @@
 #include "KingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Log.h"
 #include "KingdomEngine/Core/Event.h"
+#include "KingdomEngine/ImGui/ImGuiManager.h"
 
 #include <ImGui/imgui_impl_sdl2.h>
 
@@ -64,7 +65,8 @@ namespace KE
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
 		{
-			ImGui_ImplSDL2_ProcessEvent(&event);
+			if (ImGuiManager::Get().IsEnabled())
+				ImGui_ImplSDL2_ProcessEvent(&event);
 			if (event.type == SDL_QUIT)
 				DISPATCH_EVENT(EventType::CLOSE_APPLICATION);
 			if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
@@ -76,6 +78,9 @@ namespace KE
 		}
 
 		SDL_GL_SwapWindow(window);
+
+		//update window size properties
+		SDL_GetWindowSize(window, &properties.width, &properties.height);
 	}
 
 	void Window::Destroy()

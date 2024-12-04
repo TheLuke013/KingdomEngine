@@ -1,7 +1,7 @@
 #ifndef EXCLUDE_PROJECT_DIALOG_BOX_H
 #define EXCLUDE_PROJECT_DIALOG_BOX_H
 
-#include "KingdomEditor/ProjectManager.h"
+#include "KingdomEditor/Project/ProjectManager.h"
 
 namespace Editor
 {

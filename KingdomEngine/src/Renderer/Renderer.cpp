@@ -1,19 +1,19 @@
 #include "KingdomEngine/Renderer/Renderer.h"
 #include "KingdomEngine/Core/Log.h"
 #include "KingdomEngine/Core/Event.h"
-#include "KingdomEngine/ImGui/ImWindowManager.h"
 
 #include <iostream>
+#include <ImGui/imgui.h>
 
 namespace KE
 {
 	OpenGLVersion Renderer::version;
 	SDL_GLContext Renderer::glContext;
-	ImVec4 Renderer::clearColor;
+	ClearColor Renderer::clearColor;
 
 	void Renderer::Init()
 	{
-		//INIT SDL
+		// INIT SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
 			LOG_FATAL("Failed to initialize SDL");
@@ -23,28 +23,26 @@ namespace KE
 			LOG_INFO("Initialized SDL");
 		}
 
-		//SET GL ATTRIBUTES
+		// SET GL ATTRIBUTES
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.majorVersion);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minorVersion);
-
-		clearColor = ImVec4(0.15f, 0.15f, 0.15f, 1.0f);
 	}
 
-	void Renderer::SetContext(SDL_Window* window)
+	void Renderer::SetContext(SDL_Window *window)
 	{
-        glContext = SDL_GL_CreateContext(window);
-        SDL_GL_MakeCurrent(window, glContext);
-        SDL_GL_SetSwapInterval(1); // VSync
+		glContext = SDL_GL_CreateContext(window);
+		SDL_GL_MakeCurrent(window, glContext);
+		SDL_GL_SetSwapInterval(1); // VSync
 	}
 
 	void Renderer::InitGL()
 	{
-	    //INIT GLEW
-	    glewExperimental = GL_TRUE;
-	    GLenum err = glewInit();
+		// INIT GLEW
+		glewExperimental = GL_TRUE;
+		GLenum err = glewInit();
 		if (GLEW_OK != err)
 		{
 			LOG_FATAL("Failed to initialize GLEW");
@@ -60,31 +58,34 @@ namespace KE
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	void Renderer::CheckOpenGLVersion(SDL_Window* window)
+	void Renderer::CheckOpenGLVersion(SDL_Window *window)
 	{
-        int major = version.majorVersion;
-	    int minor = version.minorVersion;
-        const char* version = (const char*)glGetString(GL_VERSION);
+		int major = version.majorVersion;
+		int minor = version.minorVersion;
+		const char *version = (const char *)glGetString(GL_VERSION);
 
-        int currentMajor, currentMinor;
-        sscanf(version, "%d.%d", &currentMajor, &currentMinor);
+		int currentMajor, currentMinor;
+		sscanf(version, "%d.%d", &currentMajor, &currentMinor);
 
-        if (!(currentMajor > major || (currentMajor == major && currentMinor >= minor)))
-        {
-            LOG_FATAL("Incompatible OpenGL version");
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
-                                 "Incompatible OpenGL Version",
-                                 "Your system does not support the required OpenGL version. Please update your drivers or use a compatible system.",
-                                 window);
-            SET_IM_WINDOW_VISIBLE("Configuration", false);
-            DISPATCH_EVENT(EventType::LOAD_OPENGL2);
-        }
-    }
+		if (!(currentMajor > major || (currentMajor == major && currentMinor >= minor)))
+		{
+			LOG_FATAL("Incompatible OpenGL version");
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+									 "Incompatible OpenGL Version",
+									 "Your system does not support the required OpenGL version. Please update your drivers or use a compatible system.",
+									 window);
+			DISPATCH_EVENT(EventType::LOAD_OPENGL2);
+		}
+	}
 
-	void Renderer::Clear()
+	void Renderer::Clear(int width, int height)
 	{
-		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-		glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
+		float red = clearColor.r / 255.0f;
+		float green = clearColor.g / 255.0f;
+		float blue = clearColor.b / 255.0f;
+
+		glViewport(0, 0, width, height);
+		glClearColor(red, green, blue, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 

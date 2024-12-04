@@ -2,7 +2,7 @@
 #define PROJECT_MANAGER_H
 
 #include <KingdomEngine/KingdomEngine.h>
-#include "KingdomEditor/Project.h"
+#include "KingdomEditor/Project/Project.h"
 
 #include <unordered_map>
 

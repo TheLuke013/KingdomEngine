@@ -1,8 +1,9 @@
 #include "KingdomEditor/EditorApplication.h"
-#include "KingdomEditor/ProjectManager.h"
+#include "KingdomEditor/Project/ProjectManager.h"
 #include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
 #include "KingdomEditor/DialogBox/ExcludeProjectDialogBox.h"
 #include "KingdomEditor/Utils/Globals.h"
+#include "KingdomEditor/Project/ProjectBuild.h"
 
 namespace Editor
 {
@@ -14,6 +15,8 @@ namespace Editor
     {
         closeAfterSave = false;
 
+        ActivateImGui();
+
         //search fonts and load default font
         KE::FontManager::Get().FindFonts(FONTS_DIR, ".ttf");
 
@@ -22,12 +25,12 @@ namespace Editor
             if (font->properties.filePath == FONTS_DIR + "\\Roboto-Regular.ttf")
             {
                 font->properties.name = "Default";
-                KE::ImGuiManager::Get().LoadFont(font);
+                if (KE::ImGuiManager::Get().IsEnabled())
+                    KE::ImGuiManager::Get().LoadFont(font);
             }
             else if (font->properties.filePath == FONTS_DIR + "\\Roboto-Bold.ttf")
             {
                 font->properties.name = "Default Bold";
-                ;
             }
         }
     }
@@ -59,8 +62,9 @@ namespace Editor
 
         //open and load projects data file
         ProjectManager::Get().OpenProjectsFile();
-
-        ONREADY_ALL_IM_WINDOW();
+        
+        if (KE::ImGuiManager::Get().IsEnabled())
+            ONREADY_ALL_IM_WINDOW();
     }
 
     void EditorApplication::OnUpdate()
@@ -74,6 +78,22 @@ namespace Editor
         if (!ProjectManager::Get().GetLoadedProject())
         {
             GetWindow().SetTitle("Kingdom Engine - No Project Loaded");
+        }
+
+        static float progress = 0.0f;
+        if (ProjectBuild::buildStarted && !ProjectBuild::cmakeDone && progress <= 0.50f)
+        {
+            ProjectBuild::buildProgress = progress;
+            progress += 0.001f;
+        }
+
+        if (ProjectBuild::cmakeDone)
+        {
+            LOG_WARN("Project build files generated");
+            ProjectBuild::buildDone = true;
+            ProjectBuild::buildStarted = false;
+            ProjectBuild::cmakeDone = false;
+            SET_IM_WINDOW_VISIBLE("BuildProgressBar", false);
         }
     }
 

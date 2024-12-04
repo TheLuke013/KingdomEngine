@@ -20,6 +20,7 @@ namespace KE
 		void UpdateAllWindows();
 		void UpdateAllWindowsDockspace(KE::ImGuiManager& imguiManager);
 		void SetWindowVisible(const std::string& windowName, bool visible);
+		bool GetWindowVisible(const std::string& windowName);
 
 	private:
 		ImWindowManager() {}
@@ -35,5 +36,6 @@ namespace KE
 #define REGISTER_IM_WINDOW(imWindow_) KE::ImWindowManager::Get().Register(imWindow_);
 #define REMOVE_IM_WINDOW(windowName) KE::ImWindowManager::Get().Remove(windowName);
 #define SET_IM_WINDOW_VISIBLE(windowName, visible) KE::ImWindowManager::Get().SetWindowVisible(windowName, visible);
+#define GET_IM_WINDOW_VISIBLE(windowName) KE::ImWindowManager::Get().GetWindowVisible(windowName);
 
 #endif

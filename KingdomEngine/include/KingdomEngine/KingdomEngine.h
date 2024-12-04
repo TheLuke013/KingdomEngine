@@ -22,4 +22,8 @@
 #include <KingdomEngine/Core/IO/Directory.h>
 #include <KingdomEngine/Core/IO/OS.h>
 
+//RENDERER/OPENGL
+#include <KingdomEngine/Renderer/OpenGL/Shader.h>
+#include <KingdomEngine/Renderer/OpenGL/Sprite.h>
+
 #endif

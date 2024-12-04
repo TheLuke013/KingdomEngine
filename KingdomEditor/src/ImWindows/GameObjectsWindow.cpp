@@ -5,7 +5,7 @@ namespace Editor
 	class GameObjectsWindow : public KE::ImWindow
 	{
 	public:
-		GameObjectsWindow() : KE::ImWindow("Game Objects", 0, 19, 172, 334, true, false, KE::DockSide::LEFT_TOP)
+		GameObjectsWindow() : KE::ImWindow("Objects", 0, 19, 172, 334, true, false, KE::DockSide::LEFT_TOP)
 		{
 
 		}

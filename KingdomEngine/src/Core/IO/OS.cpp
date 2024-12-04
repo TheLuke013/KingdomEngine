@@ -70,4 +70,24 @@ namespace KE
             return "";
         #endif
 	}
+
+    void OS::SetCurrentDir(const std::string& path)
+    {
+        try
+        {
+            if (std::filesystem::exists(path) && std::filesystem::is_directory(path))
+            {
+                std::filesystem::current_path(path);
+                LOG_WARN("Changed current directory to: " + path);
+            }
+            else
+            {
+                LOG_ERROR("Directory does not exist: " + path);
+            }
+        }
+        catch (const std::filesystem::filesystem_error &e)
+        {
+            LOG_ERROR("Failed to change directory to: " + path + " - " + e.what());
+        }
+    }
 }

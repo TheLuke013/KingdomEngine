@@ -5,7 +5,6 @@
 #include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
-#include <ImGui/imgui.h>
 
 namespace KE
 {
@@ -22,6 +21,13 @@ namespace KE
 		GLVersion glVersion = OpenGL2;
 	};
 
+	struct ClearColor
+	{
+		int r = 255;
+		int g = 255;
+		int b = 255;
+	};
+
 	class Renderer
 	{
 	public:
@@ -29,17 +35,17 @@ namespace KE
 		static void SetContext(SDL_Window* window);
 		static void InitGL();
 		static void CheckOpenGLVersion(SDL_Window* window);
-		static void Clear();
+		static void Clear(int width, int height);
 
 		static void SetGLVersion(GLVersion version_);
 		static SDL_GLContext& GetContext() { return glContext; }
-		static ImVec4& GetClearColor() { return clearColor; }
+		static ClearColor& GetClearColor() { return clearColor; }
 		static OpenGLVersion& GetVersion() { return version; }
 
 	private:
 		static OpenGLVersion version;
 		static SDL_GLContext glContext;
-		static ImVec4 clearColor;
+		static ClearColor clearColor;
 	};
 }
 

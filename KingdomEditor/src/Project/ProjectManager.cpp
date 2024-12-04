@@ -1,5 +1,6 @@
-#include "KingdomEditor/ProjectManager.h"
+#include "KingdomEditor/Project/ProjectManager.h"
 #include "KingdomEditor/Utils/Globals.h"
+#include "KingdomEditor/Utils/FileGenerator.h"
 
 namespace Editor
 {
@@ -90,6 +91,24 @@ namespace Editor
 
             //create project kep file
             project.CreateKepFile();
+
+            //create project sub-directories
+            KE::Directory subDir;
+            subDir.Create(project.properties.path + "\\src");
+            subDir.Create(project.properties.path + "\\build");
+
+            //create project main cpp file
+            KE::File cppFile;
+            std::string cppFileName = project.properties.path + "\\src\\" + project.properties.name + ".cpp";
+            cppFile.Open(cppFileName, KE::ModeFlags::WRITE);
+            cppFile.Write("");
+            cppFile.Close();
+
+            //create project cmake file
+            KE::File cmakeFile;
+            cmakeFile.Open(project.properties.path + "\\CMakeLists.txt", KE::ModeFlags::WRITE);
+            cmakeFile.Write(FileGenerator::GenerateCMakeFile(project.properties.name));
+            cmakeFile.Close();
         }
         else
         {

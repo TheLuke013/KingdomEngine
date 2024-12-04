@@ -84,4 +84,15 @@ namespace KE
 			it->second->properties.isInitialized = false;
 		}
 	}
+
+	bool ImWindowManager::GetWindowVisible(const std::string& windowName)
+	{
+		auto it = windowsMap.find(windowName);
+		if (it != windowsMap.end())
+		{
+			return it->second->properties.isVisible;
+		}
+
+		return false;
+	}
 }
