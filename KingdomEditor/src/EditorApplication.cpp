@@ -34,6 +34,7 @@ namespace Editor
 
     EditorApplication::~EditorApplication()
     {
+        
     }
 
     void EditorApplication::OnReady()

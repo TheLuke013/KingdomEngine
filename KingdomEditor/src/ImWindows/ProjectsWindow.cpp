@@ -82,20 +82,30 @@ namespace Editor
                         ImGui::SetCursorPos(ImVec2(10, 10));
                         ImGui::Text(project->properties.name.c_str());
 
-                        ImGui::SetCursorPos(ImVec2(500, 5));
-                        if (ImGui::Button("Open", ImVec2(95, 25)))
+                        if (!(project->properties.engineCoreVersion != ENGINE_CORE_VERSION))
                         {
-                            ProjectManager::Get().LoadProject(project->properties.name);
-                            properties.isVisible = false;
-                            ResetForms();
-                            SwitchToNewProject();
-                        }
+                            ImGui::SetCursorPos(ImVec2(500, 5));
+                            if (ImGui::Button("Open", ImVec2(95, 25)))
+                            {
+                                ProjectManager::Get().LoadProject(project->properties.name);
+                                properties.isVisible = false;
+                                ResetForms();
+                                SwitchToNewProject();
+                            }
 
-                        ImGui::SetCursorPos(ImVec2(500, 40));
-                        if (ImGui::Button("Remove", ImVec2(95, 25)))
+                            ImGui::SetCursorPos(ImVec2(500, 40));
+                            if (ImGui::Button("Remove", ImVec2(95, 25)))
+                            {
+                                removingProjectName = project->properties.name;
+                                removingProject = true;
+                            }
+                        }
+                        else
                         {
-                            removingProjectName = project->properties.name;
-                            removingProject = true;
+                            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                            ImGui::SetCursorPos(ImVec2(10, 30));
+                            ImGui::Text("Project version incompatible with the Core Engine version");
+                            ImGui::PopStyleColor();
                         }
 
                         ImGui::EndChild();
@@ -167,7 +177,7 @@ namespace Editor
 
                     if (!dir.DirExists(path))
                     {
-                        Project project(nameStr, path, kepFile, glVersion);
+                        Project project(nameStr, path, kepFile);
                         ProjectManager::Get().AddProject(project);
                         ProjectManager::Get().LoadProject(nameStr);
                         ProjectManager::Get().SaveProjectsFile();
@@ -208,10 +218,13 @@ namespace Editor
                 ExcludeProjectDialog::SetProjectName(removingProjectName);
                 ExcludeProjectDialog::SetShow();
                 removingProject = false;
+                properties.isFocus = false;
                 LOG_WARN("Removing project: " + removingProjectName);
             }
-
-            properties.isFocus = !ExcludeProjectDialog::IsShowing();
+            if (!renderingNewProject && !removingProject && !ExcludeProjectDialog::IsShowing())
+            {
+                properties.isFocus = true;
+            }
         }
 
     private:

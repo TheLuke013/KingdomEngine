@@ -27,7 +27,7 @@ namespace KE
     std::string JSON::Stringify() const
     {
         rapidjson::StringBuffer buffer;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
         data.Accept(writer);
         return buffer.GetString();
     }

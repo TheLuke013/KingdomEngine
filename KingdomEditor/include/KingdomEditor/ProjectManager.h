@@ -22,6 +22,7 @@ namespace Editor
 
 		std::vector<Project*>& GetProjects() { return projects; }
 		Project* GetLoadedProject() { return loadedProject; }
+		KE::JSON& GetJson() { return projectsJson; }
 
 	private:
 		ProjectManager()

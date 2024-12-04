@@ -2,6 +2,7 @@
 #define KINGDOM_ENGINE_H
 
 //CORE
+#include <KingdomEngine/Core/Core.h>
 #include <KingdomEngine/Core/Application.h>
 #include <KingdomEngine/Core/Font.h>
 #include <KingdomEngine/Core/FontManager.h>

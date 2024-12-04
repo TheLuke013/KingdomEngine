@@ -27,7 +27,6 @@ namespace Editor
                     showing = false;
                     ProjectManager::Get().RemoveProject(projectNameToRemove);
                     projectNameToRemove = "";
-                    LOG_INFO("Removendo projeto");
                     break;
                 case KE::DialogResult::ConfirmAndRemoveFiles:
                     // remove project files

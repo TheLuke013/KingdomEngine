@@ -24,6 +24,7 @@ namespace Editor
                 switch (dialogResult)
                 {
                 case KE::DialogResult::Save:
+                    ProjectManager::Get().GetLoadedProject()->SaveKepFile();
                     ProjectManager::Get().UnloadProject();
                     showing = false;
                     SET_IM_WINDOW_VISIBLE("Projects", true);

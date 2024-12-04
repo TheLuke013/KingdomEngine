@@ -42,19 +42,20 @@ namespace Editor
             {
                 auto &obj = it->value;
 
-                int glVersion = 0;
+                std::string engineCoreVersion = "";
                 std::string kepFile = "";
                 std::string path = "";
 
                 if (obj.HasMember("path") && obj["path"].IsString() &&
                     obj.HasMember("kep_file") && obj["kep_file"].IsString() &&
-                    obj.HasMember("gl_version") && obj["gl_version"].IsInt())
+                    obj.HasMember("engine_core_version") && obj["engine_core_version"].IsString())
                 {
-                    glVersion = obj["gl_version"].GetInt();
+                    engineCoreVersion = obj["engine_core_version"].GetString();
                     kepFile = obj["kep_file"].GetString();
                     path = obj["path"].GetString();
 
-                    Project project(it->name.GetString(), path, kepFile, glVersion);
+                    Project project(it->name.GetString(), path, kepFile);
+                    project.properties.engineCoreVersion = engineCoreVersion;
                     PushProject(project);
                 }
                 else
@@ -75,9 +76,9 @@ namespace Editor
     {
         //create project dictionary
         KE::Dictionary projectDict;
-        projectDict.Add("path", project.properties.path);
         projectDict.Add("kep_file", project.properties.kepFile);
-        projectDict.Add("gl_version", project.properties.glVersion);
+        projectDict.Add("engine_core_version", project.properties.engineCoreVersion);
+        projectDict.Add("path", project.properties.path);
         projectsJson.AddDicionary(project.properties.name, projectDict);
 
         //create project directory
@@ -88,10 +89,7 @@ namespace Editor
             LOG_INFO("Project directory created");
 
             //create project kep file
-            KE::File kepFile;
-            std::string kepFilePath = project.properties.path + "\\" + project.properties.kepFile;
-            kepFile.Open(kepFilePath, KE::ModeFlags::WRITE);
-            kepFile.Close();
+            project.CreateKepFile();
         }
         else
         {
@@ -114,6 +112,7 @@ namespace Editor
         if (it != projectsMap.end())
         {
             loadedProject = it->second;
+            loadedProject->LoadKepFile();
         }
         else
         {
@@ -127,7 +126,6 @@ namespace Editor
 
     void ProjectManager::UnloadProject()
     {
-        delete loadedProject;
         loadedProject = nullptr;
     }
 
@@ -174,7 +172,8 @@ namespace Editor
 
     void ProjectManager::PushProject(Project &project)
     {
-        Project *proj = new Project(project.properties.name, project.properties.path, project.properties.kepFile, project.properties.glVersion);
+        Project *proj = new Project(project.properties.name, project.properties.path, project.properties.kepFile);
+        proj->properties = project.properties;
         projects.push_back(proj);
         projectsMap[project.properties.name] = proj;
     }

@@ -37,6 +37,11 @@ namespace Editor
 
 			}
 
+			if (Item("Save Project"))
+			{
+				ProjectManager::Get().GetLoadedProject()->SaveKepFile();
+			}
+
 			Separate();
 
 			if (Item("Close Project"))

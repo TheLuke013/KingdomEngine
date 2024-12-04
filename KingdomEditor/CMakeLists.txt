@@ -49,6 +49,6 @@ if(WIN32)
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2.dll"
-        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/Debug"
+        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/Release"
     )
 endif()

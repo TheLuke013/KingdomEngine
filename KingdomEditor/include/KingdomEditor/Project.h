@@ -7,19 +7,29 @@ namespace Editor
 {
     struct ProjectProperties
     {
-        std::string name;
-        std::string path;
-        std::string kepFile;
-        int glVersion;
+        std::string name = "My Project";
+        std::string path = "";
+        std::string kepFile = "";
+        std::string engineCoreVersion = ENGINE_CORE_VERSION;
+        int glVersion = KE::GLVersion::OpenGL2;
     };
 
     class Project
     {
     public:
-        Project(const std::string& name, const std::string& path, const std::string& kepFile, int glVersion);
+        Project(const std::string& name, const std::string& path, const std::string& kepFile);
         ~Project();
 
+        void CreateKepFile();
+        void SaveKepFile();
+        void LoadKepFile();
+
         ProjectProperties properties;
+        KE::JSON projectJson;
+		KE::File projectFile;
+
+    private:
+        void WriteProjectFile();
     };
 }
 

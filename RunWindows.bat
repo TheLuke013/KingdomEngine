@@ -1,4 +1,4 @@
 @echo off
-cd build/KingdomEditor/Debug
+cd build/KingdomEditor/Release
 KingdomEditor.exe
 pause
