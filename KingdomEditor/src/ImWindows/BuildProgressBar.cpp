@@ -22,6 +22,17 @@ namespace Editor
 			ImGui::SetCursorPos(ImVec2(100, 10));
             ImGui::Text("Building Project...");
 
+			if (ProjectBuild::runningCmake)
+			{
+				ImGui::SetCursorPos(ImVec2(70, 30));
+            	ImGui::Text("Generating CMake files");
+			}
+			else
+			{
+				ImGui::SetCursorPos(ImVec2(70, 30));
+            	ImGui::Text("Compiling project files");
+			}
+
             ImGui::SetCursorPos(ImVec2(50, 50));
             ImGui::PushItemWidth(200);
             ImGui::ProgressBar(ProjectBuild::buildProgress, ImVec2(0.0f, 0.0f));

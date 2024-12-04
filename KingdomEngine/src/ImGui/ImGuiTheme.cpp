@@ -70,6 +70,8 @@ namespace KE
         colors[ImGuiCol_Border]           = ImVec4(0.30f, 0.30f, 0.30f, 0.8f);
         colors[ImGuiCol_BorderShadow]     = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
+        colors[ImGuiCol_PlotHistogram]     = ImVec4(0.5f, 0.75f, 1.0f, 1.0f);
+
         style.FrameRounding = 4.0f;
         style.GrabRounding = 4.0f;
     }

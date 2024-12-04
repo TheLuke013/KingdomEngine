@@ -3,12 +3,11 @@
 namespace KE
 {
 	Application::Application()
-		: imguiManager(ImGuiManager::Get())
+		: imguiManager(ImGuiManager::Get()), ev(EventType::NONE)
 	{
 		isRunning = true;
-		restartImGui = false;
-		loadGL2 = false;
-		loadGL3 = false;
+		eventHandling = false;
+		handlingGLEvent = false;
 
 		REGISTER_EVENT_LISTENER(this);
 
@@ -18,13 +17,12 @@ namespace KE
 
 	Application::~Application()
 	{
-
 	}
 
-	//IMGUI
+	// IMGUI
 	void Application::ActivateImGui()
 	{
-		imguiManager.Init(window.Get());
+		imguiManager.Init(window.Get(), true);
 	}
 
 	void Application::DisableImGui()
@@ -36,9 +34,9 @@ namespace KE
 	{
 		window.properties.isMaximized = true;
 		if (!window.Create())
-        {
-            Quit();
-        }
+		{
+			Quit();
+		}
 		Renderer::SetContext(window.Get());
 		Renderer::InitGL();
 		Renderer::CheckOpenGLVersion(window.Get());
@@ -50,6 +48,73 @@ namespace KE
 		window.Destroy();
 	}
 
+	void Application::EventHandle()
+	{
+		if (ev.type_ == EventType::LOAD_OPENGL2 || ev.type_ == EventType::LOAD_OPENGL3)
+		{
+			handlingGLEvent = true;
+			eventHandling = false;
+			return;
+		}
+
+		switch (ev.type_)
+		{
+		case EventType::RESTART_IMGUI:
+			imguiManager.Restart();
+			eventHandling = false;
+			break;
+		case EventType::ACTIVE_IMGUI:
+			ActivateImGui();
+			eventHandling = false;
+			break;
+		case EventType::DISABLE_IMGUI:
+			DisableImGui();
+			eventHandling = false;
+			break;
+		case EventType::ACTIVE_DOCKSPACE:
+			imguiManager.EnableDockspace();
+			eventHandling = false;
+			break;
+		case EventType::DISABLE_DOCKSPACE:
+			imguiManager.DisableDockspace();
+			eventHandling = false;
+			break;
+		default:
+			eventHandling = false;
+			break;
+		}
+	}
+
+	void Application::GLEventHandle()
+	{
+		switch (ev.type_)
+		{
+		case EventType::LOAD_OPENGL3:
+			DisableApplication();
+			Renderer::SetGLVersion(OpenGL3);
+			CreateWindowMaximized();
+			if (window.Get() != nullptr)
+			{
+				ActivateImGui();
+			}
+			handlingGLEvent = false;
+			break;
+		case EventType::LOAD_OPENGL2:
+			DisableApplication();
+			Renderer::SetGLVersion(OpenGL2);
+			CreateWindowMaximized();
+			if (window.Get() != nullptr)
+			{
+				ActivateImGui();
+			}
+			handlingGLEvent = false;
+			break;
+		default:
+			handlingGLEvent = false;
+			break;
+		}
+	}
+
 	void Application::Run()
 	{
 		OnReady();
@@ -58,7 +123,7 @@ namespace KE
 		{
 			imguiManager.CreateNewFrame();
 
-			//IMGUI DOCKSPACE
+			// IMGUI DOCKSPACE
 			imguiManager.BeginDockspace();
 			if (imguiManager.IsEnabled())
 			{
@@ -67,42 +132,22 @@ namespace KE
 			}
 			imguiManager.EndDockspace();
 
-			//render client-application imgui
+			// render client-application imgui
 			if (imguiManager.IsEnabled())
 			{
 				OnImGuiRender();
 			}
 
-			//Resart ImGui
-			if (restartImGui)
-			{
-				imguiManager.Restart();
-				restartImGui = false;
-			}
-					
+			if (eventHandling)
+				EventHandle();
+
 			Renderer::Clear(window.properties.width, window.properties.height);
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			OnUpdate();
 			imguiManager.Render();
 			window.Update();
 
-			//Restart Application if OpenGL version was changed
-			if (loadGL3)
-			{
-				DisableApplication();
-				Renderer::SetGLVersion(OpenGL3);
-				CreateWindowMaximized();
-				if (window.Get() != nullptr) { ActivateImGui(); }
-				loadGL3 = false;
-			}
-			else if (loadGL2)
-			{
-				DisableApplication();
-				Renderer::SetGLVersion(OpenGL2);
-				CreateWindowMaximized();
-				if (window.Get() != nullptr) { ActivateImGui(); }
-				loadGL2 = false;
-			}
+			if (handlingGLEvent)
+				GLEventHandle();
 		}
 	}
 
@@ -114,20 +159,7 @@ namespace KE
 	void Application::_OnEvent(Event e)
 	{
 		OnEvent(e);
-
-		if (e.type_ == EventType::RESTART_IMGUI)
-		{
-			restartImGui = true;
-		}
-		else if (e.type_ == EventType::LOAD_OPENGL3)
-		{
-			loadGL3 = true;
-			loadGL2 = false;
-		}
-		else if (e.type_ == EventType::LOAD_OPENGL2)
-		{
-			loadGL2 = true;
-			loadGL3 = false;
-		}
+		ev = e;
+		eventHandling = true;
 	}
 }

@@ -21,12 +21,14 @@ namespace Editor
 				ProjectBuild::Build();
 			}
 
-			if (Item("Run"))
+			if (Item("Run", "F5"))
 			{
+				DISPATCH_EVENT(KE::EventType::DISABLE_IMGUI);
 			}
 
-			if (Item("Build and Run"))
+			if (Item("Stop", "Esc"))
 			{
+				DISPATCH_EVENT(KE::EventType::ACTIVE_IMGUI);
 			}
 		}
 	};

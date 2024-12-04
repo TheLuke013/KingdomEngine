@@ -79,4 +79,26 @@ namespace KE
 
         return result;
     }
+
+    DialogResult ImDialogBox::ShowDialogBox(const std::string& msgText)
+    {
+        DialogResult result = DialogResult::None;
+
+        if (ImGui::BeginPopupModal("GenericDialogBox", NULL, flags |= ImGuiWindowFlags_NoTitleBar))
+        {
+            ImGui::Text(msgText.c_str());
+            ImGui::Separator();
+
+            ImGui::SetCursorPos(ImVec2(150, 50));
+            if (ImGui::Button("Ok", ImVec2(120, 0)))
+            {
+                result = DialogResult::Confirm;
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
+
+        return result;
+    }
 }

@@ -5,7 +5,8 @@
 namespace KE
 {
 	ImGuiManager::ImGuiManager()
-		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr), theme(Theme::DEFAULT)
+		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr),
+		 theme(Theme::DEFAULT), dockspaceIsEnabled(false)
 	{
 
 	}
@@ -21,7 +22,7 @@ namespace KE
 		return *instance;
 	}
 
-	void ImGuiManager::Init(SDL_Window* window)
+	void ImGuiManager::Init(SDL_Window* window, bool enableDockspace)
 	{
 		ImGuiManager::window = window;
 
@@ -74,6 +75,12 @@ namespace KE
 
 			isEnabled = true;
 			LOG_INFO("ImGui was enabled");
+
+			if (enableDockspace)
+			{
+				dockspaceIsEnabled = true;
+				LOG_INFO("ImGui Dockspace was enabled");
+			}
 		}
 	}
 
@@ -102,7 +109,7 @@ namespace KE
 	void ImGuiManager::Restart()
 	{
 		Disable();
-		Init(window);
+		Init(window, dockspaceIsEnabled);
 	}
 
 	void ImGuiManager::Render()
@@ -153,7 +160,7 @@ namespace KE
 
 	void ImGuiManager::BeginDockspace()
 	{
-		if (isEnabled)
+		if (isEnabled && dockspaceIsEnabled)
 		{
 			//properties
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -188,7 +195,7 @@ namespace KE
 
 	void ImGuiManager::EndDockspace()
 	{
-		if (isEnabled)
+		if (isEnabled && dockspaceIsEnabled)
 		{
 			static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 
@@ -200,6 +207,16 @@ namespace KE
 
 			ImGui::End();
 		}
+	}
+
+	void ImGuiManager::EnableDockspace()
+	{
+		dockspaceIsEnabled = true;
+	}
+
+	void ImGuiManager::DisableDockspace()
+	{
+		dockspaceIsEnabled = false;
 	}
 
 	int ImGuiManager::DetectGLContextVersion()

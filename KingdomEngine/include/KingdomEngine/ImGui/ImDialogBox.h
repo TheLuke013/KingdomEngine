@@ -21,6 +21,7 @@ namespace KE
     public:
         static DialogResult ShowSaveDialog(const std::string& msgText);
         static DialogResult ShowExcludeDialog(const std::string& msgText);
+        static DialogResult ShowDialogBox(const std::string& msgText);
 
     private:
         static int flags;

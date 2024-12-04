@@ -28,7 +28,7 @@ namespace KE
 	public:
 		static ImGuiManager& Get();
 
-		void Init(SDL_Window* window);
+		void Init(SDL_Window* window, bool enableDockspace);
 		void Disable();
 		void Restart();
 		void CreateNewFrame();
@@ -38,8 +38,11 @@ namespace KE
 
 		void BeginDockspace();
 		void EndDockspace();
+		void EnableDockspace();
+		void DisableDockspace();
 
 		bool IsEnabled() const { return isEnabled; }
+		bool DockspaceIsEnabled() const { return dockspaceIsEnabled; }
 		bool NewFrameIsCalled() { return newFrameIsCalled; }
 		ImGuiID GetDockspaceID() { return dockspaceID; }
 		DockSides& GetDockSides() { return dockSides; }
@@ -53,6 +56,7 @@ namespace KE
 
 		SDL_Window* window;
 		bool isEnabled;
+		bool dockspaceIsEnabled;
 		bool newFrameIsCalled;
 		ImGuiID dockspaceID;
 		DockSides dockSides;

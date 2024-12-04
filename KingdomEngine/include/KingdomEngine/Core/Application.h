@@ -25,6 +25,8 @@ namespace KE
 		void DisableImGui();
 		void CreateWindowMaximized();
 		void DisableApplication();
+		void EventHandle();
+		void GLEventHandle();
 
 		Window& GetWindow() { return window; }
 
@@ -33,8 +35,9 @@ namespace KE
 
 	private:
 		bool isRunning;
-		bool restartImGui;
-		bool loadGL2, loadGL3;
+		bool eventHandling;
+		bool handlingGLEvent;
+		Event ev;
 		Window window;
 		ImGuiManager& imguiManager;
 

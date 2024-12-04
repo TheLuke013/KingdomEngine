@@ -15,6 +15,7 @@ namespace Editor
                 KE::DialogResult dialogResult = KE::DialogResult::None;
 
                 ImGui::OpenPopup("Please Confirm");
+                ImGui::SetNextWindowPos(ImVec2(550, 280));
                 KE::DialogResult result = KE::ImDialogBox::ShowExcludeDialog("Are you sure you want to delete this project?");
                 if (result != KE::DialogResult::None)
                 {

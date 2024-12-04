@@ -96,6 +96,9 @@ namespace Editor
             KE::Directory subDir;
             subDir.Create(project.properties.path + "\\src");
             subDir.Create(project.properties.path + "\\build");
+            subDir.Create(project.properties.path + "\\ThirdParty");
+            subDir.Create(project.properties.path + "\\KingdomEngine\\include");
+            subDir.Create(project.properties.path + "\\KingdomEngine\\bin");
 
             //create project main cpp file
             KE::File cppFile;
@@ -139,13 +142,13 @@ namespace Editor
         }
 
         //open project dir
-        KE::Directory dir;
-        dir.Open(loadedProject->properties.path);
+        KE::OS::SetCurrentDir(loadedProject->properties.path);
     }
 
     void ProjectManager::UnloadProject()
     {
         loadedProject = nullptr;
+        KE::OS::SetCurrentDir(KE::OS::GetCurrentDir() + "\\..\\");
     }
 
     void ProjectManager::RemoveProject(const std::string &projectName)

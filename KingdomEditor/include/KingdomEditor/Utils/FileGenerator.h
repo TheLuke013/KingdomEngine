@@ -25,13 +25,13 @@ file(GLOB_RECURSE SOURCE_FILES
 include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_SOURCE_DIR}/KingdomEngine/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/spdlog/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/ImGui/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/GLEW/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/GLM/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/SDL2/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/stb/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/ThirdParty/rapidjson/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/spdlog/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/ImGui/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/GLEW/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/GLM/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/SDL2/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/stb/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/rapidjson/include"
 )
 
 add_definitions(
@@ -45,7 +45,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
 if(WIN32)
     target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
     target_link_libraries(${PROJECT_NAME}
-        KingdomEngine/bin/KingdomEngine.lib
+        KingdomEngine/bin/KingdomEngine
     )
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

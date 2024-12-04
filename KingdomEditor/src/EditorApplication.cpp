@@ -2,6 +2,7 @@
 #include "KingdomEditor/Project/ProjectManager.h"
 #include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
 #include "KingdomEditor/DialogBox/ExcludeProjectDialogBox.h"
+#include "KingdomEditor/DialogBox/BuildErrorDialogBox.h"
 #include "KingdomEditor/Utils/Globals.h"
 #include "KingdomEditor/Project/ProjectBuild.h"
 
@@ -9,6 +10,7 @@ namespace Editor
 {
     bool SaveProjectDialog::showing = false;
     bool ExcludeProjectDialog::showing = false;
+    bool BuildErrorDialog::showing = false;
     std::string ExcludeProjectDialog::projectNameToRemove = "";
 
     EditorApplication::EditorApplication()
@@ -81,7 +83,7 @@ namespace Editor
         }
 
         static float progress = 0.0f;
-        if (ProjectBuild::buildStarted && !ProjectBuild::cmakeDone && progress <= 0.50f)
+        if (ProjectBuild::buildStarted && progress <= 0.90f)
         {
             ProjectBuild::buildProgress = progress;
             progress += 0.001f;
@@ -90,10 +92,25 @@ namespace Editor
         if (ProjectBuild::cmakeDone)
         {
             LOG_WARN("Project build files generated");
+            ProjectBuild::cmakeDone = false;
+            ProjectBuild::runningCmake = false;
+
+            std::thread msbuildThread(ProjectBuild::RunMSBUILD, std::ref(ProjectBuild::msbuildDone));
+            msbuildThread.detach();
+        }
+
+        if (ProjectBuild::msbuildDone)
+        {
+            LOG_WARN("Project build finished");
+
             ProjectBuild::buildDone = true;
             ProjectBuild::buildStarted = false;
-            ProjectBuild::cmakeDone = false;
+            ProjectBuild::msbuildDone = false;
+            ProjectBuild::buildProgress = 0.0f;
+            progress = 0.0f;
+
             SET_IM_WINDOW_VISIBLE("BuildProgressBar", false);
+            KE::OS::SetCurrentDir(KE::OS::GetCurrentDir() + "\\..\\");
         }
     }
 
@@ -105,6 +122,7 @@ namespace Editor
             {
                 SaveProjectDialog::SetShow();
                 closeAfterSave = true;
+                
             }
             else
             {
@@ -130,8 +148,8 @@ namespace Editor
                 Quit();
         }
 
-        //process exclude project dialog box
-        KE::DialogResult excludeProjectResult = ExcludeProjectDialog::Show();
+        ExcludeProjectDialog::Show();
+        BuildErrorDialog::Show();
     }
 
     void EditorApplication::OnMenuBarRender()
