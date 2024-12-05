@@ -35,12 +35,10 @@ if(WIN32)
         VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
 
-    #Copy Resources dir
-    add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/../resources"
-    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/resources"
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:${PROJECT_NAME}>
+        ${CMAKE_CURRENT_SOURCE_DIR}/../bin
     )
 
     #Copy SDL.dll
@@ -48,7 +46,7 @@ if(WIN32)
     TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2.dll"
-        "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/Release"
+        ${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2.dll
+        ${CMAKE_CURRENT_SOURCE_DIR}/../bin
     )
 endif()

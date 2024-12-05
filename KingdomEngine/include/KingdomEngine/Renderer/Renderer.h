@@ -1,10 +1,11 @@
 #ifndef GL_CONTEXT_H
 #define GL_CONTEXT_H
 
-#define NO_SDL_GLEXT
-#include <GL/glew.h>
 #include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
+#include <GL/glew.h>
+
+#include "KingdomEngine/Renderer/OpenGL/Framebuffer.h"
+#include "KingdomEngine/Renderer/OpenGL/Shader.h"
 
 namespace KE
 {
@@ -23,9 +24,9 @@ namespace KE
 
 	struct ClearColor
 	{
-		int r = 255;
-		int g = 255;
-		int b = 255;
+		float r = 0.20f;
+		float g = 0.20f;
+		float b = 0.20f;
 	};
 
 	class Renderer
@@ -42,10 +43,15 @@ namespace KE
 		static ClearColor& GetClearColor() { return clearColor; }
 		static OpenGLVersion& GetVersion() { return version; }
 
+		static Framebuffer& GetFramebuffer() { return framebuffer; }
+		static Shader& GetDefaultShader() { return defaultShader; }
+
 	private:
 		static OpenGLVersion version;
 		static SDL_GLContext glContext;
 		static ClearColor clearColor;
+		static Framebuffer framebuffer;
+		static Shader defaultShader;
 	};
 }
 

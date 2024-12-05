@@ -39,7 +39,7 @@ namespace Editor
 
     EditorApplication::~EditorApplication()
     {
-        
+
     }
 
     void EditorApplication::OnReady()
@@ -64,7 +64,7 @@ namespace Editor
 
         //open and load projects data file
         ProjectManager::Get().OpenProjectsFile();
-        
+
         if (KE::ImGuiManager::Get().IsEnabled())
             ONREADY_ALL_IM_WINDOW();
     }
@@ -122,7 +122,7 @@ namespace Editor
             {
                 SaveProjectDialog::SetShow();
                 closeAfterSave = true;
-                
+
             }
             else
             {

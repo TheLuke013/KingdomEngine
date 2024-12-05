@@ -3,7 +3,7 @@
 namespace KE
 {
 	Application::Application()
-		: imguiManager(ImGuiManager::Get()), ev(EventType::NONE)
+		: imguiManager(ImGuiManager::Get()), ev(EventType::NONE), sprite(nullptr)
 	{
 		isRunning = true;
 		eventHandling = false;
@@ -39,12 +39,18 @@ namespace KE
 		}
 		Renderer::SetContext(window.Get());
 		Renderer::InitGL();
-		Renderer::CheckOpenGLVersion(window.Get());
+        Renderer::CheckOpenGLVersion(window.Get());
+        Renderer::GetFramebuffer().Create(window.properties.width, window.properties.height);
+        Renderer::GetDefaultShader().LoadShaders("C:\\Development\\KingdomEngine\\resources\\shaders\\gl2\\sprite.vert", "C:\\Development\\KingdomEngine\\resources\\shaders\\gl2\\sprite.frag");
+        sprite = new Sprite("", Renderer::GetDefaultShader());
 	}
 
 	void Application::DisableApplication()
 	{
+	    delete sprite;
+	    sprite = nullptr;
 		DisableImGui();
+		Renderer::GetFramebuffer().Delete();
 		window.Destroy();
 	}
 
@@ -59,6 +65,11 @@ namespace KE
 
 		switch (ev.type_)
 		{
+        case EventType::CLOSE_APPLICATION:
+			if (!imguiManager.IsEnabled())
+                Quit();
+			eventHandling = false;
+			break;
 		case EventType::RESTART_IMGUI:
 			imguiManager.Restart();
 			eventHandling = false;
@@ -121,7 +132,12 @@ namespace KE
 
 		while (isRunning)
 		{
-			imguiManager.CreateNewFrame();
+            imguiManager.CreateNewFrame();
+
+			Renderer::GetFramebuffer().Bind();
+			Renderer::Clear(window.properties.width, window.properties.height);
+			OnUpdate();
+			Renderer::GetFramebuffer().Unbind();
 
 			// IMGUI DOCKSPACE
 			imguiManager.BeginDockspace();
@@ -134,17 +150,18 @@ namespace KE
 
 			// render client-application imgui
 			if (imguiManager.IsEnabled())
-			{
 				OnImGuiRender();
-			}
+
+            imguiManager.Render();
+
+			if (!imguiManager.IsEnabled())
+                Renderer::GetFramebuffer().Draw(window.properties.width, window.properties.height);
+
+
+			window.Update();
 
 			if (eventHandling)
 				EventHandle();
-
-			Renderer::Clear(window.properties.width, window.properties.height);
-			OnUpdate();
-			imguiManager.Render();
-			window.Update();
 
 			if (handlingGLEvent)
 				GLEventHandle();

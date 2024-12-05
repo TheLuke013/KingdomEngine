@@ -5,6 +5,7 @@
 #include "kingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Event.h"
 #include "KingdomEngine/ImGui/ImGuiManager.h"
+#include "KingdomEngine/Renderer/OpenGL/Sprite.h"
 
 namespace KE
 {
@@ -40,6 +41,7 @@ namespace KE
 		Event ev;
 		Window window;
 		ImGuiManager& imguiManager;
+		Sprite* sprite;
 
 		void _OnEvent(Event e) override;
 	};

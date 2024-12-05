@@ -10,6 +10,8 @@ namespace KE
 	OpenGLVersion Renderer::version;
 	SDL_GLContext Renderer::glContext;
 	ClearColor Renderer::clearColor;
+	Framebuffer Renderer::framebuffer;
+	Shader Renderer::defaultShader;
 
 	void Renderer::Init()
 	{
@@ -29,11 +31,18 @@ namespace KE
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.majorVersion);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minorVersion);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 	}
 
 	void Renderer::SetContext(SDL_Window *window)
 	{
 		glContext = SDL_GL_CreateContext(window);
+		if (!Renderer::glContext)
+        {
+            LOG_FATAL( "Falha ao criar contexto OpenGL: ");
+            LOG_FATAL(SDL_GetError());
+            return;
+        }
 		SDL_GL_MakeCurrent(window, glContext);
 		SDL_GL_SetSwapInterval(1); // VSync
 	}
@@ -53,7 +62,16 @@ namespace KE
 			LOG_INFO("Initialized GLEW");
 		}
 
+        //log GL Version
+		const GLubyte* version = glGetString(GL_VERSION);
+		std::string glVersionStr = "OpenGL Version: " + std::string(reinterpret_cast<const char*>(version));
+        LOG_INFO(glVersionStr);
+
+        //enable gl features
 		glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+        glFrontFace(GL_CCW);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -80,13 +98,9 @@ namespace KE
 
 	void Renderer::Clear(int width, int height)
 	{
-		float red = clearColor.r / 255.0f;
-		float green = clearColor.g / 255.0f;
-		float blue = clearColor.b / 255.0f;
-
-		glViewport(0, 0, width, height);
-		glClearColor(red, green, blue, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	void Renderer::SetGLVersion(GLVersion version_)

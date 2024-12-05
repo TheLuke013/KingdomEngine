@@ -1,4 +1,4 @@
-#include "KIngdomEngine/Renderer/OpenGL/EBO.h"
+#include "KingdomEngine/Renderer/OpenGL/EBO.h"
 
 namespace KE
 {

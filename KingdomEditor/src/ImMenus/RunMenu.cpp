@@ -23,12 +23,12 @@ namespace Editor
 
 			if (Item("Run", "F5"))
 			{
-				DISPATCH_EVENT(KE::EventType::DISABLE_IMGUI);
+
 			}
 
 			if (Item("Stop", "Esc"))
 			{
-				DISPATCH_EVENT(KE::EventType::ACTIVE_IMGUI);
+
 			}
 		}
 	};
