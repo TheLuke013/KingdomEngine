@@ -16,8 +16,9 @@ namespace Editor
     void Project::CreateKepFile()
     {
         KE::Dictionary kepDict;
-        kepDict.Add("gl_version", properties.glVersion);
         kepDict.Add("name", properties.name);
+        kepDict.Add("gl_version", properties.glVersion);
+        kepDict.Add("background_color", properties.backgroundColor.GetHex());
         projectJson.AddDicionary("project", kepDict);
         WriteProjectFile();
     }
@@ -26,6 +27,7 @@ namespace Editor
     {
         projectJson.SetValue("project", "name", properties.name);
         projectJson.SetValue("project", "gl_version", properties.glVersion);
+        projectJson.SetValue("project", "background_color", properties.backgroundColor.GetHex());
 
         WriteProjectFile();
     }
@@ -54,9 +56,11 @@ namespace Editor
 
         std::string name = projectJson.GetValue<std::string>("project", "name", "My Project");
         int glVersion = projectJson.GetValue<int>("project", "gl_version", 1);
+        std::string backgroundColor = projectJson.GetValue<std::string>("project", "background_color", "#000000");
 
         properties.name = name;
         properties.glVersion = glVersion;
+        properties.backgroundColor.FromHex(backgroundColor);
 
         if (glVersion == KE::GLVersion::OpenGL2)
         {

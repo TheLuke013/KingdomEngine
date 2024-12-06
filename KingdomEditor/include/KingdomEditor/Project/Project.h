@@ -10,7 +10,8 @@ namespace Editor
         std::string name = "My Project";
         std::string path = "";
         std::string kepFile = "";
-        std::string engineCoreVersion = ENGINE_CORE_VERSION;
+        std::string engineCoreVersion = KE::Core::ENGINE_CORE_VERSION;
+        KE::Color backgroundColor = KE::Renderer::GetClearColor();
         int glVersion = KE::GLVersion::OpenGL2;
     };
 

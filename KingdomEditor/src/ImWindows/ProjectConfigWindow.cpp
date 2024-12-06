@@ -2,6 +2,7 @@
 
 #include "KingdomEditor/Utils/GLVersionCombo.h"
 #include "KingdomEditor/Project/ProjectManager.h"
+#include "KingdomEditor/Utils/Globals.h"
 
 #include <cstring>
 
@@ -23,49 +24,89 @@ namespace Editor
 		void OnRender() override
 		{
 		    //get current project properties
-		    if (ProjectManager::Get().GetLoadedProject())
+		    if (ProjectManager::Get().GetLoadedProject() && Globals::PROJECT_CHANGED)
             {
-                inputProjectName = ProjectManager::Get().GetLoadedProject()->properties.name;
-                glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
+                projProp.name = ProjectManager::Get().GetLoadedProject()->properties.name;
+                projProp.glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
+                projProp.backgroundColor = ProjectManager::Get().GetLoadedProject()->properties.backgroundColor;
+                changed = false;
+                Globals::PROJECT_CHANGED = false;
             }
 
             //render widgets
-            strncpy(nameStr, inputProjectName.c_str(), sizeof(nameStr) - 1);
+            strncpy(nameStr, projProp.name.c_str(), sizeof(nameStr) - 1);
             nameStr[sizeof(nameStr) - 1] = '\0';
 
             if (ProjectManager::Get().GetLoadedProject())
             {
+                //Project name
                 ImGui::PushItemWidth(200);
                 ImGui::InputText("Name", nameStr, IM_ARRAYSIZE(nameStr));
                 ImGui::PopItemWidth();
 
-                inputProjectName.assign(nameStr);
+                projProp.name.assign(nameStr);
 
-                GLVersionCombo(glVersion);
+                //GL Version
+                GLVersionCombo(projProp.glVersion);
+
+                //Background Color
+                static bool showBGColor = false;
+                if (ImGui::Button("Background Color"))
+                {
+                    showBGColor = !showBGColor;
+                }
+
+                static ImVec4 color = ImVec4(projProp.backgroundColor.r,
+                                             projProp.backgroundColor.g,
+                                             projProp.backgroundColor.b,
+                                             projProp.backgroundColor.a);
+
+                if (showBGColor)
+                {
+                    ImGui::SetNextWindowSize(ImVec2(350, 350));
+                    ImGui::Begin("Color Picker", &showBGColor, ImGuiWindowFlags_NoResize);
+
+                    if (ImGui::ColorPicker4("Background Color", (float*)&color))
+                    {
+                        projProp.backgroundColor.r = color.x;
+                        projProp.backgroundColor.g = color.y;
+                        projProp.backgroundColor.b = color.z;
+                        projProp.backgroundColor.a = color.w;
+                    }
+
+                    ImGui::End();
+                }
             }
             else
             {
                 ImGui::Text("No project loaded");
             }
 
-			//update project properties if they changed
-			if (ProjectManager::Get().GetLoadedProject())
+            ImGui::SetCursorPos(ImVec2(10, 450));
+            if (ImGui::Button("Save Changes"))
             {
-                if (ProjectManager::Get().GetLoadedProject()->properties.name != inputProjectName)
+                //update project properties if they changed
+                if (ProjectManager::Get().GetLoadedProject())
                 {
-                    ProjectManager::Get().GetLoadedProject()->properties.name = inputProjectName;
-                }
-                else if (ProjectManager::Get().GetLoadedProject()->properties.glVersion != glVersion)
-                {
-                    ProjectManager::Get().GetLoadedProject()->properties.glVersion = glVersion;
+                    if (ProjectManager::Get().GetLoadedProject()->properties.name != projProp.name)
+                    {
+                        ProjectManager::Get().GetJson().GetData().RemoveMember(ProjectManager::Get().GetLoadedProject()->properties.name.c_str());
+                        ProjectManager::Get().GetLoadedProject()->properties.name = projProp.name;
+                        ProjectManager::Get().UpdateLoadedProjectJsonData();
+                    }
+
+                    ProjectManager::Get().GetLoadedProject()->properties.backgroundColor = projProp.backgroundColor;
+                    ProjectManager::Get().GetLoadedProject()->properties.glVersion = projProp.glVersion;
+
+                    changed = true;
                 }
             }
 		}
 
     private:
         char nameStr[128];
-        std::string inputProjectName;
-        int glVersion;
+        ProjectProperties projProp;
+        bool changed;
 
 	};
 

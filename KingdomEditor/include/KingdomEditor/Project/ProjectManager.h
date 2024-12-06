@@ -19,6 +19,7 @@ namespace Editor
 		void LoadProject(const std::string& projectName);
 		void UnloadProject();
 		void RemoveProject(const std::string& projectName);
+		void UpdateLoadedProjectJsonData();
 
 		std::vector<Project*>& GetProjects() { return projects; }
 		Project* GetLoadedProject() { return loadedProject; }

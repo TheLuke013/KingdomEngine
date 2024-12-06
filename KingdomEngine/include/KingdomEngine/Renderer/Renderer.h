@@ -6,6 +6,7 @@
 
 #include "KingdomEngine/Renderer/OpenGL/Framebuffer.h"
 #include "KingdomEngine/Renderer/OpenGL/Shader.h"
+#include "KingdomEngine/Core/Color.h"
 
 namespace KE
 {
@@ -22,13 +23,6 @@ namespace KE
 		GLVersion glVersion = OpenGL2;
 	};
 
-	struct ClearColor
-	{
-		float r = 0.20f;
-		float g = 0.20f;
-		float b = 0.20f;
-	};
-
 	class Renderer
 	{
 	public:
@@ -40,7 +34,7 @@ namespace KE
 
 		static void SetGLVersion(GLVersion version_);
 		static SDL_GLContext& GetContext() { return glContext; }
-		static ClearColor& GetClearColor() { return clearColor; }
+		static Color& GetClearColor() { return clearColor; }
 		static OpenGLVersion& GetVersion() { return version; }
 
 		static Framebuffer& GetFramebuffer() { return framebuffer; }
@@ -49,7 +43,7 @@ namespace KE
 	private:
 		static OpenGLVersion version;
 		static SDL_GLContext glContext;
-		static ClearColor clearColor;
+		static Color clearColor;
 		static Framebuffer framebuffer;
 		static Shader defaultShader;
 	};

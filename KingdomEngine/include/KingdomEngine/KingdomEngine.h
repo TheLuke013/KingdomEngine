@@ -8,6 +8,7 @@
 #include <KingdomEngine/Core/FontManager.h>
 #include <KingdomEngine/Core/JSON.h>
 #include <KingdomEngine/Core/Dictionary.h>
+#include <KingdomEngine/Core/Color.h>
 
 //IMGUI
 #include <KingdomEngine/ImGui/ImGuiManager.h>

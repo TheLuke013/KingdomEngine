@@ -82,7 +82,7 @@ namespace Editor
                         ImGui::SetCursorPos(ImVec2(10, 10));
                         ImGui::Text(project->properties.name.c_str());
 
-                        if (!(project->properties.engineCoreVersion != ENGINE_CORE_VERSION))
+                        if (!(project->properties.engineCoreVersion != KE::Core::ENGINE_CORE_VERSION))
                         {
                             ImGui::SetCursorPos(ImVec2(500, 5));
                             if (ImGui::Button("Open", ImVec2(95, 25)))
@@ -171,7 +171,7 @@ namespace Editor
                 }
                 else
                 {
-                    std::string path = KE_PROJECTS_DIRECTORY + "\\" + nameStr;
+                    std::string path = Globals::KE_PROJECTS_DIRECTORY + "\\" + nameStr;
                     std::string kepFile = std::string(nameStr) + ".kep";
                     KE::Directory dir;
 

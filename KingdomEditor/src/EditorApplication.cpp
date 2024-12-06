@@ -20,17 +20,17 @@ namespace Editor
         ActivateImGui();
 
         //search fonts and load default font
-        KE::FontManager::Get().FindFonts(FONTS_DIR, ".ttf");
+        KE::FontManager::Get().FindFonts(KE::Core::FONTS_DIR, ".ttf");
 
         for (const auto &font : KE::FontManager::Get().GetFonts())
         {
-            if (font->properties.filePath == FONTS_DIR + "\\Roboto-Regular.ttf")
+            if (font->properties.filePath == KE::Core::FONTS_DIR + "\\Roboto-Regular.ttf")
             {
                 font->properties.name = "Default";
                 if (KE::ImGuiManager::Get().IsEnabled())
                     KE::ImGuiManager::Get().LoadFont(font);
             }
-            else if (font->properties.filePath == FONTS_DIR + "\\Roboto-Bold.ttf")
+            else if (font->properties.filePath == KE::Core::FONTS_DIR + "\\Roboto-Bold.ttf")
             {
                 font->properties.name = "Default Bold";
             }
@@ -46,17 +46,17 @@ namespace Editor
     {
         //check KE dir
         KE::Directory keDir;
-        if (!keDir.DirExists(KE_DIRECTORY))
+        if (!keDir.DirExists(KE::Core::KE_DIRECTORY))
         {
-            keDir.Create(KE_DIRECTORY);
+            keDir.Create(KE::Core::KE_DIRECTORY);
             LOG_INFO("KE directory created");
         }
 
         //check projects dir
         KE::Directory projectsDir;
-        if (!projectsDir.DirExists(KE_PROJECTS_DIRECTORY))
+        if (!projectsDir.DirExists(Globals::KE_PROJECTS_DIRECTORY))
         {
-            projectsDir.Create(KE_PROJECTS_DIRECTORY);
+            projectsDir.Create(Globals::KE_PROJECTS_DIRECTORY);
             LOG_INFO("Projects directory created");
         }
 
@@ -75,6 +75,11 @@ namespace Editor
         {
             std::string newTitle = "Kingdom Engine - " + ProjectManager::Get().GetLoadedProject()->properties.name;
             GetWindow().SetTitle(newTitle);
+            KE::Renderer::GetClearColor() = ProjectManager::Get().GetLoadedProject()->properties.backgroundColor;
+        }
+        else
+        {
+            KE::Renderer::GetClearColor() = KE::Color(0.20f, 0.20f, 0.20f);
         }
 
         if (!ProjectManager::Get().GetLoadedProject())

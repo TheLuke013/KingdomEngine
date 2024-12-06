@@ -37,11 +37,23 @@ namespace KE
 		{
 			Quit();
 		}
+
+		//configure renderer
 		Renderer::SetContext(window.Get());
 		Renderer::InitGL();
         Renderer::CheckOpenGLVersion(window.Get());
         Renderer::GetFramebuffer().Create(window.properties.width, window.properties.height);
-        Renderer::GetDefaultShader().LoadShaders("C:\\Development\\KingdomEngine\\resources\\shaders\\gl2\\sprite.vert", "C:\\Development\\KingdomEngine\\resources\\shaders\\gl2\\sprite.frag");
+
+        //load shaders
+        if (Renderer::GetVersion().glVersion == GLVersion::OpenGL2)
+        {
+            Renderer::GetDefaultShader().LoadShaders(Core::SHADERS_GL2 + "\\sprite.vert", Core::SHADERS_GL2 + "\\sprite.frag");
+        }
+        else if (Renderer::GetVersion().glVersion == GLVersion::OpenGL3)
+        {
+            Renderer::GetDefaultShader().LoadShaders(Core::SHADERS_GL3 + "\\sprite.vert", Core::SHADERS_GL3 + "\\sprite.frag");
+        }
+
         sprite = new Sprite("", Renderer::GetDefaultShader());
 	}
 

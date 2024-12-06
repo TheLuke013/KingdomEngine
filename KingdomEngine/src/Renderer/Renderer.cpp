@@ -9,7 +9,7 @@ namespace KE
 {
 	OpenGLVersion Renderer::version;
 	SDL_GLContext Renderer::glContext;
-	ClearColor Renderer::clearColor;
+	Color Renderer::clearColor;
 	Framebuffer Renderer::framebuffer;
 	Shader Renderer::defaultShader;
 
@@ -98,7 +98,7 @@ namespace KE
 
 	void Renderer::Clear(int width, int height)
 	{
-		glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
+		glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 	}

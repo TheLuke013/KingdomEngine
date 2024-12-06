@@ -17,13 +17,13 @@ namespace Editor
 
     void ProjectManager::OpenProjectsFile()
     {
-        if (!projectsFile.Exists(PROJECTS_FILE))
+        if (!projectsFile.Exists(Globals::PROJECTS_FILE))
         {
             WriteProjectFile();
         }
         else
         {
-            projectsFile.Open(PROJECTS_FILE, KE::ModeFlags::READ);
+            projectsFile.Open(Globals::PROJECTS_FILE, KE::ModeFlags::READ);
             std::string fileContent = projectsFile.Read();
             projectsFile.Close();
 
@@ -33,7 +33,7 @@ namespace Editor
             }
         }
 
-        projectsFile.Open(PROJECTS_FILE, KE::ModeFlags::READ);
+        projectsFile.Open(Globals::PROJECTS_FILE, KE::ModeFlags::READ);
         projectsJson.Parse(projectsFile.Read(), true);
         projectsFile.Close();
 
@@ -96,9 +96,6 @@ namespace Editor
             KE::Directory subDir;
             subDir.Create(project.properties.path + "\\src");
             subDir.Create(project.properties.path + "\\build");
-            subDir.Create(project.properties.path + "\\ThirdParty");
-            subDir.Create(project.properties.path + "\\KingdomEngine\\include");
-            subDir.Create(project.properties.path + "\\KingdomEngine\\bin");
 
             //create project main cpp file
             KE::File cppFile;
@@ -133,6 +130,7 @@ namespace Editor
         auto it = projectsMap.find(projectName);
         if (it != projectsMap.end())
         {
+            Globals::PROJECT_CHANGED = true;
             loadedProject = it->second;
             loadedProject->LoadKepFile();
         }
@@ -185,9 +183,19 @@ namespace Editor
         }
     }
 
+    void ProjectManager::UpdateLoadedProjectJsonData()
+    {
+        KE::Dictionary projectDict;
+        projectDict.Add("kep_file", loadedProject->properties.kepFile);
+        projectDict.Add("engine_core_version", loadedProject->properties.engineCoreVersion);
+        projectDict.Add("path", loadedProject->properties.path);
+        projectsJson.AddDicionary(loadedProject->properties.name, projectDict);
+        ProjectManager::Get().SaveProjectsFile();
+    }
+
     void ProjectManager::WriteProjectFile()
     {
-        projectsFile.Open(PROJECTS_FILE, KE::ModeFlags::WRITE);
+        projectsFile.Open(Globals::PROJECTS_FILE, KE::ModeFlags::WRITE);
         projectsFile.Write(projectsJson.Stringify());
         projectsFile.Close();
     }

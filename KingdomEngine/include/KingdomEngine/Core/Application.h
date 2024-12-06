@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "KingdomEngine/Core/Core.h"
 #include "KingdomEngine/Core/Log.h"
 #include "kingdomEngine/Core/Window.h"
 #include "KingdomEngine/Core/Event.h"
