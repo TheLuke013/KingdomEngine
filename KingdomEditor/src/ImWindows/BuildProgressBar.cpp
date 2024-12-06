@@ -22,15 +22,15 @@ namespace Editor
 			ImGui::SetCursorPos(ImVec2(100, 10));
             ImGui::Text("Building Project...");
 
-			if (ProjectBuild::runningCmake)
+			if (ProjectBuild::generatingBuildFiles)
 			{
 				ImGui::SetCursorPos(ImVec2(70, 30));
-            	ImGui::Text("Generating CMake files");
+            	ImGui::Text("Generating build files");
 			}
 			else
 			{
 				ImGui::SetCursorPos(ImVec2(70, 30));
-            	ImGui::Text("Compiling project files");
+            	ImGui::Text("Compiling project");
 			}
 
             ImGui::SetCursorPos(ImVec2(50, 50));

@@ -1,6 +1,8 @@
 #ifndef FILE_GENERATOR_H
 #define FILE_GENERATOR_H
 
+#include <KingdomEngine/KingdomEngine.h>
+
 #include <string>
 #include <algorithm>
 
@@ -9,61 +11,97 @@ namespace Editor
     class FileGenerator
     {
     public:
-        static std::string GenerateCMakeFile(std::string projectName)
+        static std::string GenerateBuildScriptFile(std::string projectName)
         {
-            projectName.erase(std::remove(projectName.begin(), projectName.end(), ' '), projectName.end());
-            std::string cmakeFile = R"DELIMITER(
-cmake_minimum_required(VERSION 3.10)
+            std::string scriptFile = R"DELIMITER(
+workspace "PROJECT_NAME"
+	architecture "x64"
+	configurations
+	{
+		"Release"
+	}
 
-project(PROJECT_NAME)
+project "PROJECT_NAME"
+	kind "SharedLib"
+	language "C++"
 
-file(GLOB_RECURSE SOURCE_FILES
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
-)
+	targetdir ("build/")
+	objdir ("build/obj")
 
-include_directories(
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_CURRENT_SOURCE_DIR}/KingdomEngine/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/spdlog/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/ImGui/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/GLEW/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/GLM/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/SDL2/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/stb/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/rapidjson/include"
-)
+	files
+	{
+		"src/**.h",
+		"src/**.cpp"
+	}
 
-add_definitions(
-    -D_CRT_SECURE_NO_WARNINGS
-    -D_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
-    -D_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
-)
+	includedirs
+	{
+		"KEINCLUDEKingdomEngine/include",
+		"THIRDPARTYspdlog/include",
+		"THIRDPARTYImGui/include",
+		"THIRDPARTYGLAD/include",
+		"THIRDPARTYGLM/include",
+		"THIRDPARTYGLFW/include",
+		"THIRDPARTYstb/include"
+	}
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+	links
+	{
+		"KELIB"
+	}
 
-if(WIN32)
-    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-    target_link_libraries(${PROJECT_NAME}
-        KingdomEngine/bin/KingdomEngine
-    )
+	filter "system:windows"
+		cppdialect "C++17"
+		systemversion "latest"
 
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:${PROJECT_NAME}>
-        ${CMAKE_CURRENT_SOURCE_DIR}/bin
-    )
-endif()
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "On"
 )DELIMITER";
 
-            size_t pos = cmakeFile.find("PROJECT_NAME");
-            if (pos != std::string::npos)
+            //replace slahses
+            std::string thirdpartyDir = ReplaceSlash(KE::Core::THIRDPARTY_DIR);
+            std::string keIncludeDir = ReplaceSlash(KE::Core::KE_INCLUDE_DIR);
+            std::string keLibFile = ReplaceSlash(KE::Core::KE_LIB_FILE);
+
+            //replace words
+            scriptFile = ReplaceTextWord(scriptFile, "PROJECT_NAME", projectName);
+            scriptFile = ReplaceTextWord(scriptFile, "KEINCLUDE", keIncludeDir);
+            scriptFile = ReplaceTextWord(scriptFile, "KELIB", keLibFile);
+            scriptFile = ReplaceTextWord(scriptFile, "THIRDPARTY", thirdpartyDir);
+
+            return scriptFile;
+        }
+
+    private:
+        static std::string ReplaceSlash(const std::string& slashToReplace)
+        {
+            std::string slashStr = slashToReplace;
+            size_t slashPos = 0;
+            while ((slashPos = slashStr.find("\\", slashPos)) != std::string::npos)
             {
-                cmakeFile.replace(pos, 12, projectName);
+                slashStr.replace(slashPos, 1, "/");
+                slashPos += 2;
             }
 
-            return cmakeFile;
+            return slashStr;
         }
+
+        static std::string ReplaceTextWord(const std::string& text, const std::string& fromWord, const std::string& toWord)
+        {
+            std::string wordStr = text;
+            size_t thirdpartyDirPos = 0;
+            size_t fromWordLength = fromWord.length();
+
+            while ((thirdpartyDirPos = wordStr.find(fromWord, thirdpartyDirPos)) != std::string::npos)
+            {
+                wordStr.replace(thirdpartyDirPos, fromWordLength, toWord);
+                thirdpartyDirPos += toWord.length();
+            }
+
+            return wordStr;
+        }
+
     };
 }
 

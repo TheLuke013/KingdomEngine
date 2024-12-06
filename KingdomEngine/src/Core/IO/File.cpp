@@ -1,6 +1,8 @@
 #include "KingdomEngine/Core/IO/File.h"
 #include "KingdomEngine/Core/Log.h"
 
+#include <filesystem>
+
 namespace KE
 {
 	File::File()
@@ -35,6 +37,26 @@ namespace KE
 		{
 			LOG_ERROR("Error: File is not open or there is a problem writing");
 		}
+	}
+
+	void File::Remove()
+	{
+	    if (file.is_open())
+        {
+            file.close();
+        }
+
+        if (std::filesystem::exists(filename))
+        {
+            if (!std::filesystem::remove(filename))
+            {
+                LOG_ERROR("Error to remove file");
+            }
+        }
+        else
+        {
+            LOG_ERROR("Error: File is not open");
+        }
 	}
 
 	std::string File::Read()

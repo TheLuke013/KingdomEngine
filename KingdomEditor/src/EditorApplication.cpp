@@ -94,28 +94,41 @@ namespace Editor
             progress += 0.001f;
         }
 
-        if (ProjectBuild::cmakeDone)
+        if (ProjectBuild::filesGenerated)
         {
             LOG_WARN("Project build files generated");
-            ProjectBuild::cmakeDone = false;
-            ProjectBuild::runningCmake = false;
+            ProjectBuild::filesGenerated = false;
+            ProjectBuild::generatingBuildFiles = false;
 
-            std::thread msbuildThread(ProjectBuild::RunMSBUILD, std::ref(ProjectBuild::msbuildDone));
-            msbuildThread.detach();
+            std::thread compileThread(ProjectBuild::Compile, std::ref(ProjectBuild::compileDone));
+            compileThread.detach();
         }
 
-        if (ProjectBuild::msbuildDone)
+        if (ProjectBuild::compileDone)
         {
             LOG_WARN("Project build finished");
 
             ProjectBuild::buildDone = true;
             ProjectBuild::buildStarted = false;
-            ProjectBuild::msbuildDone = false;
+            ProjectBuild::compileDone = false;
             ProjectBuild::buildProgress = 0.0f;
             progress = 0.0f;
 
+            //remove temp build files
+            std::string projectName = ProjectManager::Get().GetLoadedProject()->properties.name;
+            std::string projectPath = ProjectManager::Get().GetLoadedProject()->properties.path + "\\";
+
+            KE::File buildTempFile;
+            buildTempFile.Open(projectPath + "premake5.lua", KE::ModeFlags::READ);
+            buildTempFile.Remove();
+
+            buildTempFile.Open(projectPath + projectName + ".sln", KE::ModeFlags::READ);
+            buildTempFile.Remove();
+
+            buildTempFile.Open(projectPath + projectName + ".vcxproj", KE::ModeFlags::READ);
+            buildTempFile.Remove();
+
             SET_IM_WINDOW_VISIBLE("BuildProgressBar", false);
-            KE::OS::SetCurrentDir(KE::OS::GetCurrentDir() + "\\..\\");
         }
     }
 

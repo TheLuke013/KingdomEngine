@@ -12,7 +12,7 @@ namespace Editor
     class ProjectsWindow : public KE::ImWindow
     {
     public:
-        ProjectsWindow() : KE::ImWindow("Projects", 400, 100, 680, 480, true, true, KE::DockSide::NONE)
+        ProjectsWindow() : KE::ImWindow("Projects", 600, 250, 680, 480, true, true, KE::DockSide::NONE)
         {
             properties.flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar;
             SwitchToRenderProjects();

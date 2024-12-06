@@ -14,15 +14,15 @@ namespace Editor
     {
     public:
         static void Build();
-        static void RunCMake(std::atomic<bool>& buildDone);
-        static void RunMSBUILD(std::atomic<bool>& msbuildDone);
+        static void GenerateBuildFiles(std::atomic<bool>& filesGenerated);
+        static void Compile(std::atomic<bool>& compileDone);
 
         static float buildProgress;
         static bool buildDone;
         static bool buildStarted;
-        static bool runningCmake;
-        static std::atomic<bool> cmakeDone;
-        static std::atomic<bool> msbuildDone;
+        static bool generatingBuildFiles;
+        static std::atomic<bool> filesGenerated;
+        static std::atomic<bool> compileDone;
 
     };
 }

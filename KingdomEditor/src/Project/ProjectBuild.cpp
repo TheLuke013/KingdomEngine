@@ -1,14 +1,16 @@
 #include "KingdomEditor/Project/ProjectBuild.h"
 #include "KingdomEditor/DialogBox/BuildErrorDialogBox.h"
+#include "KingdomEditor/Utils/Globals.h"
+#include "KingdomEditor/Utils/FileGenerator.h"
 
 namespace Editor
 {
     float ProjectBuild::buildProgress = 0.0f;
     bool ProjectBuild::buildDone = false;
     bool ProjectBuild::buildStarted = false;
-    bool ProjectBuild::runningCmake = false;
-    std::atomic<bool> ProjectBuild::cmakeDone = false;
-    std::atomic<bool> ProjectBuild::msbuildDone = false;
+    bool ProjectBuild::generatingBuildFiles = false;
+    std::atomic<bool> ProjectBuild::filesGenerated = false;
+    std::atomic<bool> ProjectBuild::compileDone = false;
 
     void ProjectBuild::Build()
     {
@@ -19,35 +21,39 @@ namespace Editor
             buildDone = false;
             SET_IM_WINDOW_VISIBLE("BuildProgressBar", true);
 
-            // check build dir and change current dir
-            KE::Directory buildDir;
-            std::string buildDirStr = KE::OS::GetCurrentDir() + "\\build";
-            if (!buildDir.DirExists(buildDirStr))
-                buildDir.Create(buildDirStr);
-
-            KE::OS::SetCurrentDir(buildDirStr);
+            //create project build script temp
+            KE::File buildScript;
+            buildScript.Open(ProjectManager::Get().GetLoadedProject()->properties.path + "\\premake5.lua", KE::ModeFlags::WRITE);
+            buildScript.Write(FileGenerator::GenerateBuildScriptFile(ProjectManager::Get().GetLoadedProject()->properties.name));
+            buildScript.Close();
 
             // generate build files
-            runningCmake = true;
-            std::thread cmakeThread(RunCMake, std::ref(cmakeDone));
-            cmakeThread.detach();
+            generatingBuildFiles = true;
+            std::thread generateFilesThread(GenerateBuildFiles, std::ref(filesGenerated));
+            generateFilesThread.detach();
         }
     }
 
-    void ProjectBuild::RunCMake(std::atomic<bool> &buildDone)
+    void ProjectBuild::GenerateBuildFiles(std::atomic<bool> &filesGenerated)
     {
-        int result = std::system("cmake ..");
+        std::string command = "call " + KE::Core::WINDOWS_TOOLS_DIR + "premake5.exe vs2022";
+        int result = std::system(command.c_str());
         if (result != 0)
         {
-            LOG_ERROR("Error to generate CMAKE Files");
+            buildDone = true;
+            buildStarted = false;
+            LOG_ERROR("Error to generate build files");
+            SET_IM_WINDOW_VISIBLE("BuildProgressBar", false);
+            BuildErrorDialog::SetShow();
+            return;
         }
-        cmakeDone = true;
+
+        filesGenerated = true;
     }
 
-    void ProjectBuild::RunMSBUILD(std::atomic<bool> &msbuildDone)
+    void ProjectBuild::Compile(std::atomic<bool> &compileDone)
     {
         std::string projectName = ProjectManager::Get().GetLoadedProject()->properties.name;
-        projectName.erase(std::remove(projectName.begin(), projectName.end(), ' '), projectName.end());
         std::string projectSolution = projectName + ".sln";
 
         std::string command =
@@ -57,10 +63,10 @@ namespace Editor
         int result = std::system(command.c_str());
         if (result != 0)
         {
-            LOG_ERROR("Error executing MSBuild");
+            LOG_ERROR("Error to compile project files");
             BuildErrorDialog::SetShow();
         }
 
-        msbuildDone = true;
+        compileDone = true;
     }
 }

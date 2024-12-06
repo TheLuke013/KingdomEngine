@@ -103,12 +103,6 @@ namespace Editor
             cppFile.Open(cppFileName, KE::ModeFlags::WRITE);
             cppFile.Write("");
             cppFile.Close();
-
-            //create project cmake file
-            KE::File cmakeFile;
-            cmakeFile.Open(project.properties.path + "\\CMakeLists.txt", KE::ModeFlags::WRITE);
-            cmakeFile.Write(FileGenerator::GenerateCMakeFile(project.properties.name));
-            cmakeFile.Close();
         }
         else
         {

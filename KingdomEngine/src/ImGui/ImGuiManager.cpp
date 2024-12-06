@@ -33,6 +33,7 @@ namespace KE
 			ImGui::StyleColorsDark();
 
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
+			io.IniFilename = nullptr;
 			io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 			io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 			io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
