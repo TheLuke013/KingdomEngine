@@ -9,6 +9,8 @@
 #include <KingdomEngine/Core/JSON.h>
 #include <KingdomEngine/Core/Dictionary.h>
 #include <KingdomEngine/Core/Color.h>
+#include <KingdomEngine/Core/GameLoader/Game.h>
+#include <KingdomEngine/Core/GameLoader/GameLoader.h>
 
 //IMGUI
 #include <KingdomEngine/ImGui/ImGuiManager.h>

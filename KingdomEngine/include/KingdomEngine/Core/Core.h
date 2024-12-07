@@ -17,7 +17,7 @@ namespace KE
         inline const std::string WINDOWS_TOOLS_DIR = OS::GetCurrentDir() + "\\..\\tools\\Windows\\";
 
         inline const std::string KE_INCLUDE_DIR = OS::GetCurrentDir() + "\\..\\KingdomEngine\\include\\";
-        inline const std::string KE_LIB_FILE = OS::GetCurrentDir() + "\\KingdomEngine.lib";
+        inline const std::string EXE_DIR = OS::GetCurrentDir();
         inline const std::string THIRDPARTY_DIR = OS::GetCurrentDir() + "\\..\\ThirdParty\\";
 
         inline const std::string FONTS_DIR = RESOURCES_DIR + "\\fonts";

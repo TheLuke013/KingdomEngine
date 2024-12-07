@@ -1,4 +1,5 @@
 #include "KingdomEngine/Core/Application.h"
+#include "KingdomEngine/Core/GameLoader/GameLoader.h"
 
 namespace KE
 {
@@ -144,6 +145,11 @@ namespace KE
 
 		while (isRunning)
 		{
+		    if (GameLoader::Get().GetLoadedGame())
+            {
+                GameLoader::Get().GetLoadedGame()->OnReady();
+            }
+
             imguiManager.CreateNewFrame();
 
 			Renderer::GetFramebuffer().Bind();

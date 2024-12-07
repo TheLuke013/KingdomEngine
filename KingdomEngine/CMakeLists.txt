@@ -29,6 +29,14 @@ add_definitions(
     -DGLEW_STATIC
 )
 
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MT")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MT")
+endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MT")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MT")
+
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
 if(WIN32)
@@ -50,3 +58,9 @@ if(WIN32)
         ${CMAKE_CURRENT_SOURCE_DIR}/../bin
     )
 endif()
+
+set_target_properties(KingdomEngine PROPERTIES
+    WINDOWS_EXPORT_ALL_SYMBOLS YES
+    VERSION 1.0
+    SOVERSION 1
+)

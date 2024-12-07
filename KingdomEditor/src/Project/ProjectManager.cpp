@@ -99,9 +99,14 @@ namespace Editor
 
             //create project main cpp file
             KE::File cppFile;
-            std::string cppFileName = project.properties.path + "\\src\\" + project.properties.name + ".cpp";
+            std::string projectName = project.properties.name;
+            projectName.erase(
+                std::remove(projectName.begin(), projectName.end(), ' '),
+                projectName.end()
+            );
+            std::string cppFileName = project.properties.path + "\\src\\" + projectName + ".cpp";
             cppFile.Open(cppFileName, KE::ModeFlags::WRITE);
-            cppFile.Write("");
+            cppFile.Write(FileGenerator::GenerateProjectCppFile(project.properties.name));
             cppFile.Close();
         }
         else

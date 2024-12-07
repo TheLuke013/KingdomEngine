@@ -13,3 +13,11 @@ include_directories(
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
+
+if(WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:${PROJECT_NAME}>
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../bin
+    )
+endif()

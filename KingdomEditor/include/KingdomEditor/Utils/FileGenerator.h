@@ -13,8 +13,8 @@ namespace Editor
     public:
         static std::string GenerateBuildScriptFile(std::string projectName)
         {
-            std::string scriptFile = R"DELIMITER(
-workspace "PROJECT_NAME"
+            std::string scriptFile =
+R"DELIMITER(workspace "PROJECT_NAME"
 	architecture "x64"
 	configurations
 	{
@@ -36,18 +36,23 @@ project "PROJECT_NAME"
 
 	includedirs
 	{
-		"KEINCLUDEKingdomEngine/include",
+		"KEINCLUDE",
 		"THIRDPARTYspdlog/include",
-		"THIRDPARTYImGui/include",
-		"THIRDPARTYGLAD/include",
-		"THIRDPARTYGLM/include",
-		"THIRDPARTYGLFW/include",
-		"THIRDPARTYstb/include"
+        "THIRDPARTYImGui/include",
+        "THIRDPARTYGLEW/include",
+        "THIRDPARTYGLM/include",
+        "THIRDPARTYSDL2/include",
+        "THIRDPARTYstb/include",
+        "THIRDPARTYrapidjson/include"
 	}
 
 	links
 	{
-		"KELIB"
+		"EXEDIR/KingdomEngine.lib",
+		"THIRDPARTYSDL2/lib/SDL2.lib",
+        "THIRDPARTYSDL2/lib/SDL2main.lib",
+        "THIRDPARTYGLEW/lib/glew32s.lib",
+        "EXEDIR/DearImGui.lib"
 	}
 
 	filter "system:windows"
@@ -62,15 +67,55 @@ project "PROJECT_NAME"
             //replace slahses
             std::string thirdpartyDir = ReplaceSlash(KE::Core::THIRDPARTY_DIR);
             std::string keIncludeDir = ReplaceSlash(KE::Core::KE_INCLUDE_DIR);
-            std::string keLibFile = ReplaceSlash(KE::Core::KE_LIB_FILE);
+            std::string exeDir = ReplaceSlash(KE::Core::EXE_DIR);
 
             //replace words
             scriptFile = ReplaceTextWord(scriptFile, "PROJECT_NAME", projectName);
             scriptFile = ReplaceTextWord(scriptFile, "KEINCLUDE", keIncludeDir);
-            scriptFile = ReplaceTextWord(scriptFile, "KELIB", keLibFile);
+            scriptFile = ReplaceTextWord(scriptFile, "EXEDIR", exeDir);
             scriptFile = ReplaceTextWord(scriptFile, "THIRDPARTY", thirdpartyDir);
 
             return scriptFile;
+        }
+
+        static std::string GenerateProjectCppFile(std::string projectName)
+        {
+            projectName.erase(std::remove(projectName.begin(), projectName.end(), ' '), projectName.end());
+
+            std::string cppFile =
+R"DELIMITER(#include <KingdomEngine/KingdomEngine.h>
+
+using namespace KE;
+
+class PROJECT_NAME : public Game
+{
+public:
+    void OnReady() override
+    {
+
+    }
+
+    void OnUpdate() override
+    {
+
+    }
+
+    void OnEvent(Event e) override
+    {
+
+    }
+
+};
+
+extern "C" __declspec(dllexport) Game* GameExport()
+{
+    return new PROJECT_NAME();
+}
+)DELIMITER";
+
+            cppFile = ReplaceTextWord(cppFile, "PROJECT_NAME", projectName);
+
+            return cppFile;
         }
 
     private:
