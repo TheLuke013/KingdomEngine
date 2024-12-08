@@ -13,19 +13,21 @@ namespace KE
 	class Application : EventListener
 	{
 	public:
-		Application();
+		Application(bool isGameApplication);
 		virtual ~Application();
 
 		virtual void OnEvent(Event e) = 0;
 		virtual void OnReady() = 0;
 		virtual void OnUpdate() = 0;
+		#ifndef GAME_APPLICATION
 		virtual void OnImGuiRender() = 0;
 		virtual void OnMenuBarRender() = 0;
 		virtual void OnDockspaceUpdate() = 0;
+		#endif
 
 		void ActivateImGui();
 		void DisableImGui();
-		void CreateWindowMaximized();
+		void CreateMainWindow();
 		void DisableApplication();
 		void EventHandle();
 		void GLEventHandle();
@@ -39,10 +41,11 @@ namespace KE
 		bool isRunning;
 		bool eventHandling;
 		bool handlingGLEvent;
+		bool isGameApplication;
 		Event ev;
 		Window window;
 		ImGuiManager& imguiManager;
-		Sprite* sprite;
+		Sprite sprite;
 
 		void _OnEvent(Event e) override;
 	};

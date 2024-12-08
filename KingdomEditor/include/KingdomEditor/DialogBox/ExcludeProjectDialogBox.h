@@ -1,6 +1,8 @@
 #ifndef EXCLUDE_PROJECT_DIALOG_BOX_H
 #define EXCLUDE_PROJECT_DIALOG_BOX_H
 
+#include <KingdomEngine/ImGui/ImDialogBox.h>
+
 #include "KingdomEditor/Project/ProjectManager.h"
 
 namespace Editor

@@ -2,18 +2,21 @@
 
 namespace KE
 {
-	Sprite::Sprite(const std::string& texturePath, Shader& shader)
-		: shader(shader), texture(texturePath, "diffuse", 0, GL_UNSIGNED_BYTE), transform(glm::mat4(1.0f))
+	Sprite::Sprite()
+		: shader(Renderer::GetDefaultShader()), transform(glm::mat4(1.0f))
 	{
-		Initialize(texturePath);
+
 	}
 
 	Sprite::~Sprite()
 	{
-		vao.Delete();
-		vbo.Delete();
-		ebo.Delete();
-		texture.Delete();
+		Delete();
+	}
+
+	void Sprite::LoadTexture(const std::string& texturePath)
+	{
+	    texture.LoadTexture(texturePath, "diffuse", 0, GL_UNSIGNED_BYTE);
+	    Initialize(texturePath);
 	}
 
 	void Sprite::Draw()
@@ -29,6 +32,14 @@ namespace KE
 
 		vao.Unbind();
 		texture.Unbind();
+	}
+
+	void Sprite::Delete()
+	{
+	    vao.Delete();
+		vbo.Delete();
+		ebo.Delete();
+		texture.Delete();
 	}
 
 	void Sprite::SetPosition(float x, float y)
@@ -58,7 +69,7 @@ namespace KE
 			 0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
 			 0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
 			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
-			-0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left 
+			-0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left
 		};
 
 		unsigned int indices[] = {

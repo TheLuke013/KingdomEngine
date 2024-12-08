@@ -1,19 +1,21 @@
 #include "KingdomEngine/Core/Application.h"
-#include "KingdomEngine/Core/GameLoader/GameLoader.h"
 
 namespace KE
 {
-	Application::Application()
-		: imguiManager(ImGuiManager::Get()), ev(EventType::NONE), sprite(nullptr)
+	Application::Application(bool isGameApplication)
+		: imguiManager(ImGuiManager::Get()), ev(EventType::NONE)
 	{
+	    LOG_INFO(isGameApplication);
 		isRunning = true;
 		eventHandling = false;
 		handlingGLEvent = false;
+		this->isGameApplication = isGameApplication;
 
 		REGISTER_EVENT_LISTENER(this);
 
 		Renderer::Init();
-		CreateWindowMaximized();
+
+		CreateMainWindow();
 	}
 
 	Application::~Application()
@@ -31,9 +33,17 @@ namespace KE
 		imguiManager.Disable();
 	}
 
-	void Application::CreateWindowMaximized()
+	void Application::CreateMainWindow()
 	{
-		window.properties.isMaximized = true;
+	    if (isGameApplication)
+        {
+            OS::SetCurrentDir(OS::GetCurrentDir() + "\\..");
+        }
+        else
+        {
+            window.properties.isMaximized = true;
+        }
+
 		if (!window.Create())
 		{
 			Quit();
@@ -55,13 +65,12 @@ namespace KE
             Renderer::GetDefaultShader().LoadShaders(Core::SHADERS_GL3 + "\\sprite.vert", Core::SHADERS_GL3 + "\\sprite.frag");
         }
 
-        sprite = new Sprite("", Renderer::GetDefaultShader());
+        sprite.LoadTexture("");
 	}
 
 	void Application::DisableApplication()
 	{
-	    delete sprite;
-	    sprite = nullptr;
+	    sprite.Delete();
 		DisableImGui();
 		Renderer::GetFramebuffer().Delete();
 		window.Destroy();
@@ -116,7 +125,7 @@ namespace KE
 		case EventType::LOAD_OPENGL3:
 			DisableApplication();
 			Renderer::SetGLVersion(OpenGL3);
-			CreateWindowMaximized();
+			CreateMainWindow();
 			if (window.Get() != nullptr)
 			{
 				ActivateImGui();
@@ -126,7 +135,7 @@ namespace KE
 		case EventType::LOAD_OPENGL2:
 			DisableApplication();
 			Renderer::SetGLVersion(OpenGL2);
-			CreateWindowMaximized();
+			CreateMainWindow();
 			if (window.Get() != nullptr)
 			{
 				ActivateImGui();
@@ -145,11 +154,6 @@ namespace KE
 
 		while (isRunning)
 		{
-		    if (GameLoader::Get().GetLoadedGame())
-            {
-                GameLoader::Get().GetLoadedGame()->OnReady();
-            }
-
             imguiManager.CreateNewFrame();
 
 			Renderer::GetFramebuffer().Bind();
@@ -172,9 +176,8 @@ namespace KE
 
             imguiManager.Render();
 
-			if (!imguiManager.IsEnabled())
+            if (!imguiManager.IsEnabled())
                 Renderer::GetFramebuffer().Draw(window.properties.width, window.properties.height);
-
 
 			window.Update();
 

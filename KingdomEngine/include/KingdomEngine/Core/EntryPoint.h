@@ -6,7 +6,7 @@ extern KE::Application* KE::CreateApplication();
 
 int main(int argc, char** argv)
 {
-	KE::Log::Init();
+	KE::Log::Init("logs.txt");
 	LOG_INFO("Engine initialized");
 
 	auto app = KE::CreateApplication();

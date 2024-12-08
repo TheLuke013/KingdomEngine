@@ -1,8 +1,6 @@
 #ifndef FILE_GENERATOR_H
 #define FILE_GENERATOR_H
 
-#include <KingdomEngine/KingdomEngine.h>
-
 #include <string>
 #include <algorithm>
 
@@ -22,7 +20,7 @@ R"DELIMITER(workspace "PROJECT_NAME"
 	}
 
 project "PROJECT_NAME"
-	kind "SharedLib"
+	kind "ConsoleApp"
 	language "C++"
 
 	targetdir ("build/")
@@ -46,22 +44,27 @@ project "PROJECT_NAME"
         "THIRDPARTYrapidjson/include"
 	}
 
+	defines
+	{
+	    "GAME_APPLICATION"
+	}
+
 	links
 	{
 		"EXEDIR/KingdomEngine.lib",
 		"THIRDPARTYSDL2/lib/SDL2.lib",
         "THIRDPARTYSDL2/lib/SDL2main.lib",
         "THIRDPARTYGLEW/lib/glew32s.lib",
-        "EXEDIR/DearImGui.lib"
+        "EXEDIR/DearImGui.lib",
+        "opengl32",
+        "Winmm",
+        "Imm32",
+        "Version"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		systemversion "latest"
-
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "On"
 )DELIMITER";
 
             //replace slahses
@@ -84,12 +87,21 @@ project "PROJECT_NAME"
 
             std::string cppFile =
 R"DELIMITER(#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/Core/EntryPoint.h>
 
 using namespace KE;
 
-class PROJECT_NAME : public Game
+class PROJECT_NAME : public Application
 {
+private:
+
+
 public:
+    PROJECT_NAME() : Application(true)
+    {
+
+    }
+
     void OnReady() override
     {
 
@@ -104,10 +116,9 @@ public:
     {
 
     }
-
 };
 
-extern "C" __declspec(dllexport) Game* GameExport()
+KE::Application *KE::CreateApplication()
 {
     return new PROJECT_NAME();
 }

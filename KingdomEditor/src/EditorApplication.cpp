@@ -13,7 +13,7 @@ namespace Editor
     bool BuildErrorDialog::showing = false;
     std::string ExcludeProjectDialog::projectNameToRemove = "";
 
-    EditorApplication::EditorApplication()
+    EditorApplication::EditorApplication() : KE::Application(false)
     {
         closeAfterSave = false;
 

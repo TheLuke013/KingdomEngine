@@ -22,6 +22,7 @@ namespace KE
 		void Open(const std::string& filename, ModeFlags mode);
 		void Write(const std::string& data);
 		void Remove();
+		void Copy(const std::string& from, const std::string& to);
 		std::string Read();
 		void Close();
 

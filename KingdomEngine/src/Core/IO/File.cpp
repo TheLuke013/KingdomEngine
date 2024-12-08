@@ -59,6 +59,27 @@ namespace KE
         }
 	}
 
+	void File::Copy(const std::string& from, const std::string& to)
+	{
+        std::ifstream fileToCopy(from, std::ios::binary);
+        if (!fileToCopy)
+        {
+            LOG_ERROR("Error opening source file: " + from);
+            return;
+        }
+
+        std::ofstream fileDest(to, std::ios::binary);
+        if (!fileDest)
+        {
+            LOG_ERROR("Error creating destination file: " + to);
+            return;
+        }
+
+        fileDest << fileToCopy.rdbuf();
+
+        LOG_INFO("File successfully copied from " + from + " to " + to);
+	}
+
 	std::string File::Read()
 	{
 		if (file.is_open() && file.good())

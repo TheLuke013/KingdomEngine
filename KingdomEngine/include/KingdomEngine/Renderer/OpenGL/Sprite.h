@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "KingdomEngine/Renderer/Renderer.h"
 #include "KingdomEngine/Renderer/OpenGL/Shader.h"
 #include "KingdomEngine/Renderer/OpenGL/Texture.h"
 #include "KingdomEngine/Renderer/OpenGL/VAO.h"
@@ -17,11 +18,12 @@ namespace KE
 	class Sprite
 	{
 	public:
-		Sprite(const std::string& texturePath, Shader& shader);
+		Sprite();
 		~Sprite();
 
+        void LoadTexture(const std::string& texturePath);
 		void Draw();
-
+		void Delete();
 		void SetPosition(float x, float y);
 		void SetScale(float scaleX, float scaleY);
 		void SetRotation(float degrees);

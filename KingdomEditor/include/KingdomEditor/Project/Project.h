@@ -1,7 +1,15 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
-#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/Core/Core.h>
+#include <KingdomEngine/Core/Log.h>
+#include <KingdomEngine/Core/Event.h>
+#include <KingdomEngine/Core/IO/Directory.h>
+#include <KingdomEngine/Core/IO/File.h>
+#include <KingdomEngine/Core/Dictionary.h>
+#include <KingdomEngine/Core/Color.h>
+#include <KingdomEngine/Core/JSON.h>
+#include <KingdomEngine/Renderer/Renderer.h>
 
 namespace Editor
 {

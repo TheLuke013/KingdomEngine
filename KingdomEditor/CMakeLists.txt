@@ -27,7 +27,7 @@ add_definitions(
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE KingdomEngine)
+target_link_libraries(${PROJECT_NAME} PRIVATE KingdomEngine ${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2main.lib)
 
 if(WIN32)
     target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)

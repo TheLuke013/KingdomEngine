@@ -1,10 +1,11 @@
 #ifndef PROJECT_MANAGER_H
 #define PROJECT_MANAGER_H
 
-#include <KingdomEngine/KingdomEngine.h>
 #include "KingdomEditor/Project/Project.h"
 
 #include <unordered_map>
+#include <thread>
+#include <atomic>
 
 namespace Editor
 {
@@ -18,6 +19,7 @@ namespace Editor
 		void AddProject(Project& project);
 		void LoadProject(const std::string& projectName);
 		void UnloadProject();
+		void RunProject();
 		void RemoveProject(const std::string& projectName);
 		void UpdateLoadedProjectJsonData();
 
@@ -32,6 +34,8 @@ namespace Editor
 
 		void WriteProjectFile();
 		void PushProject(Project& project);
+
+		void RunProjectThread();
 
 		std::vector<Project*> projects;
 		std::unordered_map<std::string, Project*> projectsMap;

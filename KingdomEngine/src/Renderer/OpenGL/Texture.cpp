@@ -3,10 +3,16 @@
 
 namespace KE
 {
-	Texture::Texture(const std::string& imagePath, const std::string& textureType, GLenum slot, GLenum pixelType)
-		: ID(0), unit(0), type(textureType)
+	Texture::Texture()
+		: ID(0), unit(0), type("")
 	{
-		//LOAD IMAGE
+
+	}
+
+	void Texture::LoadTexture(const std::string& imagePath, const std::string& textureType, GLenum slot, GLenum pixelType)
+	{
+        //LOAD IMAGE
+        type = textureType;
 		int widthImg, heightImg, numColCh;
 		stbi_set_flip_vertically_on_load(true);
 		unsigned char* bytes = stbi_load(imagePath.c_str(), &widthImg, &heightImg, &numColCh, 0);

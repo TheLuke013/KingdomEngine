@@ -27,6 +27,11 @@ namespace Editor
             buildScript.Write(FileGenerator::GenerateBuildScriptFile(ProjectManager::Get().GetLoadedProject()->properties.name));
             buildScript.Close();
 
+            //copy SDL DLL file
+            KE::File sdlDll;
+            if (!sdlDll.Exists(ProjectManager::Get().GetLoadedProject()->properties.path + "\\build\\SDL2.dll"))
+                sdlDll.Copy(KE::Core::EXE_DIR + "\\SDL2.dll", ProjectManager::Get().GetLoadedProject()->properties.path + "\\build\\SDL2.dll");
+
             // generate build files
             generatingBuildFiles = true;
             std::thread generateFilesThread(GenerateBuildFiles, std::ref(filesGenerated));

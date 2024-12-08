@@ -55,17 +55,41 @@ namespace KE
         }
     }
 
-    void Directory::Copy()
+    void Directory::Copy(const std::string& from, const std::string& to)
     {
         try
         {
-            auto currentDir = std::filesystem::current_path();
-            std::filesystem::copy(currentDir, currentDir.string() + "_copy",
-                                  std::filesystem::copy_options::recursive);
+            if (!std::filesystem::exists(from) || !std::filesystem::is_directory(from))
+            {
+                LOG_ERROR("Source directory does not exist or is not a directory: " + from);
+                return;
+            }
+
+            if (!std::filesystem::exists(to))
+            {
+                std::filesystem::create_directories(to);
+            }
+
+            for (const auto& dir : std::filesystem::recursive_directory_iterator(from))
+            {
+                const auto relativePath = std::filesystem::relative(dir.path(), from);
+                const auto destPath = to / relativePath;
+
+                if (std::filesystem::is_directory(dir))
+                {
+                    std::filesystem::create_directories(destPath);
+                }
+                else if (std::filesystem::is_regular_file(dir))
+                {
+                    std::filesystem::copy(dir, destPath, std::filesystem::copy_options::overwrite_existing);
+                }
+            }
+
+            LOG_INFO("Directory successfully copied from " + from + " to " + to);
         }
-        catch (const std::filesystem::filesystem_error &e)
+        catch (const std::filesystem::filesystem_error& e)
         {
-            LOG_ERROR("Error copying: " + std::string(e.what()));
+            LOG_ERROR("Error copying directory: " + std::string(e.what()));
         }
     }
 

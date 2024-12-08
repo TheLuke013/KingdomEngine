@@ -1,4 +1,5 @@
-#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/ImGui/ImWindow.h>
+#include <KingdomEngine/Core/FontManager.h>
 
 #include "KingdomEditor/Utils/GLVersionCombo.h"
 

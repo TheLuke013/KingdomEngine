@@ -8,9 +8,9 @@ namespace KE
 
 	std::shared_ptr<spdlog::logger> Log::logger;
 
-	void Log::Init()
+	void Log::Init(const std::string& logsFileName)
 	{
-		auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("logs.txt", true);
+		auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logsFileName, true);
 		auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 
 		console_sink->set_pattern("%^[%T] %n: %v%$");

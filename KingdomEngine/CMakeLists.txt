@@ -34,16 +34,12 @@ if(MSVC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MT")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MT")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MT")
-
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
 if(WIN32)
     target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
     target_link_libraries(${PROJECT_NAME}
         ${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2.lib
-        ${CMAKE_SOURCE_DIR}/ThirdParty/SDL2/lib/SDL2main.lib
         ${CMAKE_SOURCE_DIR}/ThirdParty/GLEW/lib/glew32s.lib
         DearImGui
         opengl32

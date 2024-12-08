@@ -1,4 +1,4 @@
-#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/ImGui/ImMenu.h>
 
 #include "KingdomEditor/Project/ProjectManager.h"
 #include "KingdomEditor/Project/ProjectBuild.h"
@@ -23,14 +23,7 @@ namespace Editor
 
 			if (Item("Run", "F5"))
 			{
-			    std::string projectName = ProjectManager::Get().GetLoadedProject()->properties.name;
-			    std::string gameLibPath = ProjectManager::Get().GetLoadedProject()->properties.path + "\\build\\" + projectName + ".dll";
-                KE::GameLoader::Get().LoadGame(gameLibPath);
-			}
-
-			if (Item("Stop", "Esc"))
-			{
-                KE::GameLoader::Get().UnloadGame();
+                ProjectManager::Get().RunProject();
 			}
 		}
 	};

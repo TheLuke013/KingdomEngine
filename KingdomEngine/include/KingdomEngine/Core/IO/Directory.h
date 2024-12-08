@@ -15,7 +15,7 @@ namespace KE
         void Open(const std::string& path);
         void Remove(const std::string& path);
         void Rename(const std::string& from, const std::string& to);
-        void Copy();
+        void Copy(const std::string& from, const std::string& to);
         void Create(const std::string& path);
         bool CurrentIsDir() const;
         bool DirExists(const std::string& path) { return std::filesystem::exists(path) && std::filesystem::is_directory(path); }

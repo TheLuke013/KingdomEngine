@@ -1,7 +1,8 @@
 #ifndef GL_VERSION_COMBO_H
 #define GL_VERSION_COMBO_H
 
-#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/Core/Log.h>
+#include <KingdomEngine/Core/Event.h>
 
 namespace Editor
 {

@@ -11,7 +11,7 @@ namespace KE
 	class Log
 	{
 	public:
-		static void Init();
+		static void Init(const std::string& logsFileName);
 
 		static std::shared_ptr<spdlog::logger>& GetLogger() { return logger; }
 

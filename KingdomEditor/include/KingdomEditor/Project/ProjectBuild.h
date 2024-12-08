@@ -1,7 +1,7 @@
 #ifndef BUILD_PROGRESS_H
 #define BUILD_PROGRESS_H
 
-#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/ImGui/ImWindowManager.h>
 
 #include "KingdomEditor/Project/ProjectManager.h"
 

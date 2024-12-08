@@ -1,6 +1,8 @@
 #ifndef BUILD_ERROR_DIALOG_BOX_H
 #define BUILD_ERROR_DIALOG_BOX_H
 
+#include <KingdomEngine/ImGui/ImDialogBox.h>
+
 namespace Editor
 {
     class BuildErrorDialog

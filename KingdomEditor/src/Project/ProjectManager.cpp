@@ -97,6 +97,10 @@ namespace Editor
             subDir.Create(project.properties.path + "\\src");
             subDir.Create(project.properties.path + "\\build");
 
+            //copy engine resources dir to project dir
+            KE::Directory resourcesDir;
+            resourcesDir.Copy(KE::Core::RESOURCES_DIR, project.properties.path + "\\resources");
+
             //create project main cpp file
             KE::File cppFile;
             std::string projectName = project.properties.name;
@@ -146,6 +150,12 @@ namespace Editor
     {
         loadedProject = nullptr;
         KE::OS::SetCurrentDir(KE::OS::GetCurrentDir() + "\\..\\");
+    }
+
+    void ProjectManager::RunProject()
+    {
+        std::thread runProjectThread(&ProjectManager::RunProjectThread, this);
+        runProjectThread.detach();
     }
 
     void ProjectManager::RemoveProject(const std::string &projectName)
@@ -205,5 +215,24 @@ namespace Editor
         proj->properties = project.properties;
         projects.push_back(proj);
         projectsMap[project.properties.name] = proj;
+    }
+
+    void ProjectManager::RunProjectThread()
+    {
+        std::string projectName = ProjectManager::Get().GetLoadedProject()->properties.name;
+        std::string projectBuildPath = ProjectManager::Get().GetLoadedProject()->properties.path + "\\build\\";
+
+        KE::OS::SetCurrentDir(projectBuildPath);
+
+        std::string projectExePath = "\"" + projectBuildPath + projectName + ".exe\"";
+        int result = std::system(projectExePath.c_str());
+        if (result != 0)
+        {
+            LOG_ERROR("Error to run project");
+            KE::OS::SetCurrentDir(KE::OS::GetCurrentDir() + "\\..");
+            return;
+        }
+
+        KE::OS::SetCurrentDir(KE::OS::GetCurrentDir() + "\\..");
     }
 }

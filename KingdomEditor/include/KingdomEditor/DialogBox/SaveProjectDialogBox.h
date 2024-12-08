@@ -1,6 +1,9 @@
 #ifndef SAVE_PROJECT_DIALOG_BOX_H
 #define SAVE_PROJECT_DIALOG_BOX_H
 
+#include <KingdomEngine/ImGui/ImDialogBox.h>
+#include <KingdomEngine/ImGui/ImWindowManager.h>
+
 #include "KingdomEditor/Project/ProjectManager.h"
 
 namespace Editor

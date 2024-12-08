@@ -1,7 +1,10 @@
 #ifndef EDITOR_APPLICATION_H
 #define EDITOR_APPLICATION_H
 
-#include <KingdomEngine/KingdomEngine.h>
+#include <KingdomEngine/Core/Application.h>
+#include <KingdomEngine/Core/EntryPoint.h>
+#include <KingdomEngine/Core/FontManager.h>
+#include <KingdomEngine/ImGui/ImMenuManager.h>
 
 namespace Editor
 {
