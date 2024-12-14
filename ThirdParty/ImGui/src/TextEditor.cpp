@@ -2735,27 +2735,34 @@ static bool TokenizeCStylePunctuation(const char * in_begin, const char * in_end
 	return false;
 }
 
-const TextEditor::LanguageDefinition& TextEditor::LanguageDefinition::CPlusPlus()
+const TextEditor::LanguageDefinition& TextEditor::LanguageDefinition::CPlusPlus(const std::vector<const char*>& identifiers_)
 {
 	static bool inited = false;
 	static LanguageDefinition langDef;
 	if (!inited)
 	{
-		static const char* const cppKeywords[] = {
+		static const std::vector<const char*> cppKeywords = {
 			"alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept", "auto", "bitand", "bitor", "bool", "break", "case", "catch", "char", "char16_t", "char32_t", "class",
 			"compl", "concept", "const", "constexpr", "const_cast", "continue", "decltype", "default", "delete", "do", "double", "dynamic_cast", "else", "enum", "explicit", "export", "extern", "false", "float",
 			"for", "friend", "goto", "if", "import", "inline", "int", "long", "module", "mutable", "namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or", "or_eq", "private", "protected", "public",
 			"register", "reinterpret_cast", "requires", "return", "short", "signed", "sizeof", "static", "static_assert", "static_cast", "struct", "switch", "synchronized", "template", "this", "thread_local",
 			"throw", "true", "try", "typedef", "typeid", "typename", "union", "unsigned", "using", "virtual", "void", "volatile", "wchar_t", "while", "xor", "xor_eq"
 		};
+		
 		for (auto& k : cppKeywords)
 			langDef.mKeywords.insert(k);
 
-		static const char* const identifiers[] = {
+		static std::vector<const char*> identifiers = {
 			"abort", "abs", "acos", "asin", "atan", "atexit", "atof", "atoi", "atol", "ceil", "clock", "cosh", "ctime", "div", "exit", "fabs", "floor", "fmod", "getchar", "getenv", "isalnum", "isalpha", "isdigit", "isgraph",
 			"ispunct", "isspace", "isupper", "kbhit", "log10", "log2", "log", "memcmp", "modf", "pow", "printf", "sprintf", "snprintf", "putchar", "putenv", "puts", "rand", "remove", "rename", "sinh", "sqrt", "srand", "strcat", "strcmp", "strerror", "time", "tolower", "toupper",
 			"std", "string", "vector", "map", "unordered_map", "set", "unordered_set", "min", "max"
 		};
+		
+		for (const auto& i : identifiers_)
+		{
+			identifiers.push_back(i);
+		}
+		
 		for (auto& k : identifiers)
 		{
 			Identifier id;

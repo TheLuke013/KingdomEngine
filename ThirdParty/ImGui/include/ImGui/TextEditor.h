@@ -173,7 +173,7 @@ public:
 		{
 		}
 
-		static const LanguageDefinition& CPlusPlus();
+		static const LanguageDefinition& CPlusPlus(const std::vector<const char*>& identifiers);
 		static const LanguageDefinition& HLSL();
 		static const LanguageDefinition& GLSL();
 		static const LanguageDefinition& C();

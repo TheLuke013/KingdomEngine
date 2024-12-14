@@ -18,14 +18,59 @@ namespace Editor
 			properties.flags |= ImGuiWindowFlags_HorizontalScrollbar;
 			fileIsLoaded = false;
 			cppFile = "";
-			
-			auto lang = TextEditor::LanguageDefinition::CPlusPlus();
-			editor.SetLanguageDefinition(lang);
 		}
 
 		void OnReady() override
 		{
+			std::vector<const char*> identifiers;
+			identifiers.push_back("KE");
+			
+			//load from json file KE identifiers
+			KE::File identifiersFile;
+			KE::JSON identifiersJson;
+			
+			std::string jsonFilePath = KE::Core::RESOURCES_DIR + "\\ke_identifiers.json";
+			if (identifiersFile.Exists(jsonFilePath))
+			{
+				//Open KE identifiers json file
+				identifiersFile.Open(jsonFilePath, KE::ModeFlags::READ);
+				identifiersJson.Parse(identifiersFile.Read(), true);
+				identifiersFile.Close();
+				
+				//load identifiers
+				for (auto it = identifiersJson.GetData().MemberBegin(); it != identifiersJson.GetData().MemberEnd(); ++it)
+				{
+					if (it->value.IsArray())
+					{
+						auto &obj = it->value;
+						for (rapidjson::SizeType i = 0; i < obj.Size(); ++i)
+						{
+							const rapidjson::Value& identifier = obj[i];
+							if (identifier.IsString())
+							{
+								identifiers.push_back(identifier.GetString());
+							}
+							else
+							{
+								LOG_ERROR("Array contains non-string element");
+							}
+						}
 
+					}
+					else
+					{
+						LOG_ERROR("No array with identifiers was found");
+					}
+				}
+			}
+			else
+			{
+				LOG_ERROR("Unable to load KE API identifiers");
+			}
+			
+			//Load cpp language
+			auto lang = TextEditor::LanguageDefinition::CPlusPlus(identifiers);
+			editor.SetLanguageDefinition(lang);
 		}
 
 		void OnRender() override
