@@ -1,6 +1,7 @@
 #include <KingdomEngine/ImGui/ImMenu.h>
 
 #include "KingdomEditor/DialogBox/SaveProjectDialogBox.h"
+#include "KingdomEditor/Utils/Globals.h"
 
 namespace Editor
 {
@@ -40,6 +41,11 @@ namespace Editor
 			if (Item("Save Project"))
 			{
 				ProjectManager::Get().GetLoadedProject()->SaveKepFile();
+			}
+			
+			if (Item("Save File"))
+			{
+				Globals::CAN_SAVE_FILE = true;
 			}
 
 			Separate();

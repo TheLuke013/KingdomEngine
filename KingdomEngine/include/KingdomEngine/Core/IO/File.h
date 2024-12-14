@@ -29,6 +29,7 @@ namespace KE
 		bool IsOpen() const { return file.is_open(); };
 		static bool Exists(const std::string& filename);
 		std::string GetFilename() const { return filename; };
+		std::fstream& GetFile() { return file; }
 
 	private:
 		std::fstream file;
