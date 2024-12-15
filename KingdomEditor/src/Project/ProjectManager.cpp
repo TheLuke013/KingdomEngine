@@ -224,7 +224,8 @@ namespace Editor
 
         KE::OS::SetCurrentDir(projectBuildPath);
 
-        std::string projectExePath = "\"" + projectBuildPath + projectName + ".exe\"";
+        std::string projectExePath = "call \"" + projectBuildPath + projectName + ".exe\" \"../" + projectName + ".kep\"";
+		LOG_INFO(projectExePath);
         int result = std::system(projectExePath.c_str());
         if (result != 0)
         {

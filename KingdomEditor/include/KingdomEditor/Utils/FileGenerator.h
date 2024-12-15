@@ -16,6 +16,7 @@ R"DELIMITER(workspace "PROJECT_NAME"
 	architecture "x64"
 	configurations
 	{
+		"Debug",
 		"Release"
 	}
 
@@ -30,6 +31,13 @@ project "PROJECT_NAME"
 	{
 		"src/**.h",
 		"src/**.cpp"
+	}
+	
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+		"_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING"
 	}
 
 	includedirs
@@ -65,6 +73,14 @@ project "PROJECT_NAME"
 	filter "system:windows"
 		cppdialect "C++17"
 		systemversion "latest"
+		
+	filter "configurations:Debug"
+		defines "KE_DEBUG"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "KE_RELEASE"
+		optimize "On"
 )DELIMITER";
 
             //replace slahses

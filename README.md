@@ -5,7 +5,6 @@ A game engine!
 - Windows 10/11;
 - OpenGL 2/3
 - MSBuild
-- CMake
 
 ## Download and Build
 ### Windows 10/11

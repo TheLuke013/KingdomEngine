@@ -32,6 +32,10 @@ namespace Editor
                 projProp.name = ProjectManager::Get().GetLoadedProject()->properties.name;
                 projProp.glVersion = ProjectManager::Get().GetLoadedProject()->properties.glVersion;
                 projProp.backgroundColor = ProjectManager::Get().GetLoadedProject()->properties.backgroundColor;
+				projProp.windowProperties.title = ProjectManager::Get().GetLoadedProject()->properties.windowProperties.title;
+				projProp.windowProperties.width = ProjectManager::Get().GetLoadedProject()->properties.windowProperties.width;
+				projProp.windowProperties.height = ProjectManager::Get().GetLoadedProject()->properties.windowProperties.height;
+				
                 changed = false;
                 Globals::PROJECT_CHANGED = false;
             }
@@ -39,6 +43,9 @@ namespace Editor
             //render widgets
             strncpy(nameStr, projProp.name.c_str(), sizeof(nameStr) - 1);
             nameStr[sizeof(nameStr) - 1] = '\0';
+			
+			strncpy(windowTitleStr, projProp.windowProperties.title.c_str(), sizeof(windowTitleStr) - 1);
+            windowTitleStr[sizeof(windowTitleStr) - 1] = '\0';
 
             if (ProjectManager::Get().GetLoadedProject())
             {
@@ -79,6 +86,18 @@ namespace Editor
 
                     ImGui::End();
                 }
+				
+				//Window Properties
+				ImGui::Separator();
+				ImGui::Text("Window Propertie");
+				
+				ImGui::PushItemWidth(200);
+				ImGui::InputText("Window Title", windowTitleStr, IM_ARRAYSIZE(windowTitleStr));
+				ImGui::PopItemWidth();
+				projProp.windowProperties.title.assign(windowTitleStr);
+				
+				ImGui::InputInt("Window Width", &projProp.windowProperties.width);
+				ImGui::InputInt("Window Height", &projProp.windowProperties.height);
             }
             else
             {
@@ -100,7 +119,12 @@ namespace Editor
 
                     ProjectManager::Get().GetLoadedProject()->properties.backgroundColor = projProp.backgroundColor;
                     ProjectManager::Get().GetLoadedProject()->properties.glVersion = projProp.glVersion;
-
+					
+					ProjectManager::Get().GetLoadedProject()->properties.windowProperties.title = projProp.windowProperties.title;
+					ProjectManager::Get().GetLoadedProject()->properties.windowProperties.width = projProp.windowProperties.width;
+					ProjectManager::Get().GetLoadedProject()->properties.windowProperties.height = projProp.windowProperties.height;
+					
+					ProjectManager::Get().GetLoadedProject()->SaveKepFile();
                     changed = true;
                 }
             }
@@ -108,6 +132,7 @@ namespace Editor
 
     private:
         char nameStr[128];
+		char windowTitleStr[128];
         ProjectProperties projProp;
         bool changed;
 

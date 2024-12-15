@@ -1,8 +1,6 @@
 @echo off
 
-mkdir build
-cd build
-cmake ..
+tools\Windows\premake5 vs2022
 
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
 

@@ -9,6 +9,7 @@
 #include <KingdomEngine/Core/Dictionary.h>
 #include <KingdomEngine/Core/Color.h>
 #include <KingdomEngine/Core/JSON.h>
+#include <KingdomEngine/Core/Window.h>
 #include <KingdomEngine/Renderer/Renderer.h>
 
 namespace Editor
@@ -21,6 +22,7 @@ namespace Editor
         std::string engineCoreVersion = KE::Core::ENGINE_CORE_VERSION;
         KE::Color backgroundColor = KE::Renderer::GetClearColor();
         int glVersion = KE::GLVersion::OpenGL2;
+		KE::WindowProperties windowProperties;
     };
 
     class Project

@@ -3,3 +3,7 @@ build
 
 imgui.ini
 logs.txt
+
+*.vcxproj.filters
+*.vcxproj
+*.sln

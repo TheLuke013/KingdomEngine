@@ -45,7 +45,7 @@ namespace KE
 
         if (cleanHex.empty() || cleanHex[0] != '#' || (cleanHex.length() != 7 && cleanHex.length() != 9))
         {
-            LOG_ERROR("Invalid hex color format. Expected #RRGGBB or #RRGGBBAA.");
+            LOG_ERROR("Invalid hex color format. Expected #RRGGBB or #RRGGBBAA");
         }
 
         try

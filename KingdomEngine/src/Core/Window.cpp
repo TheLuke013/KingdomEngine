@@ -97,4 +97,9 @@ namespace KE
 	{
 	    SDL_SetWindowTitle(window, title.c_str());
 	}
+	
+	void Window::SetSize(int width, int height)
+	{
+		SDL_SetWindowSize(window, width, height);
+	}
 }

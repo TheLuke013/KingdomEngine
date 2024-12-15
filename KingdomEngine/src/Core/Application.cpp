@@ -12,9 +12,7 @@ namespace KE
 		this->isGameApplication = isGameApplication;
 
 		REGISTER_EVENT_LISTENER(this);
-
 		Renderer::Init();
-
 		CreateMainWindow();
 	}
 
@@ -65,7 +63,7 @@ namespace KE
             Renderer::GetDefaultShader().LoadShaders(Core::SHADERS_GL3 + "\\sprite.vert", Core::SHADERS_GL3 + "\\sprite.frag");
         }
 
-        sprite.LoadTexture("");
+        sprite.LoadTexture(Core::RESOURCES_DIR + "\\empty.png");
 	}
 
 	void Application::DisableApplication()
@@ -177,7 +175,10 @@ namespace KE
             imguiManager.Render();
 
             if (!imguiManager.IsEnabled())
-                Renderer::GetFramebuffer().Draw(window.properties.width, window.properties.height);
+			{
+				Renderer::GetFramebuffer().Draw(window.properties.width, window.properties.height);
+				sprite.Draw();
+			}
 
 			window.Update();
 

@@ -19,6 +19,9 @@ namespace Editor
         kepDict.Add("name", properties.name);
         kepDict.Add("gl_version", properties.glVersion);
         kepDict.Add("background_color", properties.backgroundColor.GetHex());
+		kepDict.Add("window_title", properties.name);
+		kepDict.Add("window_width", properties.windowProperties.width);
+		kepDict.Add("window_height", properties.windowProperties.height);
         projectJson.AddDicionary("project", kepDict);
         WriteProjectFile();
     }
@@ -28,6 +31,9 @@ namespace Editor
         projectJson.SetValue("project", "name", properties.name);
         projectJson.SetValue("project", "gl_version", properties.glVersion);
         projectJson.SetValue("project", "background_color", properties.backgroundColor.GetHex());
+		projectJson.SetValue("project", "window_title", properties.windowProperties.title);
+		projectJson.SetValue("project", "window_width", properties.windowProperties.width);
+		projectJson.SetValue("project", "window_height", properties.windowProperties.height);
 
         WriteProjectFile();
     }
@@ -54,13 +60,21 @@ namespace Editor
         projectJson.Parse(projectFile.Read(), true);
         projectFile.Close();
 
-        std::string name = projectJson.GetValue<std::string>("project", "name", "My Project");
+        std::string name = projectJson.GetValue<std::string>("project", "name", "Project Name");
         int glVersion = projectJson.GetValue<int>("project", "gl_version", 1);
         std::string backgroundColor = projectJson.GetValue<std::string>("project", "background_color", "#000000");
+		
+		std::string windowTitle = projectJson.GetValue<std::string>("project", "window_title", "Window Title");
+		int windowWidth = projectJson.GetValue<int>("project", "window_width", 1024);
+		int windowHeight = projectJson.GetValue<int>("project", "window_height", 600);
 
         properties.name = name;
         properties.glVersion = glVersion;
         properties.backgroundColor.FromHex(backgroundColor);
+		
+		properties.windowProperties.title = windowTitle;
+		properties.windowProperties.width = windowWidth;
+		properties.windowProperties.height = windowHeight;
 
         if (glVersion == KE::GLVersion::OpenGL2)
         {

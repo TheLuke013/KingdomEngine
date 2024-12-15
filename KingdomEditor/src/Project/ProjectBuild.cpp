@@ -63,7 +63,7 @@ namespace Editor
 
         std::string command =
             "\"\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\VsDevCmd.bat\" && "
-        "msbuild \"" + projectSolution + "\" /p:Configuration=Release /p:Platform=x64\"";
+        "msbuild \"" + projectSolution + "\" /p:Configuration=Debug /p:Platform=x64\"";
 
         int result = std::system(command.c_str());
         if (result != 0)
