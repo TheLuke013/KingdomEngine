@@ -4,19 +4,21 @@
 #include "KingdomEngine/Core/Core.h"
 #include "KingdomEngine/Core/Log.h"
 #include "kingdomEngine/Core/Window.h"
-#include "KingdomEngine/Core/Event.h"
 #include "KingdomEngine/ImGui/ImGuiManager.h"
 #include "KingdomEngine/Renderer/OpenGL/Sprite.h"
 
+#include "KingdomEngine/Events/ApplicationEvent.h"
+#include "KingdomEngine/Events/ImGuiEvent.h"
+
 namespace KE
 {
-	class Application : EventListener
+	class Application
 	{
 	public:
 		Application(bool isGameApplication);
 		virtual ~Application();
 
-		virtual void OnEvent(Event e) = 0;
+		virtual void OnEvent(EventType evType) = 0;
 		virtual void OnReady() = 0;
 		virtual void OnUpdate() = 0;
 		#ifndef GAME_APPLICATION
@@ -30,7 +32,6 @@ namespace KE
 		void CreateMainWindow();
 		void DisableApplication();
 		void EventHandle();
-		void GLEventHandle();
 
 		Window& GetWindow() { return window; }
 
@@ -39,15 +40,12 @@ namespace KE
 
 	private:
 		bool isRunning;
-		bool eventHandling;
-		bool handlingGLEvent;
 		bool isGameApplication;
-		Event ev;
+		ApplicationEvent appEvent;
 		Window window;
 		ImGuiManager& imguiManager;
+		ImGuiEvent imguiEvent;
 		Sprite sprite;
-
-		void _OnEvent(Event e) override;
 	};
 
 	Application* CreateApplication();

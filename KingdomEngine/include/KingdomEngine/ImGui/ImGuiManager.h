@@ -13,6 +13,8 @@
 
 namespace KE
 {
+	class ImGuiEvent;
+	
 	struct DockSides
 	{
 		ImGuiID dock_main;
@@ -28,7 +30,8 @@ namespace KE
 	public:
 		static ImGuiManager& Get();
 
-		void Init(SDL_Window* window, bool enableDockspace);
+		void Setup(SDL_Window* window, bool enableDockspace);
+		void Enable();
 		void Disable();
 		void Restart();
 		void CreateNewFrame();

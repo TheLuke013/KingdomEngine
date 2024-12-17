@@ -2,7 +2,7 @@
 #define GL_VERSION_COMBO_H
 
 #include <KingdomEngine/Core/Log.h>
-#include <KingdomEngine/Core/Event.h>
+#include <KingdomEngine/Events/Event.h>
 
 namespace Editor
 {
@@ -15,12 +15,12 @@ namespace Editor
         {
             if (glVersion == KE::GLVersion::OpenGL2)
             {
-                DISPATCH_EVENT(KE::EventType::LOAD_OPENGL2);
+                DISPATCH_EVENT(KE::EventType::LoadGL2);
                 LOG_WARN("Switching OpenGL version to OpenGL 2.1!");
             }
             else if (glVersion == KE::GLVersion::OpenGL3)
             {
-                DISPATCH_EVENT(KE::EventType::LOAD_OPENGL3);
+                DISPATCH_EVENT(KE::EventType::LoadGL3);
                 LOG_WARN("Switching OpenGL version to OpenGL 3.3!");
             }
         }

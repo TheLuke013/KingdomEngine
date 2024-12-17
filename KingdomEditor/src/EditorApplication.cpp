@@ -132,9 +132,9 @@ namespace Editor
         }
     }
 
-    void EditorApplication::OnEvent(KE::Event e)
+    void EditorApplication::OnEvent(KE::EventType evType)
     {
-        if (e.type_ == KE::EventType::CLOSE_APPLICATION)
+        if (evType == KE::EventType::WindowClose)
         {
             if (ProjectManager::Get().GetLoadedProject())
             {

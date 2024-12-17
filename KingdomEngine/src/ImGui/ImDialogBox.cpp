@@ -59,6 +59,7 @@ namespace KE
                 if (removeFiles)
                 {
                     result = DialogResult::ConfirmAndRemoveFiles;
+					removeFiles = false;
                 }
                 else
                 {

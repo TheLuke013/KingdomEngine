@@ -128,7 +128,7 @@ public:
 
     }
 
-    void OnEvent(Event e) override
+    void OnEvent(EventType eType) override
     {
 
     }

@@ -3,15 +3,15 @@
 namespace KE
 {
 	Application::Application(bool isGameApplication)
-		: imguiManager(ImGuiManager::Get()), ev(EventType::NONE)
+		: imguiManager(ImGuiManager::Get())
 	{
 	    LOG_INFO(isGameApplication);
 		isRunning = true;
-		eventHandling = false;
-		handlingGLEvent = false;
-		this->isGameApplication = isGameApplication;
+		Application::isGameApplication = isGameApplication;
 
-		REGISTER_EVENT_LISTENER(this);
+		REGISTER_EVENT_LISTENER(&appEvent);	
+		REGISTER_EVENT_LISTENER(&imguiEvent);
+		
 		Renderer::Init();
 		CreateMainWindow();
 	}
@@ -23,7 +23,8 @@ namespace KE
 	// IMGUI
 	void Application::ActivateImGui()
 	{
-		imguiManager.Init(window.Get(), true);
+		imguiManager.Setup(window.Get(), true);
+		imguiManager.Enable();
 	}
 
 	void Application::DisableImGui()
@@ -76,51 +77,11 @@ namespace KE
 
 	void Application::EventHandle()
 	{
-		if (ev.type_ == EventType::LOAD_OPENGL2 || ev.type_ == EventType::LOAD_OPENGL3)
+		OnEvent(appEvent.eventType);
+		
+		switch (appEvent.eventType)
 		{
-			handlingGLEvent = true;
-			eventHandling = false;
-			return;
-		}
-
-		switch (ev.type_)
-		{
-        case EventType::CLOSE_APPLICATION:
-			if (!imguiManager.IsEnabled())
-                Quit();
-			eventHandling = false;
-			break;
-		case EventType::RESTART_IMGUI:
-			imguiManager.Restart();
-			eventHandling = false;
-			break;
-		case EventType::ACTIVE_IMGUI:
-			ActivateImGui();
-			eventHandling = false;
-			break;
-		case EventType::DISABLE_IMGUI:
-			DisableImGui();
-			eventHandling = false;
-			break;
-		case EventType::ACTIVE_DOCKSPACE:
-			imguiManager.EnableDockspace();
-			eventHandling = false;
-			break;
-		case EventType::DISABLE_DOCKSPACE:
-			imguiManager.DisableDockspace();
-			eventHandling = false;
-			break;
-		default:
-			eventHandling = false;
-			break;
-		}
-	}
-
-	void Application::GLEventHandle()
-	{
-		switch (ev.type_)
-		{
-		case EventType::LOAD_OPENGL3:
+		case EventType::LoadGL3:
 			DisableApplication();
 			Renderer::SetGLVersion(OpenGL3);
 			CreateMainWindow();
@@ -128,9 +89,9 @@ namespace KE
 			{
 				ActivateImGui();
 			}
-			handlingGLEvent = false;
+			appEvent.eventType = EventType::None;
 			break;
-		case EventType::LOAD_OPENGL2:
+		case EventType::LoadGL2:
 			DisableApplication();
 			Renderer::SetGLVersion(OpenGL2);
 			CreateMainWindow();
@@ -138,10 +99,14 @@ namespace KE
 			{
 				ActivateImGui();
 			}
-			handlingGLEvent = false;
+			appEvent.eventType = EventType::None;
+			break;
+        case EventType::WindowClose:
+			if (!imguiManager.IsEnabled())
+                Quit();
+			appEvent.eventType = EventType::None;
 			break;
 		default:
-			handlingGLEvent = false;
 			break;
 		}
 	}
@@ -181,24 +146,14 @@ namespace KE
 			}
 
 			window.Update();
-
-			if (eventHandling)
-				EventHandle();
-
-			if (handlingGLEvent)
-				GLEventHandle();
+			
+			PROCESS_ALL_EVENTS();
+			EventHandle();
 		}
 	}
 
 	void Application::Quit()
 	{
 		isRunning = false;
-	}
-
-	void Application::_OnEvent(Event e)
-	{
-		OnEvent(e);
-		ev = e;
-		eventHandling = true;
 	}
 }

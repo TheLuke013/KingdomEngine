@@ -16,7 +16,7 @@ namespace Editor
 
 		void OnReady() override;
 		void OnUpdate() override;
-		void OnEvent(KE::Event e) override;
+		void OnEvent(KE::EventType evType) override;
 		void OnImGuiRender() override;
 		void OnMenuBarRender() override;
 		void OnDockspaceUpdate() override;

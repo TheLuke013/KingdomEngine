@@ -27,6 +27,7 @@ namespace KE
         else
         {
             LOG_ERROR("Key Not Found");
+			return {};
         }
     }
 

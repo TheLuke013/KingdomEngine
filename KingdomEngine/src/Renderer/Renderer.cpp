@@ -1,6 +1,6 @@
 #include "KingdomEngine/Renderer/Renderer.h"
 #include "KingdomEngine/Core/Log.h"
-#include "KingdomEngine/Core/Event.h"
+#include "KingdomEngine/Events/Event.h"
 
 #include <iostream>
 #include <ImGui/imgui.h>
@@ -92,7 +92,7 @@ namespace KE
 									 "Incompatible OpenGL Version",
 									 "Your system does not support the required OpenGL version. Please update your drivers or use a compatible system.",
 									 window);
-			DISPATCH_EVENT(EventType::LOAD_OPENGL2);
+			DISPATCH_EVENT(EventType::LoadGL2);
 		}
 	}
 

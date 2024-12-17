@@ -1,15 +1,12 @@
 #include "KingdomEngine/ImGui/ImGuiManager.h"
 #include "KingdomEngine/Core/Log.h"
-#include "KingdomEngine/Core/Event.h"
+#include "KingdomEngine/Events/Event.h"
 
 namespace KE
 {
 	ImGuiManager::ImGuiManager()
 		: isEnabled(false), window(nullptr), newFrameIsCalled(false), loadedFont(nullptr),
-		 theme(Theme::DEFAULT), dockspaceIsEnabled(false)
-	{
-
-	}
+		 theme(Theme::DEFAULT), dockspaceIsEnabled(false) {}
 
 	ImGuiManager::~ImGuiManager()
 	{
@@ -21,11 +18,19 @@ namespace KE
 		static ImGuiManager* instance = new ImGuiManager();
 		return *instance;
 	}
-
-	void ImGuiManager::Init(SDL_Window* window, bool enableDockspace)
+	
+	void ImGuiManager::Setup(SDL_Window* window, bool enableDockspace)
 	{
 		ImGuiManager::window = window;
+		if (enableDockspace)
+		{
+			dockspaceIsEnabled = true;
+			LOG_INFO("ImGui Dockspace was enabled");
+		}
+	}
 
+	void ImGuiManager::Enable()
+	{
 		if (!isEnabled)
 		{
 			//setup imgui context
@@ -76,12 +81,6 @@ namespace KE
 
 			isEnabled = true;
 			LOG_INFO("ImGui was enabled");
-
-			if (enableDockspace)
-			{
-				dockspaceIsEnabled = true;
-				LOG_INFO("ImGui Dockspace was enabled");
-			}
 		}
 	}
 
@@ -110,7 +109,7 @@ namespace KE
 	void ImGuiManager::Restart()
 	{
 		Disable();
-		Init(window, dockspaceIsEnabled);
+		Enable();
 	}
 
 	void ImGuiManager::Render()
@@ -146,7 +145,7 @@ namespace KE
 		if (isEnabled)
 		{
 			loadedFont = font;
-			DISPATCH_EVENT(EventType::RESTART_IMGUI);
+			DISPATCH_EVENT(EventType::RestartImGui);
 		}
 	}
 
@@ -155,7 +154,7 @@ namespace KE
 		if (isEnabled)
 		{
 			ImGuiManager::theme.SetTheme(theme);
-	    	DISPATCH_EVENT(EventType::RESTART_IMGUI);
+	    	DISPATCH_EVENT(EventType::RestartImGui);
 		}
 	}
 

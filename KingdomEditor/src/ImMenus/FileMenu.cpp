@@ -78,7 +78,7 @@ namespace Editor
 
 			if (Item("Exit", "Alt+F4"))
 			{
-				DISPATCH_EVENT(KE::EventType::CLOSE_APPLICATION);
+				DISPATCH_EVENT(KE::EventType::WindowClose);
 			}
 		}
 	};
